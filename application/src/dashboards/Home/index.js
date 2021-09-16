@@ -2,7 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Home = () => (
-    <div>Home</div>
+    <input
+        type="text"
+        onChange={(event) => {
+            const value = event.target.value;
+            setTimeout(
+                () => console.log(value),
+                 1500
+            )
+        }}
+    />
 );
 
 export default Home;

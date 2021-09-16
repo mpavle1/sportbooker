@@ -1,12 +1,46 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
+import jwt_decode from "jwt-decode";
+import { Provider } from "react-redux";
 
-import DashboardContainer from './container/DashbordContainer';
-import routes from './routes';
+import axios from 'axios';
+
+import { setCurrentUser, logoutUser, setCurrentSportCenter } from "./redux/actions/authActions";
+import store from "./redux/store";
+
 import Header from './components/Header';
+import DashboardContainer from './container/DashbordContainer';
+
+import setAuthToken from "./utils/auth/setAuthToken";
+import routes from './routes';
+
+axios.defaults.baseURL = 'http://localhost:5000';
+
+if (localStorage.jwtToken) {
+    // Set auth token header auth
+    const token = localStorage.jwtToken;
+    setAuthToken(token);
+    // Decode token and get user info and exp
+    const decoded = jwt_decode(token);
+    // Set user and isAuthenticated
+    store.dispatch(setCurrentUser(decoded.user));
+    if (decoded.user.type === 'sportCenter') {
+        store.dispatch(setCurrentSportCenter(decoded.sportCenter));
+    } else {
+        store.dispatch(setCurrentSportCenter({}));
+    }
+    // Check for expired token
+    const currentTime = Date.now() / 1000; // to get in milliseconds
+    if (decoded.exp < currentTime) {
+        // Logout user
+        store.dispatch(logoutUser());
+        // Redirect to login
+        window.location.href = "./login";
+    }
+}
 
 const App = () => (
-    <Fragment>
+    <Provider store={store}>
         <Router>
             <Header />
             <DashboardContainer>
@@ -17,7 +51,7 @@ const App = () => (
                 </Switch>
             </DashboardContainer>
         </Router>
-    </Fragment>
+    </Provider>
 );
 
 export default App;

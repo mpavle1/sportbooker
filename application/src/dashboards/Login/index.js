@@ -1,22 +1,30 @@
-import React, { useState } from "react";
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { connect } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import styled from "styled-components";
 
-import * as FORM_VALIDATORS from '../../utils/validators/form';
+import { loginUser } from "../../redux/actions/authActions";
 
-const Login = () => {
+const Login = ({ auth, errors, loginUser }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const validateForm = () => {
-        return FORM_VALIDATORS.validateEmail(email) && FORM_VALIDATORS.validatePassword(password);
-    }
+    const history = useHistory();
+
+    useEffect(() => {
+        if (auth.isAuthenticated) {
+            history.push("/")
+        }
+    });
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('submit')
+        loginUser({
+            email,
+            password
+        });
     }
 
     return (
@@ -24,25 +32,37 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
                 <StyledContainer>
                     <TextField
+                        fullWidth
                         label="Email"
                         variant="outlined"
                         autoFocus
                         type="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        error={errors.email !== undefined}
+                        helperText={errors.email !== undefined ? errors.email : ''}
+                        onChange={(e) => {
+                            delete errors['email'];
+                            setEmail(e.target.value);
+                        }}
                     />
                 </StyledContainer>
                 <StyledContainer>
                     <TextField
+                        fullWidth
                         label="Password"
                         variant="outlined"
                         type="password"
+                        error={errors.password !== undefined}
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => {
+                            delete errors['password'];
+                            setPassword(e.target.value);
+                        }}
+                        helperText={errors.password !== undefined ? errors.password : ''}
                     />
                 </StyledContainer>
                 <div>
-                    <Button variant="contained" color="primary" type="submit" disabled={!validateForm()}>
+                    <Button variant="contained" color="primary" type="submit">
                         Login
                     </Button>
                     <StyledLink to="/register">
@@ -54,14 +74,22 @@ const Login = () => {
     );
 }
 
-export default Login;
+const mapStateToProps = state => ({
+    auth: state.auth,
+    errors: state.errors
+});
+
+export default connect(
+    mapStateToProps,
+    { loginUser }
+)(Login);
 
 const StyledContainer = styled.div`
     margin-bottom: 10px;
 `;
 
 const StyledLogin = styled.div`
-    width: 195px;
+    width: 250px;
     display: block;
     margin: 100px auto;
     border: 1px solid #777;

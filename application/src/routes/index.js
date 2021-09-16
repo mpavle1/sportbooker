@@ -17,6 +17,16 @@ const routes = [
     exact: true,
     component: Dashboards.Register
   },
+  {
+    path: CONST.navigation.REGISTER_URL,
+    exact: true,
+    component: Dashboards.Register
+  },
+  {
+    path: CONST.navigation.DASHBOARD_URL,
+    exact: true,
+    component: Dashboards.Dashboard
+  }
 ];
 
 export default routes;

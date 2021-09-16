@@ -1,7 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from 'react-redux';
 import { AppBar, Toolbar, makeStyles, Button } from "@material-ui/core";
 import { Link, useLocation } from "react-router-dom";
+
+import { logoutUser } from '../../redux/actions/authActions';
+import CONST from "../../constants";
 
 const useStyles = makeStyles(() => ({
     toolbar: {
@@ -10,39 +14,70 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const Header = () => {
+const Header = ({ auth, logoutUser }) => {
+    const { isAuthenticated, user } = auth;
     const { toolbar } = useStyles();
     const { pathname } = useLocation();
-    const isLoggedIn = false;
 
-    const getLoggedOutButtons = () => {
-        if (pathname !== '/login' && pathname !== '/register' && !isLoggedIn) {
-            return (
-                <StyledLoggedOutButtons>
-                    <Button
-                        {...{
-                            color: "inherit",
-                            to: '/login',
-                            component: StyledLink,
-                        }}
-                    >
-                        Login
-                    </Button>
-                    <Button
-                        {...{
-                            color: "inherit",
-                            to: '/register',
-                            component: StyledLink,
-                        }}
-                    >
-                        Register
-                    </Button>
-                </StyledLoggedOutButtons>
-            );
-        }
+    const getLoggedOutButtons = () => (
+        <StyledLoggedInButton>
+            {pathname !== CONST.navigation.LOGIN_URL && (
+                <Button
+                    {...{
+                        color: "inherit",
+                        to: CONST.navigation.LOGIN_URL,
+                        component: StyledLink,
+                    }}
+                >
+                    Login
+                </Button>
+            )}
+            {pathname !== CONST.navigation.REGISTER_URL && (
+                <Button
+                    {...{
+                        color: "inherit",
+                        to: CONST.navigation.REGISTER_URL,
+                        component: StyledLink,
+                    }}
+                >
+                    Register
+                </Button>
+            )}
+        </StyledLoggedInButton>
+    );
 
-        return null;
-    };
+    const getLoggedInButtons = () => (
+        <div>
+            <Button
+                {...{
+                    color: "inherit",
+                    to: '/dashboard/profile',
+                    component: StyledLink,
+                }}
+            >
+                {user.name}
+            </Button>
+            {user.type === 'sportCenter' && (
+                <Button
+                    {...{
+                        color: "inherit",
+                        to: CONST.navigation.DASHBOARD_URL,
+                        component: StyledLink,
+                    }}
+                >
+                    Dashboard
+                </Button>
+            )}
+            <Button
+                {...{
+                    color: "inherit"
+                }}
+                onClick={() => logoutUser()}
+            >
+                Logout
+            </Button>
+        </div>
+    );
 
     const displayDesktop = () => {
         return (
@@ -56,7 +91,7 @@ const Header = () => {
                 >
                     SportBooker
                 </Button>
-                {getLoggedOutButtons()}
+                {isAuthenticated ? getLoggedInButtons() : getLoggedOutButtons()}
             </Toolbar>
         );
     };
@@ -68,14 +103,20 @@ const Header = () => {
     );
 }
 
-export default Header;
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+export default connect(
+    mapStateToProps,
+    { logoutUser }
+)(Header);
 
 const StyledLink = styled(Link)`
     color: white !important;
     text-decoration: none !important;
 `;
 
-const StyledLoggedOutButtons = styled.div`
+const StyledLoggedInButton = styled.div`
     display: inline-block;
-    float: right;
 `;
