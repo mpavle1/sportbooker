@@ -157,4 +157,33 @@ router.post("/login", (req, res) => {
     });
 });
 
+router.patch('/users/changePassword', (req, res) => {
+    User.findById(req.user_id).then((user) => {
+        if(user){
+            bcrypt.compare(req.body.password, user.password, (err, r) => {
+                if(r){
+                    let costFactor = 10;
+                    bcrypt.hash(req.body.newPassword, costFactor, function(err, hash) {
+                        User.findOneAndUpdate({
+                            _id: req.user_id
+                        },{
+                            password: hash
+                        }).then((u) => {
+                            res.status(200).send(u);
+                        }).catch((err) => {
+                            res.status(500).send(err);
+                        });
+                    });
+                } else {
+                    res.status(400).send({message: "Passwords don't match"});
+                }
+            })
+        } else {
+            res.status(400).send({message: "User doesn't exist"});
+        }
+    }).catch((err) => {
+        res.status(500).send(err);
+    });
+});
+
 module.exports = router;

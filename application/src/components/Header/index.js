@@ -57,7 +57,7 @@ const Header = ({ auth, logoutUser }) => {
             >
                 {user.name}
             </Button>
-            {user.type === 'sportCenter' && (
+            {user.type !== 'user' && (
                 <Button
                     {...{
                         color: "inherit",

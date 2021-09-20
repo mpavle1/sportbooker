@@ -1,24 +1,39 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Chip, FormControlLabel, Checkbox, FormGroup } from '@material-ui/core';
+import { Chip, FormControlLabel, Checkbox, FormGroup, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import styled from 'styled-components';
+
+import { getAllSports } from "../../../../redux/actions/sports";
+import { getAllLocations } from "../../../../redux/actions/locations";
 
 import { isSportCenterComplete } from '../../../../utils/validators/sportCenter';
 
-const SportCenter = ({ auth }) => {
+const SportCenter = ({ auth, sports, locations, getAllSports, getAllLocations }) => {
+    useEffect(() => {
+        getAllSports();
+        getAllLocations();
+    }, []);
+
     const { user, sportCenter } = auth;
 
     const isComplete = isSportCenterComplete(sportCenter);
     const [isEditActive, setIsEditActive] = useState(false);
 
-    const sports = ['qwe', 'eqweq', 'eqweqweqwe'];
-
     const [name, setName] = useState(user.name);
     const [phoneNumber, setPhoneNumber] = useState(sportCenter.phoneNumber);
     const [location, setLocation] = useState(sportCenter.location);
     const [capacity, setCapacity] = useState(sportCenter.capacity);
-    const [checkedSports, setCheckedSports] = useState(sports);
+    const [checkedSports, setCheckedSports] = useState(sportCenter.sports);
 
+    const updateSportCenterProfile = () => console.log('save');
+
+    const handleCheckboxChange = (inputSport) => {
+        let newArray = [...checkedSports, inputSport];
+        if (checkedSports.includes(inputSport)) {
+            newArray = newArray.filter(sport => sport !== inputSport);
+        }
+        setCheckedSports(newArray);
+    };
 
     const getEditMode = () => {
         return (
@@ -36,8 +51,19 @@ const SportCenter = ({ auth }) => {
                     <input type="text" value={phoneNumber} onChange={(event) => setPhoneNumber(event.target.value)} />
                 </StyledInfoFieldContainer>
                 <StyledInfoFieldContainer>
-                    <StyledInfoFiledName>Location</StyledInfoFiledName>
-                    <input type="text" value={location} onChange={(event) => setLocation(event.target.value)} placeholder="Your location is missing, please add it." />
+                    {/* <StyledInfoFiledName>Location</StyledInfoFiledName> */}
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Location</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={location}
+                            label="Location"
+                            onChange={(event) => {console.log(event.target.value);setLocation(event.target.value);}}
+                        >
+                            {locations.map((location) => <MenuItem value={location.name}>{location.name}</MenuItem>)}
+                        </Select>
+                    </FormControl>
                 </StyledInfoFieldContainer>
                 <StyledInfoFieldContainer>
                     <StyledInfoFiledName>Capacity</StyledInfoFiledName>
@@ -48,15 +74,15 @@ const SportCenter = ({ auth }) => {
                     {
                         <FormGroup>
                             {
-                                checkedSports.map((sport) => <FormControlLabel
-                                    key={sport}
+                                sports.map((sport) => <FormControlLabel
+                                    key={sport.name}
                                     control={
-                                        <Checkbox checked={sports.includes(sport)}
-                                            onChange={(event) => setCheckedSports(event.target.value)}
-                                            name={sport}
+                                        <Checkbox checked={checkedSports.includes(sport.name)}
+                                            onChange={(event) => handleCheckboxChange(event.target.name)}
+                                            name={sport.name}
                                         />
                                     }
-                                    label={sport}
+                                    label={sport.name}
                                 />)
                             }
                         </FormGroup>
@@ -95,7 +121,7 @@ const SportCenter = ({ auth }) => {
                         checkedSports.length > 0
                             ? (
                                 <ul>
-                                    {checkedSports.map((sport) => <li key={sport}>{sport}</li>)}
+                                    {checkedSports.map((sport) => <li key={`${sport}-checked`}>{sport}</li>)}
                                 </ul>
                             )
                             : 'Sports that are available for viewing in you center are missing, please add them.'
@@ -110,7 +136,13 @@ const SportCenter = ({ auth }) => {
             {!isComplete && <Chip color="secondary" label="You havent finished you profile yet. Please fill in the missing information if you want to be able to create events." />}
             {isEditActive ? getEditMode() : getViewMode()}
             {isEditActive ? (
-                <button type="button" onClick={() => setIsEditActive(false)}>Save</button>
+                <button type="button" onClick={() => {
+                    setIsEditActive(false);
+                    updateSportCenterProfile();
+                }}
+                >
+                    Save
+                </button>
             ) : (
                 <button type="button" onClick={() => setIsEditActive(true)}>Edit</button>
             )}
@@ -120,11 +152,17 @@ const SportCenter = ({ auth }) => {
 }
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    locations: state.locations,
+    sports: state.sports
 });
 
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    {
+        getAllLocations,
+        getAllSports
+    }
 )(SportCenter);
 
 const StyledInfoFieldContainer = styled.div`

@@ -6,9 +6,11 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const cors = require("cors");
 
-const users = require("./routes/api/users");
-
 const app = express();
+
+const users = require("./routes/api/users");
+const sports = require("./routes/api/sports");
+const locations = require("./routes/api/locations");
 
 app.use(cors());
 
@@ -37,8 +39,11 @@ mongoose
     .then(() => console.log("MongoDB successfully connected"))
     .catch(err => console.log(err));
 
+
 // Routes
 app.use("/api/users", users);
+app.use("/api/sports", sports);
+app.use("/api/locations", locations);
 
 const port = process.env.PORT || 5000;
 
