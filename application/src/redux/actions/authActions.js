@@ -81,3 +81,19 @@ export const setCurrentSportCenter = (decoded) => {
         payload: decoded
     };
 }
+
+
+export const updateSportCenterProfile = (data) => dispatch => {
+    axios
+    .patch("/api/users/", data)
+    .then(res => {
+        dispatch(setCurrentUser(res.user));
+        dispatch(setCurrentSportCenter(res.sportCenter));
+    })
+    .catch(err =>
+        dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data
+        })
+    );
+}

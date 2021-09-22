@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { getAllSports } from "../../../../redux/actions/sports";
 import { getAllLocations } from "../../../../redux/actions/locations";
+import { updateSportCenterProfile } from "../../../../redux/actions/authActions";
 
 import { isSportCenterComplete } from '../../../../utils/validators/sportCenter';
 
@@ -25,7 +26,20 @@ const SportCenter = ({ auth, sports, locations, getAllSports, getAllLocations })
     const [capacity, setCapacity] = useState(sportCenter.capacity);
     const [checkedSports, setCheckedSports] = useState(sportCenter.sports);
 
-    const updateSportCenterProfile = () => console.log('save');
+    const updateSportCenterProfile = () => {
+        updateSportCenterProfile({
+            user: {
+                ...user,
+                phoneNumber
+            },
+            sportCenter: {
+                ...sportCenter,
+                location,
+                capacity,
+                sports: checkedSports
+            }
+        })
+    };
 
     const handleCheckboxChange = (inputSport) => {
         let newArray = [...checkedSports, inputSport];
@@ -51,19 +65,11 @@ const SportCenter = ({ auth, sports, locations, getAllSports, getAllLocations })
                     <input type="text" value={phoneNumber} onChange={(event) => setPhoneNumber(event.target.value)} />
                 </StyledInfoFieldContainer>
                 <StyledInfoFieldContainer>
-                    {/* <StyledInfoFiledName>Location</StyledInfoFiledName> */}
-                    <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Location</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={location}
-                            label="Location"
-                            onChange={(event) => {console.log(event.target.value);setLocation(event.target.value);}}
-                        >
-                            {locations.map((location) => <MenuItem value={location.name}>{location.name}</MenuItem>)}
-                        </Select>
-                    </FormControl>
+                    <StyledInfoFiledName>Location</StyledInfoFiledName>
+                    <select value={location} onChange={(event) => setLocation(event.target.value)}>
+                        <option value="">Please select a location</option>
+                        {locations.map((location) => <option value={location.name} key={location.name}>{location.name}</option>)}
+                    </select>
                 </StyledInfoFieldContainer>
                 <StyledInfoFieldContainer>
                     <StyledInfoFiledName>Capacity</StyledInfoFiledName>
@@ -105,15 +111,15 @@ const SportCenter = ({ auth, sports, locations, getAllSports, getAllLocations })
                 </StyledInfoFieldContainer>
                 <StyledInfoFieldContainer>
                     <StyledInfoFiledName>Phone Number</StyledInfoFiledName>
-                    <div>{user.phoneNumber}</div>
+                    <div>{phoneNumber || 'Your phone number is missing, please add it.'}</div>
                 </StyledInfoFieldContainer>
                 <StyledInfoFieldContainer>
                     <StyledInfoFiledName>Location</StyledInfoFiledName>
-                    <div>{sportCenter.location || 'Your location is missing, please add it.'}</div>
+                    <div>{location || 'Your location is missing, please add it.'}</div>
                 </StyledInfoFieldContainer>
                 <StyledInfoFieldContainer>
                     <StyledInfoFiledName>Capacity</StyledInfoFiledName>
-                    <div>{sportCenter.capacity || 'Your capacity is missing, please add it.'}</div>
+                    <div>{capacity || 'Your capacity is missing, please add it.'}</div>
                 </StyledInfoFieldContainer>
                 <StyledInfoFieldContainer>
                     <StyledInfoFiledName>Sports</StyledInfoFiledName>

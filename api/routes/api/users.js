@@ -157,8 +157,8 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.patch('/users/changePassword', (req, res) => {
-    User.findById(req.user_id).then((user) => {
+router.patch('/changePassword', (req, res) => {
+    User.findById(req.body.user_id).then((user) => {
         if(user){
             bcrypt.compare(req.body.password, user.password, (err, r) => {
                 if(r){
@@ -183,6 +183,21 @@ router.patch('/users/changePassword', (req, res) => {
         }
     }).catch((err) => {
         res.status(500).send(err);
+    });
+});
+
+router.patch('/', (req, res) => {
+    User.findOneAndUpdate({_id: req.body.user.id}, {
+        $set: req.body.user
+    }).then((newUser)=>{
+        SportCenter.findOneAndUpdate({_id: req.body.sportCenter.id}, {
+            $set: req.body.sportCenter
+        }).then((newSportCenter)=>{
+            res.status(200).send({
+                user: newUser,
+                sportcenter: newSportCenter
+            });
+        });
     });
 });
 
