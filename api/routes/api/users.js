@@ -190,7 +190,7 @@ router.patch('/', (req, res) => {
     User.findOneAndUpdate({_id: req.body.user.id}, {
         $set: req.body.user
     }).then((newUser)=>{
-        SportCenter.findOneAndUpdate({_id: req.body.sportCenter.id}, {
+        SportCenter.findOneAndUpdate({_id: req.body.sportCenter._id}, {
             $set: req.body.sportCenter
         }).then((newSportCenter)=>{
             res.status(200).send({

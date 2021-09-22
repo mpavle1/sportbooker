@@ -9,7 +9,7 @@ import { updateSportCenterProfile } from "../../../../redux/actions/authActions"
 
 import { isSportCenterComplete } from '../../../../utils/validators/sportCenter';
 
-const SportCenter = ({ auth, sports, locations, getAllSports, getAllLocations }) => {
+const SportCenter = ({ auth, sports, locations, getAllSports, getAllLocations, updateSportCenterProfile }) => {
     useEffect(() => {
         getAllSports();
         getAllLocations();
@@ -26,7 +26,7 @@ const SportCenter = ({ auth, sports, locations, getAllSports, getAllLocations })
     const [capacity, setCapacity] = useState(sportCenter.capacity);
     const [checkedSports, setCheckedSports] = useState(sportCenter.sports);
 
-    const updateSportCenterProfile = () => {
+    const updateProfile = () => {
         updateSportCenterProfile({
             user: {
                 ...user,
@@ -144,7 +144,7 @@ const SportCenter = ({ auth, sports, locations, getAllSports, getAllLocations })
             {isEditActive ? (
                 <button type="button" onClick={() => {
                     setIsEditActive(false);
-                    updateSportCenterProfile();
+                    updateProfile();
                 }}
                 >
                     Save
@@ -167,7 +167,8 @@ export default connect(
     mapStateToProps,
     {
         getAllLocations,
-        getAllSports
+        getAllSports,
+        updateSportCenterProfile
     }
 )(SportCenter);
 
