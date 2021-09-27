@@ -23,14 +23,16 @@ const AddEventModal = ({ isVisible, handleSetVisible, sportCenter, addEvent }) =
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
-    const [duration, setDuration] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
     const [sport, setSport] = useState('');
 
     useEffect(() => {
         setTitle('');
         setDescription('');
         setDate('');
-        setDuration('');
+        setStartTime('');
+        setEndTime('');
         setSport('');
     }, [isVisible]);
 
@@ -71,11 +73,11 @@ const AddEventModal = ({ isVisible, handleSetVisible, sportCenter, addEvent }) =
                 <StyledInfoFieldContainer>
                     <TextField
                         fullWidth
-                        label="Date"
-                        type="date"
+                        label="Start time"
+                        type="time"
                         variant="outlined"
-                        value={date}
-                        onChange={(event) => setDate(event.target.value)}
+                        value={startTime}
+                        onChange={(event) => setStartTime(event.target.value)}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -84,11 +86,27 @@ const AddEventModal = ({ isVisible, handleSetVisible, sportCenter, addEvent }) =
                 <StyledInfoFieldContainer>
                     <TextField
                         fullWidth
-                        label="Duration - in hours"
+                        label="End time"
+                        type="time"
                         variant="outlined"
-                        type="number"
-                        value={duration}
-                        onChange={(event) => setDuration(event.target.value)}
+                        value={endTime}
+                        onChange={(event) => setEndTime(event.target.value)}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </StyledInfoFieldContainer>
+                <StyledInfoFieldContainer>
+                    <TextField
+                        fullWidth
+                        label="Date"
+                        type="date"
+                        variant="outlined"
+                        value={date}
+                        onChange={(event) => setDate(event.target.value)}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                     />
                 </StyledInfoFieldContainer>
                 <StyledInfoFieldContainer>
@@ -109,18 +127,19 @@ const AddEventModal = ({ isVisible, handleSetVisible, sportCenter, addEvent }) =
                     variant="contained"
                     color="primary"
                     type="button"
-                    disabled={!(title && description && sport && duration && date)}
+                    disabled={!(title && description && sport && startTime && endTime && date)}
                     onClick={() => {
                         handleClose();
                         addEvent({
                             title,
                             description,
                             date,
-                            duration,
                             active: true,
                             setByAdmin: false,
                             sport,
-                            sportCenter_id: sportCenter._id
+                            sportCenter_id: sportCenter._id,
+                            startTime,
+                            endTime
                         });
                     }}
                 >

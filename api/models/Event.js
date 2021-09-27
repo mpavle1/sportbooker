@@ -30,7 +30,11 @@ const EventSchema = new Schema({
         type: String,
         required: true 
     },
-    duration: {
+    startTime: {
+        type: String,
+        required: true 
+    },
+    endTime: {
         type: String,
         required: true 
     }
