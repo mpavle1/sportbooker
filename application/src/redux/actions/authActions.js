@@ -87,8 +87,8 @@ export const updateSportCenterProfile = (data) => dispatch => {
     axios
     .patch("/api/users/", data)
     .then(res => {
-        dispatch(setCurrentUser(res.user));
-        dispatch(setCurrentSportCenter(res.sportCenter));
+        dispatch(setCurrentSportCenter(res.data.sportCenter));
+        dispatch(setCurrentUser(res.data.user));
     })
     .catch(err =>
         dispatch({

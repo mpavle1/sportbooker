@@ -14,10 +14,6 @@ const SportCenterSchema = new Schema({
     type: String,
     required: false
   },
-  password: {
-    type: String,
-    required: false
-  },
   sports: [
     {
       type: String

@@ -16,12 +16,12 @@ const SportCenter = ({ auth, sports, locations, getAllSports, getAllLocations, u
     }, []);
 
     const { user, sportCenter } = auth;
-
+    
     const isComplete = isSportCenterComplete(sportCenter);
     const [isEditActive, setIsEditActive] = useState(false);
 
     const [name, setName] = useState(user.name);
-    const [phoneNumber, setPhoneNumber] = useState(sportCenter.phoneNumber);
+    const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
     const [location, setLocation] = useState(sportCenter.location);
     const [capacity, setCapacity] = useState(sportCenter.capacity);
     const [checkedSports, setCheckedSports] = useState(sportCenter.sports);
@@ -139,6 +139,7 @@ const SportCenter = ({ auth, sports, locations, getAllSports, getAllLocations, u
 
     return (
         <Fragment>
+            <h1>Profile</h1>
             {!isComplete && <Chip color="secondary" label="You havent finished you profile yet. Please fill in the missing information if you want to be able to create events." />}
             {isEditActive ? getEditMode() : getViewMode()}
             {isEditActive ? (
@@ -152,7 +153,6 @@ const SportCenter = ({ auth, sports, locations, getAllSports, getAllLocations, u
             ) : (
                 <button type="button" onClick={() => setIsEditActive(true)}>Edit</button>
             )}
-
         </Fragment>
     );
 }

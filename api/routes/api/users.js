@@ -103,7 +103,7 @@ router.post("/login", (req, res) => {
                         email: user.email,
                         lastName: user.lastName,
                         name: user.name,
-                        phoneNumber: user.PhoneNumber,
+                        phoneNumber: user.phoneNumber,
                         type: user.type,
                     },
                     sportCenter: {}
@@ -190,14 +190,20 @@ router.patch('/', (req, res) => {
     User.findOneAndUpdate({_id: req.body.user.id}, {
         $set: req.body.user
     }).then((newUser)=>{
-        SportCenter.findOneAndUpdate({_id: req.body.sportCenter._id}, {
-            $set: req.body.sportCenter
-        }).then((newSportCenter)=>{
-            res.status(200).send({
-                user: newUser,
-                sportcenter: newSportCenter
+        if (req.body.user.type === 'sportCenter') {
+            SportCenter.findOneAndUpdate({_id: req.body.sportCenter._id}, {
+                $set: req.body.sportCenter
+            }).then((newSportCenter)=>{
+                res.status(200).send({
+                    user: req.body.user,
+                    sportCenter: req.body.sportCenter
+                });
             });
-        });
+        } else {
+            res.status(200).send({
+                user: req.body.user
+            });
+        }
     });
 });
 

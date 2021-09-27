@@ -11,6 +11,7 @@ const app = express();
 const users = require("./routes/api/users");
 const sports = require("./routes/api/sports");
 const locations = require("./routes/api/locations");
+const events = require("./routes/api/events");
 
 app.use(cors());
 
@@ -44,6 +45,7 @@ mongoose
 app.use("/api/users", users);
 app.use("/api/sports", sports);
 app.use("/api/locations", locations);
+app.use("/api/events", events);
 
 const port = process.env.PORT || 5000;
 

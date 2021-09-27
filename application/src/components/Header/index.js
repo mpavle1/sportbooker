@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from 'react-redux';
 import { AppBar, Toolbar, makeStyles, Button } from "@material-ui/core";
-import { Link, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import { logoutUser } from '../../redux/actions/authActions';
 import CONST from "../../constants";
@@ -112,7 +112,7 @@ export default connect(
     { logoutUser }
 )(Header);
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(NavLink)`
     color: white !important;
     text-decoration: none !important;
 `;

@@ -124,7 +124,6 @@ const Register = ({ registerUser, auth, errors }) => {
                 </StyledContainer>
                 {type === 'user' && (
                     <Fragment>
-
                         <StyledContainer>
                             <TextField
                                 fullWidth
