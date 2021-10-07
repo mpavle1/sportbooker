@@ -139,7 +139,8 @@ const AddEventModal = ({ isVisible, handleSetVisible, sportCenter, addEvent }) =
                             sport,
                             sportCenter_id: sportCenter._id,
                             startTime,
-                            endTime
+                            endTime,
+                            location: sportCenter.location
                         });
                     }}
                 >

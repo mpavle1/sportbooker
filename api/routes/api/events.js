@@ -27,6 +27,7 @@ router.post("/", (req, res) => {
   newEvent.active = event.active;
   newEvent.setByAdmin = event.setByAdmin;
   newEvent.sport = event.sport;
+  newEvent.location = event.location;
   newEvent.sportCenter_id = event.sportCenter_id;
   newEvent
     .save()

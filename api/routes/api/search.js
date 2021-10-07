@@ -1,51 +1,50 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const keys = require("../../config/keys");
 
-// Load input validation
-const validateRegisterInput = require("../../validation/register");
-const validateLoginInput = require("../../validation/login");
-
-// Load User model
+const Location = require("../../models/Location");
+const Event = require("../../models/Event");
 const User = require("../../models/User");
+const Sport = require("../../models/Sport");
 
-// @route POST api/users/register
-// @desc Register user
-// @access Public
-router.get("/get", (req, res) => {
-
-    console.log(req.body);
-    return;
-    // User.findOne({ email: req.body.email }).then(user => {
-    //     if (user) {
-    //         return res.status(400).json({ email: "Email already exists" });
-    //     } else {
-    //         const newUser = new User({
-    //             email: req.body.email,
-    //             password: req.body.password,
-    //             name: req.body.name,
-    //             lastName: req.body.lastName,
-    //             dateOfBirth: req.body.dateOfBirth,
-    //             phoneNumber: req.body.phoneNumber,
-    //             type: req.body.type,
-    //         });
-    //         // Hash password before saving in database
-    //         bcrypt.genSalt(10, (err, salt) => {
-    //             bcrypt.hash(newUser.password, salt, (err, hash) => {
-    //                 if (err) throw err;
-    //                 newUser.password = hash;
-    //                 newUser
-    //                     .save()
-    //                     .then(user => res.json(user))
-    //                     .catch(err => console.log(err));
-    //             });
-    //         });
-    //     }
-    // });
-
-
+router.get("/", (req, res) => {
+  const { param, type } = req.query;
+  switch (type) {
+    case "location": {
+      const name = param.charAt(0).toUpperCase() + param.slice(1);
+      const re = new RegExp("^" + name);
+      Location.find({ name: re }).then((locations) => {
+        res.status(200).json(locations);
+      });
+      break;
+    }
+    case "event": {
+      const title = param.charAt(0).toUpperCase() + param.slice(1);
+      const re = new RegExp("^" + title);
+      Event.find({ title: re }).then((events) => {
+        res.status(200).json(events);
+      });
+      break;
+    }
+    case "sport": {
+      const title = param.charAt(0).toUpperCase() + param.slice(1);
+      const re = new RegExp("^" + title);
+      Sport.find({ name: re }).then((sports) => {
+        res.status(200).json(sports);
+      });
+      break;
+    }
+    case "sportCenter": {
+      const title = param.charAt(0).toUpperCase() + param.slice(1);
+      const re = new RegExp("^" + title);
+      User.find({ name: re, type: 'sportCenter' }).then((users) => {
+        res.status(200).json(users);
+      });
+      break;
+    }
+    default:
+      break;
+  }
+  return;
 });
 
 module.exports = router;

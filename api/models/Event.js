@@ -37,6 +37,10 @@ const EventSchema = new Schema({
     endTime: {
         type: String,
         required: true 
+    },
+    location: {
+        type: String,
+        required: true 
     }
 });
 

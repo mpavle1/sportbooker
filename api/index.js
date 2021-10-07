@@ -12,6 +12,7 @@ const users = require("./routes/api/users");
 const sports = require("./routes/api/sports");
 const locations = require("./routes/api/locations");
 const events = require("./routes/api/events");
+const search = require("./routes/api/search");
 
 app.use(cors());
 
@@ -46,6 +47,7 @@ app.use("/api/users", users);
 app.use("/api/sports", sports);
 app.use("/api/locations", locations);
 app.use("/api/events", events);
+app.use("/api/search", search);
 
 const port = process.env.PORT || 5000;
 
