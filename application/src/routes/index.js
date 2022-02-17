@@ -18,14 +18,19 @@ const routes = [
     component: Dashboards.Register
   },
   {
-    path: CONST.navigation.REGISTER_URL,
-    exact: true,
-    component: Dashboards.Register
+    path: CONST.navigation.DASHBOARD_URL,
+    exact: false,
+    component: Dashboards.Dashboard
   },
   {
-    path: CONST.navigation.DASHBOARD_URL,
-    exact: true,
-    component: Dashboards.Dashboard
+    path: CONST.navigation.SEARCH_URL,
+    exact: false,
+    component: Dashboards.Search
+  },
+  {
+    path: CONST.navigation.EVENT_URL,
+    exact: false,
+    component: Dashboards.Event
   }
 ];
 

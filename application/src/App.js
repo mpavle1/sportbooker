@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 
 import axios from 'axios';
 
-import { setCurrentUser, logoutUser, setCurrentSportCenter } from "./redux/actions/authActions";
+import { setCurrentUser, logoutUser, setCurrentSportCenter } from "./redux/actions/auth";
 import store from "./redux/store";
 
 import Header from './components/Header';

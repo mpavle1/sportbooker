@@ -1,12 +1,9 @@
 import React from "react";
-import { connect } from "react-redux";
 import { format } from "date-fns";
 import styled from "styled-components";
 
-import { toggleActivated } from "../../../../redux/actions/events";
-
-const EventItem = ({ event, toggleActivated }) => {
-  const { title, description, startTime, endTime, date, active } = event;
+const CardItem = ({ event }) => {
+  const { title, description, startTime, endTime, date, active, sport } = event;
   return (
     <StyledEventItem>
       <StyledHeader>
@@ -15,31 +12,13 @@ const EventItem = ({ event, toggleActivated }) => {
           {format(new Date(date), "PPP")} {startTime} - {endTime}
         </span>
       </StyledHeader>
+      <div>{sport}</div>
       <div>{description}</div>
-      {active ? (
-        <StyledButton
-          onClick={() => toggleActivated(event._id, false)}
-          variant="outlined"
-          active={!active}
-        >
-          Deacivate
-        </StyledButton>
-      ) : (
-        <StyledButton
-          onClick={() => toggleActivated(event._id, true)}
-          variant="contained"
-          active={!active}
-        >
-          Activate
-        </StyledButton>
-      )}
     </StyledEventItem>
   );
 };
 
-export default connect(() => ({}), {
-  toggleActivated,
-})(EventItem);
+export default CardItem;
 
 const StyledEventItem = styled.div`
   border: 1px solid #ccc;

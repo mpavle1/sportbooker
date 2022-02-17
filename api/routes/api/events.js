@@ -9,6 +9,12 @@ router.get("/", (req, res) => {
     .catch((err) => res.status(400).json(err));
 });
 
+router.get("/:eventId", (req, res) => {
+  Event.findOne({ _id: req.params.eventId })
+    .then((event) => res.status(200).json(event))
+    .catch((err) => res.status(400).json(err));
+});
+
 router.get("/sportCenter/:sportCenterId", (req, res) => {
   Event.find({ sportCenter_id: req.params.sportCenterId })
     .then((events) => res.status(200).json(events))

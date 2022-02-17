@@ -4,7 +4,7 @@ import { Link, withRouter, useHistory } from 'react-router-dom';
 import { Button, InputLabel, Select, TextField, MenuItem, FormControl } from '@material-ui/core';
 import styled from "styled-components";
 
-import { registerUser } from "../../redux/actions/authActions";
+import { registerUser } from "../../redux/actions/auth";
 
 const Register = ({ registerUser, auth, errors }) => {
     const [email, setEmail] = useState('');

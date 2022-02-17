@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { AppBar, Toolbar, makeStyles, Button } from "@material-ui/core";
 import { NavLink, useLocation } from "react-router-dom";
 
-import { logoutUser } from '../../redux/actions/authActions';
+import { logoutUser } from '../../redux/actions/auth';
 import CONST from "../../constants";
 
 const useStyles = makeStyles(() => ({

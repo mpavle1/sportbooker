@@ -13,9 +13,11 @@ import {
 } from "@material-ui/core";
 import styled from "styled-components";
 
+import Stadium from "./components/Stadium";
+
 import { getAllSports } from "../../../../redux/actions/sports";
 import { getAllLocations } from "../../../../redux/actions/locations";
-import { updateSportCenterProfile } from "../../../../redux/actions/authActions";
+import { updateSportCenterProfile } from "../../../../redux/actions/auth";
 
 import { isSportCenterComplete } from "../../../../utils/validators/sportCenter";
 
@@ -40,8 +42,81 @@ const SportCenter = ({
   const [name, setName] = useState(user.name);
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
   const [location, setLocation] = useState(sportCenter.location);
-  const [capacity, setCapacity] = useState(sportCenter.capacity);
   const [checkedSports, setCheckedSports] = useState(sportCenter.sports);
+  const [stadium, setStadium] = useState(
+    sportCenter?.stadium || {
+      // skloniti ovo ili kada sredis i drugi sport centar
+      N: {
+        active: false,
+        sections: {
+          A: { active: false, row: 0, column: 0 },
+          B: { active: false, row: 0, column: 0 },
+          C: { active: false, row: 0, column: 0 },
+          D: { active: false, row: 0, column: 0 },
+          E: { active: false, row: 0, column: 0 },
+          F: { active: false, row: 0, column: 0 },
+        },
+      },
+      E: {
+        active: false,
+        sections: {
+          A: { active: false, row: 0, column: 0 },
+          B: { active: false, row: 0, column: 0 },
+          C: { active: false, row: 0, column: 0 },
+          D: { active: false, row: 0, column: 0 },
+          E: { active: false, row: 0, column: 0 },
+          F: { active: false, row: 0, column: 0 },
+        },
+      },
+      W: {
+        active: false,
+        sections: {
+          A: { active: false, row: 0, column: 0 },
+          B: { active: false, row: 0, column: 0 },
+          C: { active: false, row: 0, column: 0 },
+          D: { active: false, row: 0, column: 0 },
+          E: { active: false, row: 0, column: 0 },
+          F: { active: false, row: 0, column: 0 },
+        },
+      },
+      S: {
+        active: false,
+        sections: {
+          A: { active: false, row: 0, column: 0 },
+          B: { active: false, row: 0, column: 0 },
+          C: { active: false, row: 0, column: 0 },
+          D: { active: false, row: 0, column: 0 },
+          E: { active: false, row: 0, column: 0 },
+          F: { active: false, row: 0, column: 0 },
+        },
+      },
+    }
+  );
+
+  const calculateCapacity = () => {
+    let sum = 0;
+    Object.values(stadium).forEach((stand) => {
+      let tempSum = 0;
+
+      Object.values(stand.sections).forEach((section) => {
+        tempSum += +section.active ? section.row * section.column : 0;
+      });
+
+      sum += tempSum;
+    });
+
+    return sum;
+  };
+
+  const handleChangeStadium = (stand, section, row, column) => {
+    const newStadium = JSON.parse(JSON.stringify(stadium));
+    newStadium[stand].sections[section] = {
+      active: row || column,
+      row,
+      column,
+    };
+    setStadium(JSON.parse(JSON.stringify(newStadium)));
+  };
 
   const updateProfile = () => {
     updateSportCenterProfile({
@@ -53,7 +128,7 @@ const SportCenter = ({
       sportCenter: {
         ...sportCenter,
         location,
-        capacity,
+        capacity: calculateCapacity(),
         sports: checkedSports,
       },
     });
@@ -106,12 +181,10 @@ const SportCenter = ({
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Capacity</StyledInfoFiledName>
-          <input
-            type="number"
-            value={capacity}
-            onChange={(event) => setCapacity(event.target.value)}
-            placeholder="Your capacity is missing, please add it."
-          />
+          <div>{calculateCapacity()}</div>
+        </StyledInfoFieldContainer>
+        <StyledInfoFieldContainer>
+          <Stadium isViewModeActive stadium={stadium} onChangeStadium={handleChangeStadium} />
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Sports</StyledInfoFiledName>
@@ -162,7 +235,9 @@ const SportCenter = ({
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Capacity</StyledInfoFiledName>
-          <div>{capacity || "Your capacity is missing, please add it."}</div>
+          <div>
+            {calculateCapacity() || "Your capacity is missing, please add it."}
+          </div>
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Sports</StyledInfoFiledName>

@@ -13,6 +13,7 @@ import {
 const initialState = {
   user: [],
   all: [],
+  search: null
 };
 
 export default function (state = initialState, action) {

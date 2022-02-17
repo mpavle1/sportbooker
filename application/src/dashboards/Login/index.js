@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import styled from "styled-components";
 
-import { loginUser } from "../../redux/actions/authActions";
+import { loginUser } from "../../redux/actions/auth";
 
 const Login = ({ auth, errors, loginUser }) => {
     const [email, setEmail] = useState("");
