@@ -1,30 +1,53 @@
-import React, { Fragment } from "react";
-import { Button } from "@material-ui/core";
+import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 
 import North from "./North";
 import South from "./South";
 import East from "./East";
 import West from "./West";
+import SetRowColumnModal from "./SetRowColumnModal";
 
 const SelectSection = ({ isViewModeActive, stadium, onChangeStadium }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [standAndSection, setStandAndSection] = useState({
+    stand: "N",
+    section: "A",
+  });
+
+  const handleOpenModal = (stand, section) => {
+    setStandAndSection({ stand, section });
+    setIsModalVisible(true);
+  };
+
+  const updateStadium = (stand, section, row, column) => {
+    setIsModalVisible(false);
+    onChangeStadium(stand, section, row, column);
+  };
+
   return (
     <Fragment>
-      <StyledModalBody>
+      <StyledSelectSection>
         <StyledNorthButton>
-          <North onChangeStadium={onChangeStadium} stand={stadium.N} />
+          <North stand={stadium.N} handleOpenModal={handleOpenModal} />
         </StyledNorthButton>
         <StyledEastButton>
-          <East handleButtonClick={onChangeStadium} stand={stadium.E} />
+          <East stand={stadium.E} handleOpenModal={handleOpenModal} />
         </StyledEastButton>
         <StyledWestButton>
-          <West handleButtonClick={onChangeStadium} stand={stadium.W} />
+          <West stand={stadium.W} handleOpenModal={handleOpenModal} />
         </StyledWestButton>
         <StyledSouthButton>
-          <South handleButtonClick={onChangeStadium} stand={stadium.S} />
+          <South stand={stadium.S} handleOpenModal={handleOpenModal} />
         </StyledSouthButton>
         <StyledImage src="/public/stadion.jpeg" />
-      </StyledModalBody>
+      </StyledSelectSection>
+      <SetRowColumnModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        stadium={stadium}
+        standAndSection={standAndSection}
+        updateStadium={updateStadium}
+      />
     </Fragment>
   );
 };
@@ -40,7 +63,7 @@ const StyledImage = styled.img`
   transform: translate(-50%, -50%);
 `;
 
-const StyledModalBody = styled.div`
+const StyledSelectSection = styled.div`
   position: relative;
   height: 500px;
   width: 600px;

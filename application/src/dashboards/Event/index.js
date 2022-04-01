@@ -42,7 +42,8 @@ const Event = ({ user }) => {
     return <div>Loading...</div>;
   }
 
-  const canBookATicket = user.type === "user" && event.active;
+  const canBookATicket = true;
+  // const canBookATicket = user.type === "user" && event.active;
 
   const {
     active,

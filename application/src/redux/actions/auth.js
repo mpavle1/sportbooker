@@ -52,6 +52,24 @@ export const loginUser = userData => dispatch => {
         );
 };
 
+// Login - get user token
+export const getUser = userId => dispatch => {
+    axios
+        .post("/api/users", userId)
+        .then(res => {
+            dispatch(setCurrentUser(res.data.user));
+            if (decoded.user.type === 'sportCenter') {
+                dispatch(setCurrentSportCenter(res.data.sportCenter));
+            }
+        })
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        );
+};
+
 // Set logged in user
 export const setCurrentUser = decoded => {
     return {

@@ -5,10 +5,6 @@ import {
   FormControlLabel,
   Checkbox,
   FormGroup,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Button,
 } from "@material-ui/core";
 import styled from "styled-components";
@@ -22,30 +18,21 @@ import { updateSportCenterProfile } from "../../../../redux/actions/auth";
 import { isSportCenterComplete } from "../../../../utils/validators/sportCenter";
 
 const SportCenter = ({
-  auth,
+  user,
+  sportCenter,
   sports,
   locations,
   getAllSports,
   getAllLocations,
   updateSportCenterProfile,
 }) => {
-  useEffect(() => {
-    getAllSports();
-    getAllLocations();
-  }, []);
-
-  const { user, sportCenter } = auth;
-
-  const isComplete = isSportCenterComplete(sportCenter);
   const [isEditActive, setIsEditActive] = useState(false);
-
   const [name, setName] = useState(user.name);
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
   const [location, setLocation] = useState(sportCenter.location);
   const [checkedSports, setCheckedSports] = useState(sportCenter.sports);
   const [stadium, setStadium] = useState(
     sportCenter?.stadium || {
-      // skloniti ovo ili kada sredis i drugi sport centar
       N: {
         active: false,
         sections: {
@@ -93,6 +80,13 @@ const SportCenter = ({
     }
   );
 
+  useEffect(() => {
+    getAllSports();
+    getAllLocations();
+  }, []);
+
+  const isComplete = isSportCenterComplete(sportCenter);
+
   const calculateCapacity = () => {
     let sum = 0;
     Object.values(stadium).forEach((stand) => {
@@ -111,7 +105,7 @@ const SportCenter = ({
   const handleChangeStadium = (stand, section, row, column) => {
     const newStadium = JSON.parse(JSON.stringify(stadium));
     newStadium[stand].sections[section] = {
-      active: row || column,
+      active: !!(row || column),
       row,
       column,
     };
@@ -130,6 +124,7 @@ const SportCenter = ({
         location,
         capacity: calculateCapacity(),
         sports: checkedSports,
+        stadium,
       },
     });
   };
@@ -184,7 +179,11 @@ const SportCenter = ({
           <div>{calculateCapacity()}</div>
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
-          <Stadium isViewModeActive stadium={stadium} onChangeStadium={handleChangeStadium} />
+          <Stadium
+            isViewModeActive={false}
+            stadium={stadium}
+            onChangeStadium={handleChangeStadium}
+          />
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Sports</StyledInfoFiledName>
@@ -239,6 +238,13 @@ const SportCenter = ({
             {calculateCapacity() || "Your capacity is missing, please add it."}
           </div>
         </StyledInfoFieldContainer>
+        {/* <StyledInfoFieldContainer>
+          <Stadium
+            isViewModeActive
+            stadium={stadium}
+            onChangeStadium={handleChangeStadium}
+          />
+        </StyledInfoFieldContainer> */}
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Sports</StyledInfoFiledName>
           {checkedSports.length > 0 ? (
@@ -290,7 +296,8 @@ const SportCenter = ({
 };
 
 const mapStateToProps = (state) => ({
-  auth: state.auth,
+  user: state.auth.user,
+  sportCenter: state.auth.sportCenter,
   locations: state.locations,
   sports: state.sports,
 });

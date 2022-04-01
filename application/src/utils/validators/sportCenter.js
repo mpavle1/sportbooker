@@ -1,5 +1,5 @@
 export const isSportCenterComplete = (sportCenter) => {
-    if (sportCenter.capacity === '') {
+    if (sportCenter.capacity === '' || sportCenter.capacity === 0) {
         return false;
     }
 

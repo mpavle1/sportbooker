@@ -1,81 +1,106 @@
-import React, { Fragment } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Typography, TextField, Button } from "@material-ui/core";
+import { Typography, TextField, Button, Modal, Box } from "@material-ui/core";
 
-const SelectSeat = ({
-  handleSectionSeat,
-  currentStep,
-  setCurrentStep,
-  selectedStand,
-  selectedSection,
-  selectedSeat,
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
+  bgcolor: "background.paper",
+  border: "1px solid #000",
+  boxShadow: 24,
+  p: 2,
+};
+
+const SetRowColumnModal = ({
+  isModalVisible,
+  setIsModalVisible,
+  stadium,
+  updateStadium,
+  standAndSection,
 }) => {
-  const handleBackButtonClick = () => {
-    handleSectionSeat({ row: null, column: null });
-    setCurrentStep(currentStep - 1);
-  };
+  const [numberOrRows, setNumberOfRows] = useState(
+    stadium[standAndSection.stand].sections[standAndSection.section].row
+  );
+  const [numberOfColumns, setNumberOfColumns] = useState(
+    stadium[standAndSection.stand].sections[standAndSection.section].column
+  );
 
   return (
-    <Fragment>
-      <Typography id="modal-modal-title" variant="h6" component="h2">
-        <b>Please select a seat:</b>
-        <StyledInformation>
-          Stand: {selectedStand} / Section: {selectedSection}
-        </StyledInformation>
-      </Typography>
-      <StyledInfoFieldContainer>
-        <TextField
-          fullWidth
-          label="Row"
-          type="number"
-          variant="outlined"
-          value={null}
-          onChange={(event) =>
-            handleSectionSeat({ ...selectedSeat, row: event.target.value })
-          }
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-      </StyledInfoFieldContainer>
-      <StyledInfoFieldContainer>
-        <TextField
-          fullWidth
-          label="Column"
-          type="number"
-          variant="outlined"
-          value={null}
-          onChange={(event) =>
-            handleSectionSeat({ ...selectedSeat, column: event.target.value })
-          }
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-      </StyledInfoFieldContainer>
-      <StyledButtons>
-        <Button
-          variant="outlined"
-          color="primary"
-          type="button"
-          onClick={handleBackButtonClick}
-        >
-          Back
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          type="button"
-          onClick={() => console.log("clicked")}
-        >
-          Update
-        </Button>
-      </StyledButtons>
-    </Fragment>
+    <Modal
+      open={isModalVisible}
+      onClose={() => setIsModalVisible(false)}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <Typography id="modal-modal-title" variant="h6" component="h2">
+          <b>Set the number of row:</b>
+          <StyledInformation>
+            Stand: {standAndSection.stand} / Section: {standAndSection.section}
+          </StyledInformation>
+        </Typography>
+        <StyledInfoFieldContainer>
+          <TextField
+            fullWidth
+            label="Row"
+            type="number"
+            variant="outlined"
+            value={numberOrRows}
+            onChange={(event) => setNumberOfRows(event.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{ inputProps: { min: 0, max: 10 } }}
+          />
+        </StyledInfoFieldContainer>
+        <StyledInfoFieldContainer>
+          <TextField
+            fullWidth
+            label="Column"
+            type="number"
+            variant="outlined"
+            value={numberOfColumns}
+            onChange={(event) => setNumberOfColumns(event.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{ inputProps: { min: 0, max: 10 } }}
+          />
+        </StyledInfoFieldContainer>
+        <StyledButtons>
+          <Button
+            variant="outlined"
+            color="primary"
+            type="button"
+            onClick={() => setIsModalVisible(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            type="button"
+            onClick={() =>
+              updateStadium(
+                standAndSection.stand,
+                standAndSection.section,
+                numberOrRows,
+                numberOfColumns
+              )
+            }
+          >
+            Update
+          </Button>
+        </StyledButtons>
+      </Box>
+    </Modal>
   );
 };
 
-export default SelectSeat;
+export default SetRowColumnModal;
 
 const StyledInfoFieldContainer = styled.div`
   margin: 10px 0;

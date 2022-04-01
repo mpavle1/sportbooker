@@ -250,31 +250,59 @@ router.patch("/", (req, res) => {
     {
       $set: req.body.user,
     }
-  ).then((newUser) => {
-    if (req.body.user.type === "sportCenter") {
-      SportCenter.findOneAndUpdate(
-        { _id: req.body.sportCenter._id },
-        {
-          $set: req.body.sportCenter,
-        }
-      ).then((newSportCenter) => {
+  )
+    .then((newUser) => {
+      if (req.body.user.type === "sportCenter") {
+        SportCenter.findOneAndUpdate(
+          { _id: req.body.sportCenter._id },
+          {
+            $set: req.body.sportCenter,
+          }
+        )
+          .then((newSportCenter) => {
+            res.status(200).send({
+              user: req.body.user,
+              sportCenter: req.body.sportCenter,
+            });
+          })
+          .catch((err) => res.status(400).json(err));
+      } else {
         res.status(200).send({
           user: req.body.user,
-          sportCenter: req.body.sportCenter,
         });
-      });
-    } else {
-      res.status(200).send({
-        user: req.body.user,
-      });
-    }
-  });
+      }
+    })
+    .catch((err) => res.status(400).json(err));
 });
 
 router.get("/:userId", (req, res) => {
-  User.findOne({ _id: req.params.userId })
-    .then((sportCenter) => res.status(200).json(sportCenter))
-    .catch((err) => res.status(400).json(err));
+  const userId = req.params.userId;
+  User.findOne({ _id: userId }).then((user) => {
+    let payload = {
+      user: {
+        id: user._id,
+        dateOfBirth: user.dateOfBirth,
+        email: user.email,
+        lastName: user.lastName,
+        name: user.name,
+        phoneNumber: user.phoneNumber,
+        type: user.type,
+      },
+      sportCenter: {},
+    };
+    if (user.type === "sportCenter") {
+      SportCenter.findOne({ user_id: userId })
+        .then((sportCenter) => {
+          payload.sportCenter = sportCenter;
+          res.status(200).json(payload);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      res.status(200).json(payload);
+    }
+  });
 });
 
 module.exports = router;
