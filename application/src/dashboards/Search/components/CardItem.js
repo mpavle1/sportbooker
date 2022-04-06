@@ -28,6 +28,7 @@ const StyledEventItem = styled.div`
   margin-bottom: 10px;
   padding: 15px;
   position: relative;
+  display: inline-block;
 `;
 
 const StyledHeader = styled.div`

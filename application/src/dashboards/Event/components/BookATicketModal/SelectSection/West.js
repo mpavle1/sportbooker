@@ -6,14 +6,14 @@ const West = ({ handleButtonClick }) => {
   return (
     <StyledWest>
       <StyledGridColumn>
-        <StyledButton onClick={() => handleButtonClick("D")}>D</StyledButton>
-        <StyledButton onClick={() => handleButtonClick("E")}>E</StyledButton>
-        <StyledButton onClick={() => handleButtonClick("F")}>F</StyledButton>
+        <StyledButton onClick={() => handleButtonClick("D")} disabled={!isSectionActive(stadium, 'N', 'D')}>D</StyledButton>
+        <StyledButton onClick={() => handleButtonClick("E")} disabled={!isSectionActive(stadium, 'N', 'E')}>E</StyledButton>
+        <StyledButton onClick={() => handleButtonClick("F")} disabled={!isSectionActive(stadium, 'N', 'F')}>F</StyledButton>
       </StyledGridColumn>
       <StyledGridColumn>
-        <StyledButton onClick={() => handleButtonClick("A")}>A</StyledButton>
-        <StyledButton onClick={() => handleButtonClick("B")}>B</StyledButton>
-        <StyledButton onClick={() => handleButtonClick("C")}>C</StyledButton>
+        <StyledButton onClick={() => handleButtonClick("A")} disabled={!isSectionActive(stadium, 'N', 'A')}>A</StyledButton>
+        <StyledButton onClick={() => handleButtonClick("B")} disabled={!isSectionActive(stadium, 'N', 'B')}>B</StyledButton>
+        <StyledButton onClick={() => handleButtonClick("C")} disabled={!isSectionActive(stadium, 'N', 'C')}>C</StyledButton>
       </StyledGridColumn>
       <StyledField>Field</StyledField>
     </StyledWest>

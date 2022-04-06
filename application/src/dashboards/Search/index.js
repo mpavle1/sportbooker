@@ -60,7 +60,7 @@ const Search = ({ search }) => {
         {/* <Home /> dodati opciju da i na search results stranici pretrazuju se nove stvari */}
 
         {searchResults.map((searchResult) => (
-          <StyledNavLink to={`/event/${searchResult._id}`}>
+          <StyledNavLink to={`/event/${searchResult._id}`} key={searchResult._id}>
             <CardItem event={searchResult} />
           </StyledNavLink>
         ))}

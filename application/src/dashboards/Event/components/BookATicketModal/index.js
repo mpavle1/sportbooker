@@ -5,24 +5,33 @@ import SelectStand from "./SelectStand";
 import SelectSection from "./SelectSection";
 import SelectSeat from "./SelectSeat";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 500,
-  bgcolor: "background.paper",
-  border: "1px solid #777",
-  borderRadius: "5px",
-  boxShadow: 24,
-  p: 2,
-};
+function getStyle(step) {
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    bgcolor: "background.paper",
+    border: "1px solid #777",
+    borderRadius: "5px",
+    boxShadow: 24,
+    p: 2,
+  }
 
-const BookATicketModal = ({ isVisible, handleCloseModal }) => {
+  if (step !== 3) {
+    style.width = 500;
+  }
+
+  return style;
+}
+
+
+
+const BookATicketModal = ({ isVisible, handleCloseModal, stadium }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedStand, setSelectedStand] = useState(null);
   const [selectedSection, setSelectedSection] = useState(null);
-  const [selectedSeat, setSelectedSeat] = useState({ row: null, column: null });
+  const [selectedSeats, setSelectedSeats] = useState([]);
 
   const onModalClose = () => {
     setCurrentStep(1);
@@ -41,6 +50,7 @@ const BookATicketModal = ({ isVisible, handleCloseModal }) => {
             setCurrentStep={setCurrentStep}
             currentStep={currentStep}
             setIsModalVisible={handleCloseModal}
+            stadium={stadium}
           />
         );
       case 2:
@@ -50,17 +60,19 @@ const BookATicketModal = ({ isVisible, handleCloseModal }) => {
             setCurrentStep={setCurrentStep}
             selectedStand={selectedStand}
             currentStep={currentStep}
+            stadium={stadium}
           />
         );
       case 3:
         return (
           <SelectSeat
-            handleSectionSeat={setSelectedSeat}
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
             selectedStand={selectedStand}
             selectedSection={selectedSection}
-            selectedSeat={selectedSeat}
+            stadium={stadium}
+            selectedSeats={selectedSeats}
+            setSelectedSeats={setSelectedSeats}
           />
         );
       default:
@@ -75,7 +87,7 @@ const BookATicketModal = ({ isVisible, handleCloseModal }) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>{renderCurrentStep()}</Box>
+      <Box sx={getStyle(currentStep)}>{renderCurrentStep()}</Box>
     </Modal>
   );
 };

@@ -1,5 +1,5 @@
-import Dashboards from '../dashboards';
-import CONST from '../constants';
+import Dashboards from './dashboards';
+import CONST from './constants';
 
 const routes = [
   {

@@ -2,11 +2,14 @@ import React, { Fragment } from "react";
 import { Typography, Button } from "@material-ui/core";
 import styled from "styled-components";
 
+import { isStandActive } from "../../../../utils";
+
 const SelectStand = ({
   handleStandSelect,
   setCurrentStep,
   currentStep,
   setIsModalVisible,
+  stadium
 }) => {
   const handleButtonClick = (direction) => {
     handleStandSelect(direction);
@@ -29,24 +32,28 @@ const SelectStand = ({
         <StyledNorthButton
           variant="outlined"
           onClick={() => handleButtonClick("N")}
+          disabled={!isStandActive(stadium, 'N')}
         >
           North
         </StyledNorthButton>
         <StyledEastButton
           variant="outlined"
           onClick={() => handleButtonClick("E")}
+          disabled={!isStandActive(stadium, 'E')}
         >
           East
         </StyledEastButton>
         <StyledWestButton
           variant="outlined"
           onClick={() => handleButtonClick("W")}
+          disabled={!isStandActive(stadium, 'W')}
         >
           West
         </StyledWestButton>
         <StyledSouthButton
           variant="outlined"
           onClick={() => handleButtonClick("S")}
+          disabled={!isStandActive(stadium, 'N')}
         >
           South
         </StyledSouthButton>

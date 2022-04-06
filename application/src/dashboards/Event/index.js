@@ -42,8 +42,7 @@ const Event = ({ user }) => {
     return <div>Loading...</div>;
   }
 
-  const canBookATicket = true;
-  // const canBookATicket = user.type === "user" && event.active;
+  let canBookATicket = user.type !== undefined && user.type === "user"
 
   const {
     active,
@@ -51,12 +50,11 @@ const Event = ({ user }) => {
     description,
     endTime,
     location,
-    setByAdmin,
     sport,
     startTime,
     title,
   } = event;
-  const { name: scName } = scUser;
+  const { user: { name: scName } } = scUser;
   const { capacity } = sportCenter;
   return (
     <Fragment>
@@ -83,13 +81,14 @@ const Event = ({ user }) => {
       <BookATicketModal
         isVisible={isModalVisible}
         handleCloseModal={setIsModalVisible}
+        stadium={sportCenter.stadium}
       />
     </Fragment>
   );
 };
 
-const mapStateToProps = (state) => ({
-  user: state.auth.user,
+const mapStateToProps = state => ({
+  user: state.auth.user
 });
 
 export default connect(mapStateToProps)(Event);
