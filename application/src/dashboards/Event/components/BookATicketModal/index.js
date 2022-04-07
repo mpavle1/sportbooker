@@ -25,9 +25,7 @@ function getStyle(step) {
   return style;
 }
 
-
-
-const BookATicketModal = ({ isVisible, handleCloseModal, stadium }) => {
+const BookATicketModal = ({ isVisible, handleCloseModal, stadium, onBookATicketClick }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedStand, setSelectedStand] = useState(null);
   const [selectedSection, setSelectedSection] = useState(null);
@@ -37,9 +35,14 @@ const BookATicketModal = ({ isVisible, handleCloseModal, stadium }) => {
     setCurrentStep(1);
     setSelectedStand(null);
     setSelectedSection(null);
-    setSelectedSeat({ row: null, column: null });
+    setSelectedSeats([]);
     handleCloseModal(false);
   };
+
+  const onBookClick = () => {
+    onBookATicketClick(selectedStand, selectedSection, selectedSeats);
+    onModalClose();
+  }
 
   const renderCurrentStep = () => {
     switch (currentStep) {
@@ -73,6 +76,7 @@ const BookATicketModal = ({ isVisible, handleCloseModal, stadium }) => {
             stadium={stadium}
             selectedSeats={selectedSeats}
             setSelectedSeats={setSelectedSeats}
+            onBookClick={onBookClick}
           />
         );
       default:

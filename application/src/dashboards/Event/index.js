@@ -42,6 +42,10 @@ const Event = ({ user }) => {
     return <div>Loading...</div>;
   }
 
+  const onBookATicketClick = (stand, section, seats) => {
+    console.log(stand, section, seats);
+  }
+
   let canBookATicket = user.type !== undefined && user.type === "user"
 
   const {
@@ -82,6 +86,7 @@ const Event = ({ user }) => {
         isVisible={isModalVisible}
         handleCloseModal={setIsModalVisible}
         stadium={sportCenter.stadium}
+        onBookATicketClick={onBookATicketClick}
       />
     </Fragment>
   );
