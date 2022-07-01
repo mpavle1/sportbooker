@@ -43,6 +43,16 @@ const Event = ({ user }) => {
   }
 
   const onBookATicketClick = (stand, section, seats) => {
+    axios.post(`api/ticket`, {
+      user_id: user._id,
+      sportCenter_id: sportCenter._id,
+      event_id: eventId,
+      stand,
+      section,
+      seats
+    })
+    .then(console.log)
+    .catch(console.log);
     console.log(stand, section, seats);
   }
 

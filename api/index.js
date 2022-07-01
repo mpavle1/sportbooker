@@ -14,6 +14,7 @@ const locations = require("./routes/api/locations");
 const events = require("./routes/api/events");
 const search = require("./routes/api/search");
 const sportCenters = require("./routes/api/sportCenters");
+const ticket = require("./routes/api/ticket");
 
 app.use(cors());
 
@@ -37,7 +38,11 @@ const db = require("./config/keys").mongoURI;
 mongoose
     .connect(
         db,
-        { useNewUrlParser: true }
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            generateResolvConf: true
+        }
     )
     .then(() => console.log("MongoDB successfully connected"))
     .catch(err => console.log(err));
@@ -50,6 +55,7 @@ app.use("/api/locations", locations);
 app.use("/api/events", events);
 app.use("/api/search", search);
 app.use("/api/sportCenters", sportCenters);
+app.use("/api/ticket", ticket);
 
 const port = process.env.PORT || 5000;
 

@@ -53,9 +53,9 @@ export const loginUser = userData => dispatch => {
 };
 
 // Login - get user token
-export const getUser = userId => dispatch => {
+export const getUser = (userId) => (dispatch) => {
     axios
-        .post("/api/users", userId)
+        .get(`/api/users/${userId}`)
         .then(res => {
             dispatch(setCurrentUser(res.data.user));
             if (decoded.user.type === 'sportCenter') {

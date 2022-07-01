@@ -280,7 +280,7 @@ router.get("/:userId", (req, res) => {
   User.findOne({ _id: userId }).then((user) => {
     let payload = {
       user: {
-        id: user._id,
+        _id: user._id,
         dateOfBirth: user.dateOfBirth,
         email: user.email,
         lastName: user.lastName,

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 import jwt_decode from "jwt-decode";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 
 import axios from 'axios';
 
@@ -39,19 +39,28 @@ if (localStorage.jwtToken) {
     }
 }
 
-const App = () => (
-    <Provider store={store}>
-        <Router>
-            <Header />
-            <DashboardContainer>
-                <Switch>
-                    {routes.map((route) => (
-                        <Route key={route.path} path={route.path} exact={route.exact} component={route.component} />
-                    ))}
-                </Switch>
-            </DashboardContainer>
-        </Router>
-    </Provider>
-);
+const App = () => {
+    // const dispatch = useDispatch();
+
+    // useEffect(() => {
+
+    // }, []);
+
+    
+    return (
+        <Provider store={store}>
+            <Router>
+                <Header />
+                <DashboardContainer>
+                    <Switch>
+                        {routes.map((route) => (
+                            <Route key={route.path} path={route.path} exact={route.exact} component={route.component} />
+                        ))}
+                    </Switch>
+                </DashboardContainer>
+            </Router>
+        </Provider>
+    )
+};
 
 export default App;
