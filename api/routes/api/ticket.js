@@ -16,19 +16,25 @@ router.get("/:ticketId", (req, res) => {
 });
 
 router.get("/sportCenter/:sportCenterId", (req, res) => {
-  Event.find({ sportCenter_id: req.params.sportCenterId })
+  Event.find({ sportCenterId: req.params.sportCenterId })
     .then((ticket) => res.status(200).json(ticket))
     .catch((err) => res.status(400).json(err));
 });
 
 router.get("/user/:userId", (req, res) => {
-  Event.find({ sportCenter_id: req.params.sportCenterId })
+  Event.find({ sportCenterId: req.params.sportCenterId })
     .then((ticket) => res.status(200).json(ticket))
     .catch((err) => res.status(400).json(err));
 });
 
 router.get("/user/:eventId", (req, res) => {
-  Event.find({ sportCenter_id: req.params.sportCenterId })
+  Event.find({ sportCenterId: req.params.sportCenterId })
+    .then((ticket) => res.status(200).json(ticket))
+    .catch((err) => res.status(400).json(err));
+});
+
+router.get("/event/:eventId", (req, res) => {
+  Ticket.find({ eventId: req.params.eventId })
     .then((ticket) => res.status(200).json(ticket))
     .catch((err) => res.status(400).json(err));
 });
@@ -36,44 +42,23 @@ router.get("/user/:eventId", (req, res) => {
 router.post("/", async (req, res) => {
   const eventBody = req.body;
 
-  // const newTicket = new Ticket();
-  // newTicket.sportCenter_id = eventBody.sportCenter_id;
-  // newTicket.user_id = eventBody.user_id;
-  // newTicket.event_id = eventBody.event_id;
-  // newTicket.stand = eventBody.stand;
-  // newTicket.section = eventBody.section;
-  // newTicket.seat = {
-  //   row: eventBody.row,
-  //   column: eventBody.column
-  // };
-  // newTicket
-  //   .save()
-  //   .then(() => res.status(200).send(newTicket))
-  //   .catch((error) => res.status(400).send(error));
+  // ubaciti proveru da li su vec bookirane karte sa tim mestima
 
-  // testiraj ovo ispod
+  const promises = eventBody.seats.map(function (seat) {
+    const newTicket = new Ticket();
+    newTicket.sportCenterId = eventBody.sportCenterId;
+    newTicket.userId = eventBody.userId;
+    newTicket.eventId = eventBody.eventId;
+    newTicket.stand = eventBody.stand;
+    newTicket.section = eventBody.section;
+    newTicket.seat = { ...seat };
+    return newTicket.save();
+  });
 
-  try {
-    const promises = eventBody.seats.map(function (seat) {
-      const newTicket = new Ticket();
-      newTicket.sportCenter_id = eventBody.sportCenter_id;
-      newTicket.user_id = eventBody.user_id;
-      newTicket.event_id = eventBody.event_id;
-      newTicket.stand = eventBody.stand;
-      newTicket.section = eventBody.section;
-      newTicket.seat = {
-        row: seat.row,
-        column: seat.column
-      };
-      return newTicket.save();
-    });
-  
-    await Promise.all(promises);
-
-    res.status(200).send(newTicket);
-  } catch (error) {
-    res.status(400).send(error);
-  }
+  await Promise.all(promises)
+  .then((response) => {
+    res.status(200).send(response);
+  }).catch((error) => res.status(400).send(error));
 });
 
 router.patch("/", (req, res) => {

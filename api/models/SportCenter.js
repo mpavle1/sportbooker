@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const SportCenterSchema = new Schema({
-  user_id: {
-    type: String,
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   },
   capacity: {
@@ -14,9 +15,20 @@ const SportCenterSchema = new Schema({
     type: String,
     required: false
   },
+  locationId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Location',
+    required: false
+  },
   sports: [
     {
       type: String
+    }
+  ],
+  sportIds: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Sport',
     }
   ],
   stadium: {

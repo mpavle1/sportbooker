@@ -28,7 +28,6 @@ router.post("/register", (req, res) => {
     if (user) {
       return res.status(400).json({ email: "Email already exists" });
     } else {
-      const responceObject = {};
       const newUser = new User({
         email: req.body.email,
         password: req.body.password,
@@ -49,8 +48,10 @@ router.post("/register", (req, res) => {
               if (user.type === "sportCenter") {
                 const newSportCenter = new SportCenter({
                   sports: [],
+                  sportIds: [],
                   capacity: "",
                   location: "",
+                  locationId: "",
                   stadium: {
                     N: {
                       active: false,
@@ -97,7 +98,7 @@ router.post("/register", (req, res) => {
                       },
                     },
                   },
-                  user_id: user._id,
+                  userId: user._id,
                 });
 
                 newSportCenter
@@ -160,7 +161,7 @@ router.post("/login", (req, res) => {
           };
 
           if (user.type === "sportCenter") {
-            SportCenter.findOne({ user_id: user._id })
+            SportCenter.findOne({ userId: user._id })
               .then((sportCenter) => {
                 payload.sportCenter = sportCenter;
 
@@ -209,7 +210,7 @@ router.post("/login", (req, res) => {
 });
 
 router.patch("/changePassword", (req, res) => {
-  User.findById(req.body.user_id)
+  User.findById(req.body.userId)
     .then((user) => {
       if (user) {
         bcrypt.compare(req.body.password, user.password, (err, r) => {
@@ -218,7 +219,7 @@ router.patch("/changePassword", (req, res) => {
             bcrypt.hash(req.body.newPassword, costFactor, function (err, hash) {
               User.findOneAndUpdate(
                 {
-                  _id: req.user_id,
+                  _id: req.userId,
                 },
                 {
                   password: hash,
@@ -291,7 +292,7 @@ router.get("/:userId", (req, res) => {
       sportCenter: {},
     };
     if (user.type === "sportCenter") {
-      SportCenter.findOne({ user_id: userId })
+      SportCenter.findOne({ userId: userId })
         .then((sportCenter) => {
           payload.sportCenter = sportCenter;
           res.status(200).json(payload);

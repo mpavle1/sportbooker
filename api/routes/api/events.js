@@ -16,7 +16,7 @@ router.get("/:eventId", (req, res) => {
 });
 
 router.get("/sportCenter/:sportCenterId", (req, res) => {
-  Event.find({ sportCenter_id: req.params.sportCenterId })
+  Event.find({ sportCenterId: req.params.sportCenterId })
     .then((events) => res.status(200).json(events))
     .catch((err) => res.status(400).json(err));
 });
@@ -34,7 +34,7 @@ router.post("/", (req, res) => {
   newEvent.setByAdmin = event.setByAdmin;
   newEvent.sport = event.sport;
   newEvent.location = event.location;
-  newEvent.sportCenter_id = event.sportCenter_id;
+  newEvent.sportCenterId = event.sportCenterId;
   newEvent
     .save()
     .then(() => res.status(200).send(newEvent))

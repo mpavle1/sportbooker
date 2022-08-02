@@ -24,7 +24,7 @@ const Event = ({ user }) => {
     if (event === null) {
       return;
     }
-    axios.get(`api/sportCenters/${event.sportCenter_id}`).then((response) => {
+    axios.get(`api/sportCenters/${event.sportCenterId}`).then((response) => {
       setSportCenter(response.data);
     });
   }, [event]);
@@ -33,7 +33,7 @@ const Event = ({ user }) => {
     if (sportCenter === null) {
       return;
     }
-    axios.get(`api/users/${sportCenter.user_id}`).then((response) => {
+    axios.get(`api/users/${sportCenter.userId}`).then((response) => {
       setscUser(response.data);
     });
   }, [sportCenter]);
@@ -44,9 +44,9 @@ const Event = ({ user }) => {
 
   const onBookATicketClick = (stand, section, seats) => {
     axios.post(`api/ticket`, {
-      user_id: user._id,
-      sportCenter_id: sportCenter._id,
-      event_id: eventId,
+      userId: user.id,
+      sportCenterId: sportCenter._id,
+      eventId: eventId,
       stand,
       section,
       seats

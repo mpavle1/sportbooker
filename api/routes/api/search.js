@@ -40,13 +40,13 @@ router.get("/", (req, res) => {
       User.find({ name: re, type: "sportCenter" })
         .then(async (users) => {
           const sportCenters = await SportCenter.find({
-            user_id: { $in: users.map((user) => user._id) },
+            userId: { $in: users.map((user) => user._id) },
           });
           const returnValue = await sportCenters.map((sportCenter) => {
             return {
               _id: sportCenter._id,
               name: users.find(
-                (user) => user._id.toString() === sportCenter.user_id.toString()
+                (user) => user._id.toString() === sportCenter.userId.toString()
               ).name,
             };
           });

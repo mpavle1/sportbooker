@@ -29,8 +29,8 @@ const SportCenter = ({
   const [isEditActive, setIsEditActive] = useState(false);
   const [name, setName] = useState(user.name);
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
-  const [location, setLocation] = useState(sportCenter.location);
-  const [checkedSports, setCheckedSports] = useState(sportCenter.sports);
+  const [locationId, setLocationId] = useState(sportCenter.locationId || null);
+  const [checkedSportIds, setCheckedSportIds] = useState(sportCenter.sportIds || []);
   const [stadium, setStadium] = useState(
     sportCenter?.stadium || {
       N: {
@@ -121,20 +121,20 @@ const SportCenter = ({
       },
       sportCenter: {
         ...sportCenter,
-        location,
+        locationId,
         capacity: calculateCapacity(),
-        sports: checkedSports,
+        sportIds: checkedSportIds,
         stadium,
       },
     });
   };
 
-  const handleCheckboxChange = (inputSport) => {
-    let newArray = [...checkedSports, inputSport];
-    if (checkedSports.includes(inputSport)) {
-      newArray = newArray.filter((sport) => sport !== inputSport);
+  const handleCheckboxChange = (inputSportId) => {
+    let newArray = [...checkedSportIds, inputSportId];
+    if (checkedSportIds.includes(inputSportId)) {
+      newArray = newArray.filter((sportId) => sportId !== inputSportId);
     }
-    setCheckedSports(newArray);
+    setCheckedSportIds(newArray);
   };
 
   const getEditMode = () => {
@@ -163,12 +163,12 @@ const SportCenter = ({
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Location</StyledInfoFiledName>
           <select
-            value={location}
-            onChange={(event) => setLocation(event.target.value)}
+            value={locationId}
+            onChange={(event) => setLocationId(event.target.value)}
           >
             <option value="">Please select a location</option>
             {locations.map((location) => (
-              <option value={location.name} key={location.name}>
+              <option value={location._id} key={location.name}>
                 {location.name}
               </option>
             ))}
@@ -194,11 +194,12 @@ const SportCenter = ({
                   key={sport.name}
                   control={
                     <Checkbox
-                      checked={checkedSports.includes(sport.name)}
-                      onChange={(event) =>
-                        handleCheckboxChange(event.target.name)
-                      }
+                      checked={checkedSportIds.includes(sport._id)}
+                      onChange={(event) => {
+                        handleCheckboxChange(event.target.id)
+                      }}
                       name={sport.name}
+                      id={sport._id}
                     />
                   }
                   label={sport.name}
@@ -230,7 +231,7 @@ const SportCenter = ({
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Location</StyledInfoFiledName>
-          <div>{location || "Your location is missing, please add it."}</div>
+          <div>{locations.find((location) => location.id === locationId)?.name || "Your location is missing, please add it."}</div>
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Capacity</StyledInfoFiledName>
@@ -247,10 +248,10 @@ const SportCenter = ({
         </StyledInfoFieldContainer> */}
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Sports</StyledInfoFiledName>
-          {checkedSports.length > 0 ? (
+          {checkedSportIds.length > 0 ? (
             <ul>
-              {checkedSports.map((sport) => (
-                <li key={`${sport}-checked`}>{sport}</li>
+              {checkedSportIds.map((sportId) => (
+                <li key={sportId}>{sports.find((sport) => sport._id === sportId).name}</li>
               ))}
             </ul>
           ) : (

@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const EventSchema = new Schema({
-    sportCenter_id: {
-        type: String,
+    sportCenterId: {
+        type: Schema.Types.ObjectId,
+        ref: 'SportCenter',
         required: true
     },
     date: {
@@ -22,8 +23,9 @@ const EventSchema = new Schema({
         type: Boolean,
         required: true 
     },
-    sport: {
-        type: String,
+    sportId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Sport',
         required: true 
     },
     title: {
@@ -38,8 +40,9 @@ const EventSchema = new Schema({
         type: String,
         required: true 
     },
-    location: {
-        type: String,
+    locationId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Location',
         required: true 
     }
 });
