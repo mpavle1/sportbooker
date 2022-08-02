@@ -17,6 +17,53 @@ import { updateSportCenterProfile } from "../../../../redux/actions/auth";
 
 import { isSportCenterComplete } from "../../../../utils/validators/sportCenter";
 
+const DEFAULT_STADIUM = {
+N: {
+  active: false,
+  sections: {
+    A: { active: false, row: 0, column: 0 },
+    B: { active: false, row: 0, column: 0 },
+    C: { active: false, row: 0, column: 0 },
+    D: { active: false, row: 0, column: 0 },
+    E: { active: false, row: 0, column: 0 },
+    F: { active: false, row: 0, column: 0 },
+  },
+},
+E: {
+  active: false,
+  sections: {
+    A: { active: false, row: 0, column: 0 },
+    B: { active: false, row: 0, column: 0 },
+    C: { active: false, row: 0, column: 0 },
+    D: { active: false, row: 0, column: 0 },
+    E: { active: false, row: 0, column: 0 },
+    F: { active: false, row: 0, column: 0 },
+  },
+},
+W: {
+  active: false,
+  sections: {
+    A: { active: false, row: 0, column: 0 },
+    B: { active: false, row: 0, column: 0 },
+    C: { active: false, row: 0, column: 0 },
+    D: { active: false, row: 0, column: 0 },
+    E: { active: false, row: 0, column: 0 },
+    F: { active: false, row: 0, column: 0 },
+  },
+},
+S: {
+  active: false,
+  sections: {
+    A: { active: false, row: 0, column: 0 },
+    B: { active: false, row: 0, column: 0 },
+    C: { active: false, row: 0, column: 0 },
+    D: { active: false, row: 0, column: 0 },
+    E: { active: false, row: 0, column: 0 },
+    F: { active: false, row: 0, column: 0 },
+  },
+},
+};
+
 const SportCenter = ({
   user,
   sportCenter,
@@ -32,58 +79,17 @@ const SportCenter = ({
   const [locationId, setLocationId] = useState(sportCenter.locationId || null);
   const [checkedSportIds, setCheckedSportIds] = useState(sportCenter.sportIds || []);
   const [stadium, setStadium] = useState(
-    sportCenter?.stadium || {
-      N: {
-        active: false,
-        sections: {
-          A: { active: false, row: 0, column: 0 },
-          B: { active: false, row: 0, column: 0 },
-          C: { active: false, row: 0, column: 0 },
-          D: { active: false, row: 0, column: 0 },
-          E: { active: false, row: 0, column: 0 },
-          F: { active: false, row: 0, column: 0 },
-        },
-      },
-      E: {
-        active: false,
-        sections: {
-          A: { active: false, row: 0, column: 0 },
-          B: { active: false, row: 0, column: 0 },
-          C: { active: false, row: 0, column: 0 },
-          D: { active: false, row: 0, column: 0 },
-          E: { active: false, row: 0, column: 0 },
-          F: { active: false, row: 0, column: 0 },
-        },
-      },
-      W: {
-        active: false,
-        sections: {
-          A: { active: false, row: 0, column: 0 },
-          B: { active: false, row: 0, column: 0 },
-          C: { active: false, row: 0, column: 0 },
-          D: { active: false, row: 0, column: 0 },
-          E: { active: false, row: 0, column: 0 },
-          F: { active: false, row: 0, column: 0 },
-        },
-      },
-      S: {
-        active: false,
-        sections: {
-          A: { active: false, row: 0, column: 0 },
-          B: { active: false, row: 0, column: 0 },
-          C: { active: false, row: 0, column: 0 },
-          D: { active: false, row: 0, column: 0 },
-          E: { active: false, row: 0, column: 0 },
-          F: { active: false, row: 0, column: 0 },
-        },
-      },
-    }
+    sportCenter?.stadium || DEFAULT_STADIUM
   );
 
   useEffect(() => {
     getAllSports();
     getAllLocations();
   }, []);
+
+  if (sports.length === 0 && locations.length === 0) {
+    return null;
+  }
 
   const isComplete = isSportCenterComplete(sportCenter);
 
@@ -231,7 +237,10 @@ const SportCenter = ({
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Location</StyledInfoFiledName>
-          <div>{locations.find((location) => location.id === locationId)?.name || "Your location is missing, please add it."}</div>
+          <div>
+            {locations.find((location) => location._id === locationId)?.name ||
+              "Your location is missing, please add it."}
+          </div>
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Capacity</StyledInfoFiledName>
@@ -239,19 +248,20 @@ const SportCenter = ({
             {calculateCapacity() || "Your capacity is missing, please add it."}
           </div>
         </StyledInfoFieldContainer>
-        {/* <StyledInfoFieldContainer>
+        <StyledInfoFieldContainer>
           <Stadium
             isViewModeActive
             stadium={stadium}
-            onChangeStadium={handleChangeStadium}
           />
-        </StyledInfoFieldContainer> */}
+        </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Sports</StyledInfoFiledName>
           {checkedSportIds.length > 0 ? (
             <ul>
               {checkedSportIds.map((sportId) => (
-                <li key={sportId}>{sports.find((sport) => sport._id === sportId).name}</li>
+                <li key={sportId}>
+                  {sports.find((sport) => sport._id === sportId).name}
+                </li>
               ))}
             </ul>
           ) : (
@@ -263,7 +273,7 @@ const SportCenter = ({
   };
 
   return (
-    <Fragment>
+    <div style={{ paddingBottom: '30px' }}>
       <h1>Profile</h1>
       {!isComplete && (
         <Chip
@@ -292,7 +302,7 @@ const SportCenter = ({
           Edit
         </Button>
       )}
-    </Fragment>
+    </div>
   );
 };
 

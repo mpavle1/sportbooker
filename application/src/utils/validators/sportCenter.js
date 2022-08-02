@@ -3,11 +3,11 @@ export const isSportCenterComplete = (sportCenter) => {
         return false;
     }
 
-    if (sportCenter.location === '') {
+    if (sportCenter.locationId === null) {
         return false;
     }
 
-    if (sportCenter.sports.length === 0) {
+    if (sportCenter.sportIds.length === 0) {
         return false;
     }
 

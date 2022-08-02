@@ -15,13 +15,17 @@ const SelectSection = ({ isViewModeActive, stadium, onChangeStadium }) => {
   });
 
   const handleOpenModal = (stand, section) => {
-    setStandAndSection({ stand, section });
-    setIsModalVisible(true);
+    if (!isViewModeActive) {
+      setStandAndSection({ stand, section });
+      setIsModalVisible(true);
+    }
   };
 
   const updateStadium = (stand, section, row, column) => {
     setIsModalVisible(false);
-    onChangeStadium(stand, section, row, column);
+    if (!isViewModeActive) {
+      onChangeStadium(stand, section, row, column);
+    }
   };
 
   return (
@@ -50,6 +54,11 @@ const SelectSection = ({ isViewModeActive, stadium, onChangeStadium }) => {
       />
     </Fragment>
   );
+};
+
+SelectSection.defaultProps = {
+  isViewModeActive: false,
+  onChangeStadium: () => {}
 };
 
 export default SelectSection;

@@ -1,7 +1,7 @@
 import "react-bootstrap-typeahead/css/Typeahead.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
 
-import React from "react";
+import React, { Fragment } from "react";
 import fetch from "isomorphic-fetch";
 import styled from "styled-components";
 import { connect } from 'react-redux';
@@ -16,6 +16,12 @@ import {
   Button,
   TextField,
 } from "@material-ui/core";
+// import moment from 'moment';
+// import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DateRangePicker } from '@mui/lab';
+
 
 import { setSearchParameters } from '../../redux/actions/search';
 
@@ -65,11 +71,15 @@ class Home extends React.Component {
     options: [],
     query: "",
     type: "location",
-    date: null,
+    // date: moment(new Date()).format('YYYY-MM-DD'),
+    dateFrom: null,
+    dateTo: null,
     selectedOption: {},
+    date: [null, null]
   };
 
   componentDidMount() {
+    console.log(this.state.date);
     var cssId = "myCss"; // you could encode the css path itself to generate id..
     if (!document.getElementById(cssId)) {
       var head = document.getElementsByTagName("head")[0];
@@ -93,6 +103,21 @@ class Home extends React.Component {
   }
 
   _cache = {};
+
+  handlePlaceHolder = () => {
+    switch (this.state.type) {
+      case 'location':
+        return 'Search by location';
+      case 'event':
+        return 'Search for event';
+      case 'sportCenter':
+        return 'Search by sport center';
+      case 'sport':
+        return 'Search by sport';
+      default:
+        break;
+    }
+  }
 
   render() {
     return (
@@ -132,18 +157,42 @@ class Home extends React.Component {
             </RadioGroup>
           </FormControl>
           <div style={{ marginTop: "15px" }}>
-            <TextField
-              fullWidth
-              label=""
-              type="date"
-              variant="outlined"
+            <DateRangePicker
+              startText="Date from"
+              endText="Date to"
               value={this.state.date}
-              onChange={(event) => this.setState({ date: event.target.value })}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              placeholder="Event date"
+              onChange={(newValue) => { this.setState({ date: newValue })}}
+              renderInput={(startProps, endProps) => (
+                <div>
+                  {/* <StyledDateConainer> */}
+                    <TextField {...startProps} />
+                    <TextField {...endProps} />
+                  {/* </StyledDateConainer> */}
+                </div>
+              )}
             />
+            {/* <StyledDateConainer>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="Date From"
+                  value={this.state.dateFrom}
+                  onChange={(newValue) => {
+                    this.setState({ dateFrom: newValue });
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="Date To"
+                  value={this.state.dateTo}
+                  onChange={(newValue) => {
+                    this.setState({ dateTo: newValue });
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </StyledDateConainer> */}
           </div>
           <div style={{ margin: "20px 0 20px" }}>
             <StyledSeatchBar
@@ -157,7 +206,7 @@ class Home extends React.Component {
               onPaginate={this._handlePagination}
               onSearch={this._handleSearch}
               paginate
-              placeholder="Search for location"
+              placeholder={this.handlePlaceHolder()}
               renderMenuItemChildren={(option) => (
                 <div key={option.id}>
                   <span>{option.name}</span>
@@ -258,4 +307,10 @@ const StyledSearchBarContainer = styled.div`
 
 const StyledSeatchBar = styled(AsyncTypeahead)`
   height: 56px;
+`;
+
+const StyledDateConainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
 `;

@@ -11,20 +11,11 @@ const SportCenterSchema = new Schema({
     type: String,
     required: false
   },
-  location: {
-    type: String,
-    required: false
-  },
   locationId: {
     type: Schema.Types.ObjectId,
     ref: 'Location',
     required: false
   },
-  sports: [
-    {
-      type: String
-    }
-  ],
   sportIds: [
     {
       type: Schema.Types.ObjectId,

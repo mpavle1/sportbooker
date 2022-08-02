@@ -3,6 +3,8 @@ import { connect, useDispatch } from "react-redux";
 import { useParams, NavLink, Redirect } from "react-router-dom";
 import styled from 'styled-components';
 import axios from "axios";
+import { Button } from "@material-ui/core";
+import { useHistory } from 'react-router-dom'; 
 
 import CardItem from "./components/CardItem";
 
@@ -13,6 +15,9 @@ const Search = ({ search }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchResultObject, setSearchResultObject] = useState(null);
   const { searchType, searchId } = useParams();
+  const history = useHistory();
+
+  const hasSearchResults = searchResults.length !== 0 && searchResultObject !== null;
 
   useEffect(() => {
     dispatch(setSearchParameters(searchType, null, searchId));
@@ -49,17 +54,21 @@ const Search = ({ search }) => {
     return <Redirect to={`/event/${searchId}`} />;
   }
 
-  if (searchResults.length === 0 || searchResultObject === null) {
-    return <div>Loading results...</div>;
-  }
-
   return (
     <Fragment>
-      <h2>{renderTitle()}</h2>
+      {hasSearchResults && <h2>{renderTitle()}</h2>}
       <div>
-        {/* <Home /> dodati opciju da i na search results stranici pretrazuju se nove stvari */}
-
-        {searchResults.map((searchResult) => (
+        {!hasSearchResults && <h2>No Search results for selected parametes</h2>}
+        {!hasSearchResults && <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              history.push("/");
+            }}
+          >
+            Back to search
+          </Button>}
+        {hasSearchResults && searchResults.map((searchResult) => (
           <StyledNavLink to={`/event/${searchResult._id}`} key={searchResult._id}>
             <CardItem event={searchResult} />
           </StyledNavLink>

@@ -12,7 +12,7 @@ import { getUser } from "../../../redux/actions/auth";
 const Profile = ({ auth, getUser }) => {
 
   useEffect(() => {
-    getUser(auth.user._id); // ovde nesto puca, ne moze da dohvat _id
+    getUser(auth.user.id); // ovde nesto puca, ne moze da dohvat _id
     //bio je problem sto nakon refresha se ne dovuku izmene za usera ako je na profile stranici
   }, []);
 

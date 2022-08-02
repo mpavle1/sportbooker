@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
     case "event": {
       const title = param.charAt(0).toUpperCase() + param.slice(1);
       const re = new RegExp(title);
-      Event.find({ title: re }).then((events) => {
+      Event.find({ title: re, active: true }).then((events) => {
         res.status(200).json(events);
       });
       break;
@@ -62,7 +62,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/sportCenter/:sportCenterId", (req, res) => {
-  Event.find({ sportCenter_id: req.params.sportCenterId })
+  Event.find({ sportCenterId: req.params.sportCenterId, active: true })
     .then((events) => {
       res.status(200).json(events);
     })
@@ -70,25 +70,17 @@ router.get("/sportCenter/:sportCenterId", (req, res) => {
 });
 
 router.get("/location/:locationId", (req, res) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then((location) => {
-      Event.find({ location: location.name })
-        .then((events) => {
-          res.status(200).json(events);
-        })
-        .catch((err) => res.status(400).json(err));
+  Event.find({ locationId: req.params.locationId, active: true })
+    .then((events) => {
+      res.status(200).json(events);
     })
     .catch((err) => res.status(400).json(err));
 });
 
 router.get("/sport/:sportId", (req, res) => {
-  Sport.findOne({ _id: req.params.sportId })
-  .then((sport) => {
-    Event.find({ sport: sport.name })
-      .then((events) => {
-        res.status(200).json(events);
-      })
-      .catch((err) => res.status(400).json(err));
+  Event.find({ sportId: req.params.sportId, active: true })
+  .then((events) => {
+    res.status(200).json(events);
   })
   .catch((err) => res.status(400).json(err));
 });
@@ -103,7 +95,9 @@ router.get("/getObject/:type/:objectId", (req, res) => {
   switch (req.params.type) {
     case 'location':
       Location.findOne({ _id: req.params.objectId })
-        .then((location) => res.status(200).json(location))
+        .then((location) => {
+          res.status(200).json(location)
+        })
         .catch((err) => res.status(400).json(err));
       break;
     case 'sport':

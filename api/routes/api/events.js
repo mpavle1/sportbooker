@@ -23,18 +23,7 @@ router.get("/sportCenter/:sportCenterId", (req, res) => {
 
 router.post("/", (req, res) => {
   const event = req.body.event;
-
-  const newEvent = new Event();
-  newEvent.title = event.title;
-  newEvent.description = event.description;
-  newEvent.startTime = event.startTime;
-  newEvent.endTime = event.endTime;
-  newEvent.date = event.date;
-  newEvent.active = event.active;
-  newEvent.setByAdmin = event.setByAdmin;
-  newEvent.sport = event.sport;
-  newEvent.location = event.location;
-  newEvent.sportCenterId = event.sportCenterId;
+  const newEvent = new Event(event);
   newEvent
     .save()
     .then(() => res.status(200).send(newEvent))

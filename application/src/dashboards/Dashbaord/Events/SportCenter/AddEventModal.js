@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 
 import { addEvent } from "../../../../redux/actions/events";
+import { getAllSports } from '../../../../redux/actions/sports';
 
 const style = {
   position: "absolute",
@@ -32,6 +33,8 @@ const AddEventModal = ({
   handleSetVisible,
   sportCenter,
   addEvent,
+  sports,
+  getAllSports
 }) => {
   const handleClose = () => handleSetVisible(false);
 
@@ -40,16 +43,21 @@ const AddEventModal = ({
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [sport, setSport] = useState("");
+  const [sportId, setSportId] = useState("");
 
   useEffect(() => {
+    getAllSports();
     setTitle("");
     setDescription("");
     setDate("");
     setStartTime("");
     setEndTime("");
-    setSport("");
+    setSportId("");
   }, [isVisible]);
+
+  if (sports.length === 0) {
+    return null;
+  }
 
   return (
       <Modal
@@ -129,14 +137,18 @@ const AddEventModal = ({
                 label="Sport"
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
-                value={sport}
-                onChange={(e) => setSport(e.target.value)}
+                value={sportId}
+                onChange={(e) => setSportId(e.target.value)}
               >
-                {sportCenter.sports.map((availableSport) => (
-                  <MenuItem value={availableSport} key={availableSport}>
-                    {availableSport}
-                  </MenuItem>
-                ))}
+                {sportCenter.sportIds.map((tempsportId) => {
+                  const sport = sports.find((singleSport) => singleSport._id === tempsportId);
+                  console.log(sport, tempsportId);
+                  return (
+                    <MenuItem value={sport._id} key={sport.name}>
+                      {sport.name}
+                    </MenuItem>
+                  )
+                })}
               </Select>
             </FormControl>
           </StyledInfoFieldContainer>
@@ -145,7 +157,7 @@ const AddEventModal = ({
             color="primary"
             type="button"
             disabled={
-              !(title && description && sport && startTime && endTime && date)
+              !(title && description && sportId && startTime && endTime && date)
             }
             onClick={() => {
               handleClose();
@@ -155,11 +167,11 @@ const AddEventModal = ({
                 date,
                 active: true,
                 setByAdmin: false,
-                sport,
-                sportCenter_id: sportCenter._id,
+                sportId: sportId,
+                sportCenterId: sportCenter._id,
                 startTime,
                 endTime,
-                location: sportCenter.location,
+                locationId: sportCenter.locationId,
               });
             }}
           >
@@ -172,10 +184,12 @@ const AddEventModal = ({
 
 const mapStateToProps = (state) => ({
   sportCenter: state.auth.sportCenter,
+  sports: state.sports
 });
 
 export default connect(mapStateToProps, {
   addEvent,
+  getAllSports
 })(AddEventModal);
 
 const StyledInfoFieldContainer = styled.div`

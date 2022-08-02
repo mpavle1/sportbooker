@@ -12,6 +12,53 @@ const validateLoginInput = require("../../validation/login");
 const User = require("../../models/User");
 const SportCenter = require("../../models/SportCenter");
 
+const DEFAULT_STADIUM = {
+  N: {
+    active: false,
+    sections: {
+      A: { active: false, row: 0, column: 0 },
+      B: { active: false, row: 0, column: 0 },
+      C: { active: false, row: 0, column: 0 },
+      D: { active: false, row: 0, column: 0 },
+      E: { active: false, row: 0, column: 0 },
+      F: { active: false, row: 0, column: 0 },
+    },
+  },
+  E: {
+    active: false,
+    sections: {
+      A: { active: false, row: 0, column: 0 },
+      B: { active: false, row: 0, column: 0 },
+      C: { active: false, row: 0, column: 0 },
+      D: { active: false, row: 0, column: 0 },
+      E: { active: false, row: 0, column: 0 },
+      F: { active: false, row: 0, column: 0 },
+    },
+  },
+  W: {
+    active: false,
+    sections: {
+      A: { active: false, row: 0, column: 0 },
+      B: { active: false, row: 0, column: 0 },
+      C: { active: false, row: 0, column: 0 },
+      D: { active: false, row: 0, column: 0 },
+      E: { active: false, row: 0, column: 0 },
+      F: { active: false, row: 0, column: 0 },
+    },
+  },
+  S: {
+    active: false,
+    sections: {
+      A: { active: false, row: 0, column: 0 },
+      B: { active: false, row: 0, column: 0 },
+      C: { active: false, row: 0, column: 0 },
+      D: { active: false, row: 0, column: 0 },
+      E: { active: false, row: 0, column: 0 },
+      F: { active: false, row: 0, column: 0 },
+    },
+  },
+};
+
 // @route POST api/users/register
 // @desc Register user
 // @access Public
@@ -52,52 +99,7 @@ router.post("/register", (req, res) => {
                   capacity: "",
                   location: "",
                   locationId: "",
-                  stadium: {
-                    N: {
-                      active: false,
-                      sections: {
-                        A: { active: false, row: 0, column: 0 },
-                        B: { active: false, row: 0, column: 0 },
-                        C: { active: false, row: 0, column: 0 },
-                        D: { active: false, row: 0, column: 0 },
-                        E: { active: false, row: 0, column: 0 },
-                        F: { active: false, row: 0, column: 0 },
-                      },
-                    },
-                    E: {
-                      active: false,
-                      sections: {
-                        A: { active: false, row: 0, column: 0 },
-                        B: { active: false, row: 0, column: 0 },
-                        C: { active: false, row: 0, column: 0 },
-                        D: { active: false, row: 0, column: 0 },
-                        E: { active: false, row: 0, column: 0 },
-                        F: { active: false, row: 0, column: 0 },
-                      },
-                    },
-                    W: {
-                      active: false,
-                      sections: {
-                        A: { active: false, row: 0, column: 0 },
-                        B: { active: false, row: 0, column: 0 },
-                        C: { active: false, row: 0, column: 0 },
-                        D: { active: false, row: 0, column: 0 },
-                        E: { active: false, row: 0, column: 0 },
-                        F: { active: false, row: 0, column: 0 },
-                      },
-                    },
-                    S: {
-                      active: false,
-                      sections: {
-                        A: { active: false, row: 0, column: 0 },
-                        B: { active: false, row: 0, column: 0 },
-                        C: { active: false, row: 0, column: 0 },
-                        D: { active: false, row: 0, column: 0 },
-                        E: { active: false, row: 0, column: 0 },
-                        F: { active: false, row: 0, column: 0 },
-                      },
-                    },
-                  },
+                  stadium: DEFAULT_STADIUM,
                   userId: user._id,
                 });
 

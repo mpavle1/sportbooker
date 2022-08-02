@@ -42,7 +42,7 @@ export const addLocation = (location) => dispatch => {
         .catch(err =>
             dispatch({
                 type: ADD_LOCATION_FAIL,
-                payload: err.response.data
+                payload: err.message
             })
         );
 }
@@ -60,7 +60,7 @@ export const deleteLocation = (location) => dispatch => {
         .catch(err =>
             dispatch({
                 type: DELETE_LOCATION_FAIL,
-                payload: err.response.data
+                payload: err.message
             })
         );
 }

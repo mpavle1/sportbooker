@@ -12,10 +12,10 @@ export const TOGGLE_ACTIVATED = 'TOGGLE_ACTIVATED';
 export const TOGGLE_ACTIVATED_SUCCESS = 'TOGGLE_ACTIVATED_SUCCESS';
 export const TOGGLE_ACTIVATED_FAIL = 'TOGGLE_ACTIVATED_FAIL';
 
-export const getAllEventsForUser = (sportCenter_id) => dispatch => {
+export const getAllEventsForUser = (sportCenterId) => dispatch => {
     dispatch({ type: GET_ALL_EVENTS_FOR_USER });
     axios
-        .get(`/api/events/sportCenter/${sportCenter_id}`)
+        .get(`/api/events/sportCenter/${sportCenterId}`)
         .then(res => {
             dispatch({
                 type: GET_ALL_EVENTS_FOR_USER_SUCCESS,

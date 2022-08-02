@@ -42,7 +42,7 @@ export const addSport = (sport) => dispatch => {
         .catch(err =>
             dispatch({
                 type: ADD_SPORT_FAIL,
-                payload: err.response.data
+                payload: err.message
             })
         );
 }
@@ -60,7 +60,7 @@ export const deleteSport = (sport) => dispatch => {
         .catch(err =>
             dispatch({
                 type: DELETE_SPORT_FAIL,
-                payload: err.response.data
+                payload: err.message
             })
         );
 }
