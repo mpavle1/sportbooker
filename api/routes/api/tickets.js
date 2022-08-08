@@ -4,34 +4,34 @@ const router = express.Router();
 const Ticket = require("../../models/Ticket");
 
 router.get("/", (req, res) => {
-    Ticket.find({})
+  Ticket.find({})
     .then((ticket) => res.status(200).json(ticket))
     .catch((err) => res.status(400).json(err));
 });
 
 router.get("/:ticketId", (req, res) => {
-  Event.findOne({ _id: req.params.ticketId })
+  Ticket.findOne({ _id: req.params.ticketId })
     .then((ticket) => res.status(200).json(ticket))
     .catch((err) => res.status(400).json(err));
 });
 
 router.get("/sportCenter/:sportCenterId", (req, res) => {
-  Event.find({ sportCenterId: req.params.sportCenterId })
+  Ticket.find({ sportCenterId: req.params.sportCenterId })
     .then((ticket) => res.status(200).json(ticket))
     .catch((err) => res.status(400).json(err));
 });
 
 router.get("/user/:userId", (req, res) => {
-  Event.find({ sportCenterId: req.params.sportCenterId })
+  Ticket.find({ userId: req.params.userId })
     .then((ticket) => res.status(200).json(ticket))
     .catch((err) => res.status(400).json(err));
 });
 
-router.get("/user/:eventId", (req, res) => {
-  Event.find({ sportCenterId: req.params.sportCenterId })
-    .then((ticket) => res.status(200).json(ticket))
-    .catch((err) => res.status(400).json(err));
-});
+// router.get("/user/:eventId", (req, res) => {
+//   Ticket.find({ sportCenterId: req.params.sportCenterId })
+//     .then((ticket) => res.status(200).json(ticket))
+//     .catch((err) => res.status(400).json(err));
+// });
 
 router.get("/event/:eventId", (req, res) => {
   Ticket.find({ eventId: req.params.eventId })
@@ -56,9 +56,10 @@ router.post("/", async (req, res) => {
   });
 
   await Promise.all(promises)
-  .then((response) => {
-    res.status(200).send(response);
-  }).catch((error) => res.status(400).send(error));
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((error) => res.status(400).send(error));
 });
 
 router.patch("/", (req, res) => {

@@ -9,7 +9,8 @@ const Navigation = ({ auth }) => {
         <nav>
             <ul style={{ padding: 'unset' }}>
                 <NavLink to="/dashboard">General</NavLink> {/* paljenje gasenje stadiona itd */}
-                <NavLink to="/dashboard/events">Events</NavLink> {/* imamju sport center i user */}
+                {user.type !== 'user' && <NavLink to="/dashboard/events">Events</NavLink>} {/* imamju sport center i user */}
+                {user.type !== 'sportCenter' && <NavLink to="/dashboard/tickets">Tickets</NavLink>} {/* imamju sport center i user */}
                 <NavLink to="/dashboard/profile">Profile</NavLink> {/* imamju sport center i user */}
                 {user.type === 'admin' && (
                     <Fragment>

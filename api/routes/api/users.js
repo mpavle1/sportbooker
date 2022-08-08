@@ -151,7 +151,7 @@ router.post("/login", (req, res) => {
           // Create JWT Payload
           let payload = {
             user: {
-              id: user._id,
+              _id: user._id,
               dateOfBirth: user.dateOfBirth,
               email: user.email,
               lastName: user.lastName,
@@ -249,7 +249,7 @@ router.patch("/changePassword", (req, res) => {
 
 router.patch("/", (req, res) => {
   User.findOneAndUpdate(
-    { _id: req.body.user.id },
+    { _id: req.body.user._id },
     {
       $set: req.body.user,
     }
@@ -306,6 +306,36 @@ router.get("/:userId", (req, res) => {
       res.status(200).json(payload);
     }
   });
+});
+
+router.get("/sportcenter/:sportcenterId", (req, res) => {
+  const sportcenterId = req.params.sportcenterId;
+  SportCenter.findOne({ _id: sportcenterId })
+    .then((sportCenter) => {
+      let payload = {
+        user: {},
+        sportCenter: {},
+      };
+      payload.sportCenter = sportCenter;
+
+      User.findOne({ _id: sportCenter.userId }).then((user) => {
+        const newUser = {
+          _id: user._id,
+          dateOfBirth: user.dateOfBirth,
+          email: user.email,
+          lastName: user.lastName,
+          name: user.name,
+          phoneNumber: user.phoneNumber,
+          type: user.type,
+        };
+        payload.user = newUser;
+
+        res.status(200).json(payload);
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 module.exports = router;

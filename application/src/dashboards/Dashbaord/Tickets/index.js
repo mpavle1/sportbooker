@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 
 import withNavigationContainer from '../withNavigationContainer';
 
+import User from './User';
 import Admin from './Admin';
-import SportCenter from './SportCenter';
 
-const Events = ({ auth }) => {
+const Tickets = ({ auth }) => {
     switch(auth.user.type) {
+        case 'user': return <User />;
         case 'admin': return <Admin />;
-        case 'sportCenter': return <SportCenter />;
     }    
 };
 
@@ -19,4 +19,4 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps
-)(withNavigationContainer(Events));
+)(withNavigationContainer(Tickets));

@@ -12,11 +12,15 @@ export const GET_ALL_EVENT_TICKETS = 'GET_ALL_EVENT_TICKETS';
 export const GET_ALL_EVENT_TICKETS_SUCCESS = 'GET_ALL_EVENT_TICKETS_SUCCESS';
 export const GET_ALL_EVENT_TICKETS_FAIL = 'GET_ALL_EVENT_TICKETS_FAIL';
 
+export const ADD_TICKET = 'ADD_TICKET';
+export const ADD_TICKET_SUCCESS = 'ADD_TICKET_SUCCESS';
+export const ADD_TICKET_FAIL = 'ADD_TICKET_FAIL';
 
-export const getAllTicket = () => dispatch => {
+
+export const getAllTickets = () => dispatch => {
     dispatch({ type: GET_ALL_TICKETS });
     axios
-        .get("/api/ticket")
+        .get("/api/tickets")
         .then(res => {
             dispatch({
                 type: GET_ALL_TICKETS_SUCCESS,
@@ -30,10 +34,10 @@ export const getAllTicket = () => dispatch => {
         });
 }
 
-export const getAllUserTicket = (userId) => dispatch => {
+export const getAllUserTickets = (userId) => dispatch => {
     dispatch({ type: GET_ALL_USER_TICKETS });
     axios
-        .get(`/api/ticket/user/${userId}`)
+        .get(`/api/tickets/user/${userId}`)
         .then(res => {
             dispatch({
                 type: GET_ALL_USER_TICKETS_SUCCESS,
@@ -48,10 +52,10 @@ export const getAllUserTicket = (userId) => dispatch => {
 }
 
 
-export const getAllEventTicket = (eventId) => dispatch => {
+export const getAllEventTickets = (eventId) => dispatch => {
     dispatch({ type: GET_ALL_EVENT_TICKETS });
     axios
-        .get(`/api/event/${eventId}`)
+        .get(`/api/tickets/event/${eventId}`)
         .then(res => {
             dispatch({
                 type: GET_ALL_EVENT_TICKETS_SUCCESS,
@@ -59,8 +63,25 @@ export const getAllEventTicket = (eventId) => dispatch => {
             });
         })
         .catch(err => {
+            console.log(err)
             dispatch({
                 type: GET_ALL_EVENT_TICKETS_FAIL
             })
         });
+}
+
+export const bookATicket = (postData) => dispatch => {
+    dispatch({ type: ADD_TICKET });
+    axios.post(`api/tickets`, postData)
+    .then(res => {
+        dispatch({
+            type: ADD_TICKET_SUCCESS,
+            payload: res.data
+        });
+    })
+    .catch(err => {
+        dispatch({
+            type: ADD_TICKET_FAIL
+        })
+    });
 }

@@ -2,13 +2,16 @@ import React from "react";
 import { connect } from "react-redux";
 import { format } from "date-fns";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
-import { toggleActivated } from "../../../../redux/actions/events";
+import { toggleActivated } from "../../../../../redux/actions/events";
 
 const EventItem = ({ event, toggleActivated }) => {
   const { title, description, startTime, endTime, date, active } = event;
+  const history = useHistory();
+
   return (
-    <StyledEventItem>
+    <StyledEventItem onClick={() => { history.push(`/dashboard/events/${event._id}`) }}>
       <StyledHeader>
         <span style={{ fontWeight: "bold", fontSize: "20px" }}>{title}</span>{" "}
         <span>

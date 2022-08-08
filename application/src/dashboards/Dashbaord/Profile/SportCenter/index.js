@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import styled from "styled-components";
 
-import Stadium from "./components/Stadium";
+import Stadium from "../../../../components/Stadium";
 
 import { getAllSports } from "../../../../redux/actions/sports";
 import { getAllLocations } from "../../../../redux/actions/locations";

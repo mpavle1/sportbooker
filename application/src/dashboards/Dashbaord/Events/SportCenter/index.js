@@ -1,55 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Button } from '@material-ui/core';
+import React, { useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
-import AddEventModal from './AddEventModal';
-import EventItem from './EventItem';
+import AllEventScreen from "./AllEventScreen";
+import SingleEventScreen from "./SingleEventScreen";
 
-import { getAllEventsForUser } from "../../../../redux/actions/events";
+import { getAllEventsForSportCenter } from "../../../../redux/actions/events";
 
-function compare( a, b ) {
-    if ( a.date < b.date ){
-      return -1;
-    }
-    if ( a.date > b.date ){
-      return 1;
-    }
-    return 0;
-  }
+const Events = () => {
+  const dispatch = useDispatch();
+  const sportCenter = useSelector((state) => state.auth.sportCenter);
 
-const SportCenter = ({ getAllEventsForUser, sportCenter, events }) => {
-    const [isModalVisible, setIsModalVisible] = useState(false);
+  useEffect(() => {
+    dispatch(getAllEventsForSportCenter(sportCenter._id));
+  }, []);
 
-    useEffect(() => {
-        getAllEventsForUser(sportCenter._id);
-    }, []);
+  return (
+    <Switch>
+      <Route
+        path="/dashboard/events/:eventId"
+        exact
+        component={SingleEventScreen}
+      />
+      <Route path="/dashboard/events" exact component={AllEventScreen} />
+    </Switch>
+  );
+};
 
-    return (
-        <div style={{ paddingBottom: '50px'}}>
-            <h1>Events</h1>
-            <Button
-                variant="contained"
-                color="primary"
-                type="button"
-                onClick={() => setIsModalVisible(true)}
-            >
-                Add Event
-            </Button>
-            <h2>All events</h2>
-            {events.sort(compare).map((event) => <EventItem key={event.title} event={event}/>)}
-            <AddEventModal isVisible={isModalVisible} handleSetVisible={setIsModalVisible} />
-        </div>
-    );
-}
-
-const mapStateToProps = state => ({
-    sportCenter: state.auth.sportCenter,
-    events: state.events.user
-});
-
-export default connect(
-    mapStateToProps,
-    {
-        getAllEventsForUser
-    }
-)(SportCenter);
+export default Events;

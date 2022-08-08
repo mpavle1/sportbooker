@@ -13,8 +13,8 @@ import {
   Button
 } from "@material-ui/core";
 
-import { addEvent } from "../../../../redux/actions/events";
-import { getAllSports } from '../../../../redux/actions/sports';
+import { addEvent } from "../../../../../redux/actions/events";
+import { getAllSports } from '../../../../../redux/actions/sports';
 
 const style = {
   position: "absolute",
@@ -142,7 +142,6 @@ const AddEventModal = ({
               >
                 {sportCenter.sportIds.map((tempsportId) => {
                   const sport = sports.find((singleSport) => singleSport._id === tempsportId);
-                  console.log(sport, tempsportId);
                   return (
                     <MenuItem value={sport._id} key={sport.name}>
                       {sport.name}

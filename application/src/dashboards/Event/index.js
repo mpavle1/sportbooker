@@ -3,16 +3,32 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 import { Button } from "@material-ui/core";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import BookATicketModal from "./components/BookATicketModal";
 
-const Event = ({ user }) => {
+import { bookATicket } from '../../redux/actions/tickets';
+import { getAllEventTickets } from '../../redux/actions/tickets';
+import { getAllSports } from '../../redux/actions/sports';
+import { getAllLocations } from '../../redux/actions/locations';
+
+const Event = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const locations = useSelector((state) => state.locations);
+  const sports = useSelector((state) => state.sports);
+
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
   const [sportCenter, setSportCenter] = useState(null);
   const [scUser, setscUser] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  useEffect(() => {
+    dispatch(getAllEventTickets(eventId));
+    dispatch(getAllSports());
+    dispatch(getAllLocations());
+  }, []);
 
   useEffect(() => {
     axios.get(`api/events/${eventId}`).then((response) => {
@@ -43,17 +59,15 @@ const Event = ({ user }) => {
   }
 
   const onBookATicketClick = (stand, section, seats) => {
-    axios.post(`api/ticket`, {
-      userId: user.id,
+    dispatch(bookATicket({
+      userId: user._id,
       sportCenterId: sportCenter._id,
       eventId: eventId,
       stand,
       section,
       seats
-    })
-    .then(console.log)
-    .catch(console.log);
-    console.log(stand, section, seats);
+    }));
+    dispatch(getAllEventTickets(eventId));
   }
 
   let canBookATicket = user.type !== undefined && user.type === "user"
@@ -63,11 +77,15 @@ const Event = ({ user }) => {
     date,
     description,
     endTime,
-    location,
-    sport,
+    locationId,
+    sportId,
     startTime,
     title,
   } = event;
+
+  const location = locations.find((singleLocation) => singleLocation._id === locationId)?.name;
+  const sport = sports.find((singleLocation) => singleLocation._id === sportId)?.name;
+
   const { user: { name: scName } } = scUser;
   const { capacity } = sportCenter;
   return (
@@ -102,8 +120,4 @@ const Event = ({ user }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  user: state.auth.user
-});
-
-export default connect(mapStateToProps)(Event);
+export default Event;

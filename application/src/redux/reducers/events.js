@@ -8,6 +8,9 @@ import {
   TOGGLE_ACTIVATED,
   TOGGLE_ACTIVATED_SUCCESS,
   TOGGLE_ACTIVATED_FAIL,
+  GET_ALL_EVENTS,
+  GET_ALL_EVENTS_SUCCESS,
+  GET_ALL_EVENTS_FAIL
 } from "../actions/events";
 
 const initialState = {
@@ -28,6 +31,11 @@ export default function (state = initialState, action) {
         user: [...state.user, action.payload],
         all: [...state.all],
       };
+    case GET_ALL_EVENTS_SUCCESS:
+      return {
+        user: [...state.user],
+        all: [...action.payload],
+      };
     case TOGGLE_ACTIVATED_SUCCESS:
       const newState = state.user.filter(
         (event) => event._id !== action.payload._id
@@ -42,6 +50,8 @@ export default function (state = initialState, action) {
     case TOGGLE_ACTIVATED_FAIL:
     case GET_ALL_EVENTS_FOR_USER:
     case GET_ALL_EVENTS_FOR_USER_FAIL:
+    case GET_ALL_EVENTS:
+    case GET_ALL_EVENTS_FAIL:
     default:
       return state;
   }

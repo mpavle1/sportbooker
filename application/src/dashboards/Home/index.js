@@ -4,7 +4,7 @@ import "react-bootstrap-typeahead/css/Typeahead.css";
 import React, { Fragment } from "react";
 import fetch from "isomorphic-fetch";
 import styled from "styled-components";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import {
@@ -16,14 +16,13 @@ import {
   Button,
   TextField,
 } from "@material-ui/core";
-// import moment from 'moment';
-// import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { DateRangePicker } from '@mui/lab';
+import moment from 'moment';
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import { DateRangePicker } from '@mui/lab';
 
-
-import { setSearchParameters } from '../../redux/actions/search';
+import { setSearchParameters } from "../../redux/actions/search";
 
 const PER_PAGE = 50;
 
@@ -75,11 +74,9 @@ class Home extends React.Component {
     dateFrom: null,
     dateTo: null,
     selectedOption: {},
-    date: [null, null]
   };
 
   componentDidMount() {
-    console.log(this.state.date);
     var cssId = "myCss"; // you could encode the css path itself to generate id..
     if (!document.getElementById(cssId)) {
       var head = document.getElementsByTagName("head")[0];
@@ -87,9 +84,11 @@ class Home extends React.Component {
       link.id = cssId;
       link.rel = "stylesheet";
       link.type = "text/css";
-      link.crossOrigin = "anonymous"
-      link.integrity = "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      link.href = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
+      link.crossOrigin = "anonymous";
+      link.integrity =
+        "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm";
+      link.href =
+        "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
       link.media = "all";
       head.appendChild(link);
     }
@@ -106,18 +105,18 @@ class Home extends React.Component {
 
   handlePlaceHolder = () => {
     switch (this.state.type) {
-      case 'location':
-        return 'Search by location';
-      case 'event':
-        return 'Search for event';
-      case 'sportCenter':
-        return 'Search by sport center';
-      case 'sport':
-        return 'Search by sport';
+      case "location":
+        return "Search by location";
+      case "event":
+        return "Search for event";
+      case "sportCenter":
+        return "Search by sport center";
+      case "sport":
+        return "Search by sport";
       default:
         break;
     }
-  }
+  };
 
   render() {
     return (
@@ -157,42 +156,30 @@ class Home extends React.Component {
             </RadioGroup>
           </FormControl>
           <div style={{ marginTop: "15px" }}>
-            <DateRangePicker
-              startText="Date from"
-              endText="Date to"
-              value={this.state.date}
-              onChange={(newValue) => { this.setState({ date: newValue })}}
-              renderInput={(startProps, endProps) => (
-                <div>
-                  {/* <StyledDateConainer> */}
-                    <TextField {...startProps} />
-                    <TextField {...endProps} />
-                  {/* </StyledDateConainer> */}
-                </div>
-              )}
-            />
-            {/* <StyledDateConainer>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label="Date From"
-                  value={this.state.dateFrom}
-                  onChange={(newValue) => {
-                    this.setState({ dateFrom: newValue });
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label="Date To"
-                  value={this.state.dateTo}
-                  onChange={(newValue) => {
-                    this.setState({ dateTo: newValue });
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </StyledDateConainer> */}
+            <StyledDateConainer>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                    label="Date From"
+                    inputFormat="dd/MM/yyyy"
+                    value={this.state.dateFrom}
+                    onChange={(newValue) => {
+                      this.setState({ dateFrom: moment(newValue).format('YYYY-MM-DD') });
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                    label="Date To"
+                    inputFormat="dd/MM/yyyy"
+                    value={this.state.dateTo}
+                    onChange={(newValue) => {
+                      this.setState({ dateTo: moment(newValue).format('YYYY-MM-DD') });
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+            </StyledDateConainer>
           </div>
           <div style={{ margin: "20px 0 20px" }}>
             <StyledSeatchBar
@@ -222,10 +209,11 @@ class Home extends React.Component {
             onClick={() => {
               this.props.setSearchParameters(
                 this.state.type,
-                this.state.date,
+                this.state.dateFrom,
+                this.state.dateTo,
                 this.state.selectedOption[0].id
               );
-              if (this.state.type === 'event') {
+              if (this.state.type === "event") {
                 this.props.history.push({
                   pathname: `/${this.state.type}/${this.state.selectedOption[0].id}`,
                 });
@@ -286,12 +274,9 @@ class Home extends React.Component {
   };
 }
 
-export default connect(
-  () => ({}),
-  {
-    setSearchParameters
-  }
-)(withRouter(Home));
+export default connect(() => ({}), {
+  setSearchParameters,
+})(withRouter(Home));
 
 const StyledSearchBarContainer = styled.div`
   width: 500px;

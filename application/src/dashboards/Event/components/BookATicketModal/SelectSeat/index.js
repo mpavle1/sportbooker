@@ -2,6 +2,8 @@ import React, { Fragment, memo } from "react";
 import styled from "styled-components";
 import { Typography, Button } from "@material-ui/core";
 import { v4 as uuidv4 } from 'uuid';
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const SelectSeat = ({
   currentStep,
@@ -13,25 +15,66 @@ const SelectSeat = ({
   setSelectedSeats,
   onBookClick
 }) => {
+  const tickets = useSelector((state) => state.tickets.event);
+  const { eventId } = useParams();
+
+  const isSpaceBooked = (row, column) => {
+    return !!tickets.find(
+      (ticket) =>
+        ticket.seat.row === row &&
+        ticket.seat.column === column &&
+        ticket.section === selectedSection &&
+        ticket.stand === selectedStand &&
+        ticket.eventId === eventId
+    );
+  };
+
+  const getButtonColor = (isSeatSelected, isSeatBooked) => {
+    if (isSeatBooked) {
+      return '#B01414';
+    }
+    if (isSeatSelected) {
+      return '#68a66e'
+    }
+    return 'transparent'
+  }
+
   const handleBackButtonClick = () => {
     setSelectedSeats([]);
     setCurrentStep(currentStep - 1);
   };
 
-  const getSeatButton = (i, j, ) => (
-    <StyledButton onClick={() => {
-      if (selectedSeats.some((seat) => seat.row === i && seat.column === j + 1)) {
-        const filteredSeats = selectedSeats.filter((seat) => seat.row !== i || seat.column !== j + 1);
-        setSelectedSeats([...filteredSeats]);
-      } else {
-        setSelectedSeats([...selectedSeats, {row: i, column: j + 1}]);
-      }
-    }}
-    isseatselected={selectedSeats.find((seat) => seat.row === i && seat.column === j + 1) !== undefined}
-    key={uuidv4()}
-  > 
-  </StyledButton>
-  );
+  const getSeatButton = (i, j) => {
+    const isSeatSelected =
+      selectedSeats.find((seat) => seat.row === i && seat.column === j + 1) !==
+      undefined;
+    const isSeatBooked = isSpaceBooked(i, j + 1);
+    const buttonColor = getButtonColor(isSeatSelected, isSeatBooked);
+
+    return (
+      <StyledButton
+        onClick={() => {
+          if (isSeatBooked) {
+            return;
+          }
+          if (
+            selectedSeats.some(
+              (seat) => seat.row === i && seat.column === j + 1
+            )
+          ) {
+            const filteredSeats = selectedSeats.filter(
+              (seat) => seat.row !== i || seat.column !== j + 1
+            );
+            setSelectedSeats([...filteredSeats]);
+          } else {
+            setSelectedSeats([...selectedSeats, { row: i, column: j + 1 }]);
+          }
+        }}
+        buttonColor={buttonColor}
+        key={uuidv4()}
+      ></StyledButton>
+    );
+  };
 
   const renderSeats = () => {
     const returnValue = [];
@@ -167,7 +210,7 @@ const StyledRowContainer = styled.div`
 
 const StyledButton = styled(Button)`
   border: 1px solid #777 !important;
-  background-color: ${({ isseatselected }) => isseatselected ? '#68a66e' : 'transparent' } !important;
+  background-color: ${({ buttonColor }) => buttonColor } !important;
 `;
 
 const StyledInfoButton = styled(Button)`

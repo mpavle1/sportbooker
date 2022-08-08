@@ -3,7 +3,8 @@ import { SET_SEARCH_PARAMS } from '../actions/search';
 const initialState = {
     type: 'location',
     id: null,
-    date: null
+    dateFrom: null,
+    dateTo: null
 };
 
 export default function (state = initialState, action) {
