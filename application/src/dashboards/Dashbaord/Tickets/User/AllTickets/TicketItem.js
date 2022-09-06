@@ -3,10 +3,14 @@ import styled from "styled-components";
 import { Button } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { format } from "date-fns";
+import moment from 'moment';
+import { useHistory } from "react-router-dom";
 
 import { getSportCenter } from "../../../../../redux/actions/auth";
 
 const TicketItem = ({ ticket }) => {
+  const history = useHistory();
+
   const events = useSelector((state) => state.events.all);
   const sports = useSelector((state) => state.sports);
   const locations = useSelector((state) => state.locations);
@@ -47,24 +51,30 @@ const TicketItem = ({ ticket }) => {
         </div>
         <div style={{ margin: "10px 0" }}>{description}</div>
       </div>
-      <StyledButtonContainer>
-        <Button
-          variant="contained"
-          color="primary"
-          type="button"
-          onClick={() => console.log("cancel")}
-        >
-          Cancel Ticket
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          type="button"
-          onClick={() => console.log("change")}
-        >
-          Change Ticket
-        </Button>
-      </StyledButtonContainer>
+      {!moment(date).isAfter(new Date()) && (
+        <StyledButtonContainer>
+          <Button
+            variant="contained"
+            color="primary"
+            type="button"
+            onClick={() => {
+              history.push(`/dashboard/tickets/${ticket._id}/cancel`);
+            }}
+          >
+            Cancel Ticket
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            type="button"
+            onClick={() => {
+              history.push(`/dashboard/tickets/${ticket._id}/change`);
+            }}
+          >
+            Change Ticket
+          </Button>
+        </StyledButtonContainer>
+      )}
     </StyledEventItem>
   );
 };

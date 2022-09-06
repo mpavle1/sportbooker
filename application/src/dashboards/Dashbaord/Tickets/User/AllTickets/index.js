@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import moment from "moment";
 import styled from "styled-components";
 
 import TicketItem from "./TicketItem";
-
-import { getAllSports } from "../../../../../redux/actions/sports";
-import { getAllLocations } from "../../../../../redux/actions/locations";
 
 function compare(a, b) {
   if (a.date < b.date) {
@@ -20,17 +17,9 @@ function compare(a, b) {
 }
 
 const AllTickets = () => {
-  const dispatch = useDispatch();
-
   const events = useSelector((state) => state.events.all);
   const allTickets = useSelector((state) => state.tickets.user);
   const [currentFilter, setCurrentFilter] = useState("upcoming");
-
-
-  useEffect(() => {
-    dispatch(getAllSports());
-    dispatch(getAllLocations());
-  }, []);
 
   if (events.length === 0) {
     return null;
@@ -59,7 +48,7 @@ const AllTickets = () => {
       <StyledButtonContainer>
         <Button
           variant="contained"
-          color={currentFilter === "upcoming" ? "primary" : "info"}
+          color={currentFilter === "upcoming" ? "primary" : "default"}
           type="button"
           onClick={() => setCurrentFilter("upcoming")}
         >
@@ -67,7 +56,7 @@ const AllTickets = () => {
         </Button>
         <Button
           variant="contained"
-          color={currentFilter === "all" ? "primary" : "info"}
+          color={currentFilter === "all" ? "primary" : "default"}
           type="button"
           onClick={() => setCurrentFilter("all")}
         >

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { format } from "date-fns";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import moment from "moment";
 
 import { toggleActivated } from "../../../../../redux/actions/events";
 
@@ -10,16 +11,12 @@ const EventItem = ({ event, toggleActivated }) => {
   const { title, description, startTime, endTime, date, active } = event;
   const history = useHistory();
 
-  return (
-    <StyledEventItem onClick={() => { history.push(`/dashboard/events/${event._id}`) }}>
-      <StyledHeader>
-        <span style={{ fontWeight: "bold", fontSize: "20px" }}>{title}</span>{" "}
-        <span>
-          {format(new Date(date), "PPP")} {startTime} - {endTime}
-        </span>
-      </StyledHeader>
-      <div>{description}</div>
-      {active ? (
+  const renderToggleButton = () => {
+    if (moment(date).isBefore(new Date())) {
+      return;
+    }
+    if (active) {
+      return (
         <StyledButton
           onClick={() => toggleActivated(event._id, false)}
           variant="outlined"
@@ -27,15 +24,33 @@ const EventItem = ({ event, toggleActivated }) => {
         >
           Deacivate
         </StyledButton>
-      ) : (
-        <StyledButton
-          onClick={() => toggleActivated(event._id, true)}
-          variant="contained"
-          active={!active}
-        >
-          Activate
-        </StyledButton>
-      )}
+      );
+    }
+    return (
+      <StyledButton
+        onClick={() => toggleActivated(event._id, true)}
+        variant="contained"
+        active={!active}
+      >
+        Activate
+      </StyledButton>
+    );
+  };
+
+  return (
+    <StyledEventItem
+      onClick={() => {
+        history.push(`/dashboard/events/${event._id}`);
+      }}
+    >
+      <StyledHeader>
+        <span style={{ fontWeight: "bold", fontSize: "20px" }}>{title}</span>{" "}
+        <span>
+          {format(new Date(date), "PPP")} {startTime} - {endTime}
+        </span>
+      </StyledHeader>
+      <div>{description}</div>
+      {renderToggleButton()}
     </StyledEventItem>
   );
 };

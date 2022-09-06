@@ -18,7 +18,7 @@ const Dashboard = () => (
                 <Route path="/dashboard/events/:eventId?" exact component={Events} />
                 <Route path="/dashboard/sports" exact component={Sports} />
                 <Route path="/dashboard/locations" exact component={Locations} />
-                <Route path="/dashboard/tickets/:ticketId?" exact component={Tickets} />
+                <Route path="/dashboard/tickets/:ticketId?/(change|cancel)?" exact component={Tickets} />
             </Switch>
         </BrowserRouter>
     </PrivateRoute>
