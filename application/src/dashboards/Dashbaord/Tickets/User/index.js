@@ -13,6 +13,7 @@ import { getAllLocations } from "../../../../redux/actions/locations";
 const Tickets = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const isEventsInitialized = useSelector((state) => state.events.isInitialized);
 
   useEffect(() => {
     dispatch(getAllUserTickets(user._id));
@@ -20,6 +21,10 @@ const Tickets = () => {
     dispatch(getAllSports());
     dispatch(getAllLocations());
   }, []);
+
+  if (!isEventsInitialized) {
+    return null;
+  }
 
   return (
     <Switch>

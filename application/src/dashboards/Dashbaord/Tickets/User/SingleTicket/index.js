@@ -5,7 +5,6 @@ import Cancel from "./Cancel";
 import Change from "./Change";
 
 const SingleTicket = () => {
-  console.log(123);
   return (
     <Switch>
       <Route
@@ -13,11 +12,11 @@ const SingleTicket = () => {
         exact
         component={Cancel}
       />
-      <Route
+      {/* <Route
         path="/dashboard/tickets/:ticketId/change"
         exact
         component={Change}
-      />
+      /> */}
     </Switch>
   );
 };

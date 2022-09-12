@@ -31,12 +31,14 @@ router.post("/", (req, res) => {
 });
 
 router.patch("/", (req, res) => {
+  console.log(req.body.newState);
   Event.findOneAndUpdate(
     {
       _id: req.body.eventId,
     },
     {
-      active: req.body.newState,
+      active: req.body.newState.active,
+      setByAdmin: req.body.newState.setByAdmin,
     },
     {
       new: true,
@@ -49,5 +51,19 @@ router.patch("/", (req, res) => {
       res.status(500).send(err);
     });
 });
+
+// @route POST api/events/delete
+// @desc cancel ticket
+// @access Private
+router.post("/delete", (req, res) => {
+  Event.findOneAndDelete({ _id: req.body.data.eventId })
+    .then((ticket) => {
+      res.status(200).json({ ticketId: req.params.eventId });
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
 
 module.exports = router;

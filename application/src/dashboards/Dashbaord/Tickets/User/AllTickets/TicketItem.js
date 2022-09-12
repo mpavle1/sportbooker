@@ -51,7 +51,7 @@ const TicketItem = ({ ticket }) => {
         </div>
         <div style={{ margin: "10px 0" }}>{description}</div>
       </div>
-      {!moment(date).isAfter(new Date()) && (
+      {!moment(date).isBefore(new Date()) && (
         <StyledButtonContainer>
           <Button
             variant="contained"
@@ -63,7 +63,7 @@ const TicketItem = ({ ticket }) => {
           >
             Cancel Ticket
           </Button>
-          <Button
+          {/* <Button
             variant="contained"
             color="primary"
             type="button"
@@ -72,7 +72,7 @@ const TicketItem = ({ ticket }) => {
             }}
           >
             Change Ticket
-          </Button>
+          </Button> */}
         </StyledButtonContainer>
       )}
     </StyledEventItem>

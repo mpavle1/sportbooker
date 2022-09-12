@@ -39,6 +39,19 @@ router.get("/event/:eventId", (req, res) => {
     .catch((err) => res.status(400).json(err));
 });
 
+// @route POST api/tickets/cancel
+// @desc cancel ticket
+// @access Private
+router.post("/cancel", (req, res) => {
+  Ticket.findOneAndDelete({ _id: req.body.data.ticketId })
+    .then((ticket) => {
+      res.status(200).json({ ticketId: req.params.ticketId });
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
 router.post("/", async (req, res) => {
   const eventBody = req.body;
 

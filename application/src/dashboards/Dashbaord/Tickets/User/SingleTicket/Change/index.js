@@ -4,10 +4,9 @@ import { Button } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { format } from "date-fns";
 
-import { getSportCenter } from "../../../../../redux/actions/auth";
-import { cancelATicket } from "../../../../../redux/actions/tickets";
+import { getSportCenter } from "../../../../../../redux/actions/auth";
 
-const Cancel = () => {
+const Change = () => {
   const { ticketId } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -20,6 +19,7 @@ const Cancel = () => {
     (event) => event._id === ticket.eventId
   );
   const [sportCenter, setSportCenter] = React.useState(null);
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
 
   const { title, description, startTime, endTime, date, sportCenterId } = event;
 
@@ -29,26 +29,14 @@ const Cancel = () => {
     );
   }, []);
 
+  console.log(sportCenter);
+
   if (sportCenter === null) {
     return null;
   }
 
-  const handleCancelTicket = () => {
-    if (
-      !confirm(
-        "Are you sure you want to cancel your ticket? This action cannot be reverted"
-      )
-    ) {
-      return;
-    }
-
-    dispatch(cancelATicket(ticketId));
-    history.push(`/dashboard/tickets/`);
-  };
-
   return (
     <div>
-      <h3>Are you sure you want to cancel this ticket?</h3>
       <div>
         <div style={{ fontWeight: "bold", fontSize: "20px" }}>{title}</div>{" "}
         <div>
@@ -61,26 +49,50 @@ const Cancel = () => {
           {locations.find((location) => location._id === event.locationId).name}
         </div>
         <div>{sports.find((sport) => sport._id === event.sportId).name}</div>
+        <div style={{ margin: "10px 0" }}>{description}</div>
+        <br />
+        <div>Current Ticket:</div>
         <div>
           stand: {ticket.stand} section: {ticket.section}
         </div>
         <div>
           row: {ticket.seat.row} column: {ticket.seat.column}
         </div>
-        <div style={{ margin: "10px 0" }}>{description}</div>
       </div>
-      <Button variant="contained" color="default" onClick={handleCancelTicket}>
-        Cancel Ticket
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => history.push(`/dashboard/tickets/`)}
-      >
-        Back
-      </Button>
+      <div>
+        <Button
+          variant="contained"
+          color="default"
+          onClick={() => setIsModalVisible(true)}
+        >
+          Change Ticket Seat
+        </Button>
+      </div>
+      {/* <BookATicketModal
+        isVisible={isModalVisible}
+        handleCloseModal={() => setIsModalVisible(false)}
+        stadium={sportCenter.sportCenter.stadium}
+        onBookATicketClick={(ticket) => console.log(ticket)}
+      /> */}
+      <br />
+      <div>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => console.log(123)}
+        >
+          Change
+        </Button>
+        <Button
+          variant="contained"
+          color="default"
+          onClick={() => history.push(`/dashboard/tickets/`)}
+        >
+          Back
+        </Button>
+      </div>
     </div>
   );
 };
 
-export default Cancel;
+export default Change;

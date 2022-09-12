@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { connect } from "react-redux";
+import { useSelector, dispatch, useDispatch } from "react-redux";
 import { AppBar, Toolbar, makeStyles, Button } from "@material-ui/core";
 import { NavLink, useLocation, useHistory } from "react-router-dom";
 
@@ -14,9 +14,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Header = ({ auth, logoutUser }) => {
+const Header = () => {
   const history = useHistory();
-  const { isAuthenticated, user } = auth;
+  const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector(state => state.auth);
   const { toolbar } = useStyles();
   const { pathname } = useLocation();
 
@@ -75,7 +76,7 @@ const Header = ({ auth, logoutUser }) => {
         {...{
           color: "inherit",
         }}
-        onClick={() => logoutUser()}
+        onClick={() => dispatch(logoutUser())}
       >
         Logout
       </Button>
@@ -110,7 +111,7 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { logoutUser })(Header);
+export default Header;
 
 const StyledLink = styled(NavLink)`
   color: white !important;

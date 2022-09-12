@@ -6,7 +6,6 @@ import { Button } from "@material-ui/core";
 import ViewStadium from "./ViewStadium";
 
 import { getAllEventTickets } from "../../../../../redux/actions/tickets";
-import { getAllSports } from "../../../../../redux/actions/sports";
 
 const SingleEventScreen = () => {
   const dispatch = useDispatch();
@@ -21,7 +20,6 @@ const SingleEventScreen = () => {
 
   useEffect(() => {
     dispatch(getAllEventTickets(eventId))
-    dispatch(getAllSports());
   }, []);
 
   if (!event && sports.length === 0) {

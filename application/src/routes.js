@@ -29,7 +29,7 @@ const routes = [
   },
   {
     path: CONST.navigation.EVENT_URL,
-    exact: false,
+    exact: true,
     component: Dashboards.Event
   }
 ];

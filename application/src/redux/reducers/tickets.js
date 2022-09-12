@@ -13,7 +13,10 @@ import {
   GET_ALL_EVENT_TICKETS_SUCCESS,
   GET_ALL_USER_TICKETS_SUCCESS,
   GET_ALL_USER_TICKETS,
-  GET_ALL_USER_TICKETS_FAIL
+  GET_ALL_USER_TICKETS_FAIL,
+  CANCEL_TICKET,
+  CANCEL_TICKET_SUCCESS,
+  CANCEL_TICKET_FAIL,
 } from "../actions/tickets";
 
 const initialState = {
@@ -48,6 +51,17 @@ export default function (state = initialState, action) {
         all: [...state.all, ...action.payload],
         event: [...state.event, ...action.payload],
       };
+    case CANCEL_TICKET_SUCCESS:
+      const removedTicketId = action.payload;
+      return {
+        user: [
+          ...state.user.filter((ticket) => ticket._id !== removedTicketId),
+        ],
+        all: [...state.all.filter((ticket) => ticket._id !== removedTicketId)],
+        event: [
+          ...state.event.filter((ticket) => ticket._id !== removedTicketId),
+        ],
+      };
     // case TOGGLE_ACTIVATED_SUCCESS:
     //   const newState = state.user.filter(
     //     (ticket) => ticket._id !== action.payload._id
@@ -66,6 +80,8 @@ export default function (state = initialState, action) {
     case GET_ALL_USER_TICKETS_FAIL:
     case GET_ALL_TICKETS:
     case GET_ALL_TICKETS_FAIL:
+    case CANCEL_TICKET:
+    case CANCEL_TICKET_FAIL:
     default:
       return state;
   }

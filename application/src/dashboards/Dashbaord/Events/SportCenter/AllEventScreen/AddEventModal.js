@@ -14,7 +14,6 @@ import {
 } from "@material-ui/core";
 
 import { addEvent } from "../../../../../redux/actions/events";
-import { getAllSports } from '../../../../../redux/actions/sports';
 
 const style = {
   position: "absolute",
@@ -33,8 +32,7 @@ const AddEventModal = ({
   handleSetVisible,
   sportCenter,
   addEvent,
-  sports,
-  getAllSports
+  sports
 }) => {
   const handleClose = () => handleSetVisible(false);
 
@@ -46,7 +44,6 @@ const AddEventModal = ({
   const [sportId, setSportId] = useState("");
 
   useEffect(() => {
-    getAllSports();
     setTitle("");
     setDescription("");
     setDate("");
@@ -188,7 +185,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   addEvent,
-  getAllSports
 })(AddEventModal);
 
 const StyledInfoFieldContainer = styled.div`
