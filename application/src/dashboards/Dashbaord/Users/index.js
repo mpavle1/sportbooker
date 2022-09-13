@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect, useLayoutEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
@@ -69,7 +69,7 @@ const Users = () => {
                         status: status === "deactive" ? "active" : "deactive",
                       })
                     ).then(() => {
-                      alert("User has been updated");
+                    //   alert("User has been updated");
                       dispatch(getAllUsers());
                     });
                   }}
@@ -88,7 +88,7 @@ const Users = () => {
                         status: "active",
                       })
                     ).then(() => {
-                      alert("User has been updated");
+                    //   alert("User has been updated");
                       dispatch(getAllUsers());
                     });
                   }}
@@ -106,7 +106,7 @@ const Users = () => {
                       status: "disabled",
                     })
                   ).then(() => {
-                    alert("User has been updated");
+                    // alert("User has been updated");
                     dispatch(getAllUsers());
                   });
                 }}
@@ -120,7 +120,7 @@ const Users = () => {
     },
   ];
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     dispatch(getAllUsers());
   }, []);
 

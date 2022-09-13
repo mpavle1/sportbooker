@@ -89,7 +89,7 @@ const Admin = () => {
           </Tooltip>
           <Tooltip title="View Ticket">
             <IconButton
-              onClick={() => history.push(`/ticket/${cell.row.original._id}`)}
+              onClick={() => alert('add view ticket')}
             >
               <EventIcon />
             </IconButton>

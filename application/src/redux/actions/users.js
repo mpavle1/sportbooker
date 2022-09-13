@@ -4,6 +4,10 @@ export const GET_ALL_USERS = "GET_ALL_USERS";
 export const GET_ALL_USERS_SUCCESS = "GET_ALL_USERS_SUCCESS";
 export const GET_ALL_USERS_FAIL = "GET_ALL_USERS_FAIL";
 
+export const UPDATE_USER = "UPDATE_USER";
+export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
+export const UPDATE_USER_FAIL = "UPDATE_USER_FAIL";
+
 // export const ADD_SPORT = 'ADD_SPORT';
 // export const ADD_SPORT_SUCCESS = 'ADD_SPORT_SUCCESS';
 // export const ADD_SPORT_FAIL = 'ADD_SPORT_FAIL';
@@ -29,23 +33,21 @@ export const getAllUsers = () => (dispatch) => {
     });
 };
 
-export const updateUser =
-  ({ data }) =>
-  (dispatch) => {
-    dispatch({ type: GET_ALL_USERS });
-    return axios
-      .patch("/api/users", {
-        user: { ...data },
-      })
-      .then((res) => {
-        dispatch({
-          type: GET_ALL_USERS_SUCCESS,
-          payload: res.data,
-        });
-      })
-      .catch((err) => {
-        dispatch({
-          type: GET_ALL_USERS_FAIL,
-        });
+export const updateUser = (user) => (dispatch) => {
+  dispatch({ type: UPDATE_USER });
+  return axios
+    .patch("/api/users", {
+      user,
+    })
+    .then((res) => {
+      dispatch({
+        type: UPDATE_USER_SUCCESS,
+        payload: res.data,
       });
-  };
+    })
+    .catch((err) => {
+      dispatch({
+        type: UPDATE_USER_FAIL,
+      });
+    });
+};

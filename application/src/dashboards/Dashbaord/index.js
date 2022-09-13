@@ -12,7 +12,7 @@ import PrivateRoute from '../../container/PrivateRoute';
 
 const Dashboard = () => (
     <PrivateRoute>
-        <BrowserRouter>
+        {/* <BrowserRouter> */}
             <Switch>
                 <Route path="/dashboard" exact component={General} />
                 <Route path="/dashboard/profile" exact component={Profile} />
@@ -22,7 +22,7 @@ const Dashboard = () => (
                 <Route path="/dashboard/tickets/:ticketId?/(change|cancel)?" exact component={Tickets} />
                 <Route path="/dashboard/users" exact component={Users} />
             </Switch>
-        </BrowserRouter>
+        {/* </BrowserRouter> */}
     </PrivateRoute>
 );
 

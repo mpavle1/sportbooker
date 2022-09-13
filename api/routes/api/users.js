@@ -249,7 +249,6 @@ router.patch("/changePassword", (req, res) => {
 });
 
 router.patch("/", (req, res) => {
-  console.log(req.body);
   User.findOneAndUpdate(
     { _id: req.body.user._id },
     {

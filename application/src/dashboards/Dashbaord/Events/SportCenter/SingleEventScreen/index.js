@@ -49,6 +49,8 @@ const SingleEventScreen = () => {
       >
         Open stadium view
       </Button>
+      <h2>Tickets for this event:</h2>
+      <span>lista svih tiketa za neki event, i opcija da se search uje po id</span>
     </div>
   );
 };

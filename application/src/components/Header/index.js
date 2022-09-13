@@ -60,7 +60,7 @@ const Header = () => {
       >
         {user.name}
       </Button>
-      {user.type !== "user" && (
+      {/* {user.type !== "user" && (
         <Button
           {...{
             color: "inherit",
@@ -71,7 +71,7 @@ const Header = () => {
         >
           Dashboard
         </Button>
-      )}
+      )} */}
       <Button
         {...{
           color: "inherit",

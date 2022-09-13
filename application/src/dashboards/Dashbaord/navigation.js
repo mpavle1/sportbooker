@@ -10,11 +10,11 @@ const Navigation = () => {
   return (
     <nav>
       <StyledUl>
-        <StyledButton>
+        {/* <StyledButton>
           <NavLink to="/dashboard" exact activeStyle={{ color: "#3f51b5" }}>
             General
           </NavLink>
-        </StyledButton>
+        </StyledButton> */}
         {userType !== "user" && (
           <StyledButton>
             <NavLink to="/dashboard/events" activeStyle={{ color: "#3f51b5" }}>
