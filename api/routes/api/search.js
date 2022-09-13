@@ -79,10 +79,10 @@ router.get("/location/:locationId", (req, res) => {
 
 router.get("/sport/:sportId", (req, res) => {
   Event.find({ sportId: req.params.sportId, active: true })
-  .then((events) => {
-    res.status(200).json(events);
-  })
-  .catch((err) => res.status(400).json(err));
+    .then((events) => {
+      res.status(200).json(events);
+    })
+    .catch((err) => res.status(400).json(err));
 });
 
 router.get("/event/:eventId", (req, res) => {
@@ -93,24 +93,24 @@ router.get("/event/:eventId", (req, res) => {
 
 router.get("/getObject/:type/:objectId", (req, res) => {
   switch (req.params.type) {
-    case 'location':
+    case "location":
       Location.findOne({ _id: req.params.objectId })
         .then((location) => {
-          res.status(200).json(location)
+          res.status(200).json(location);
         })
         .catch((err) => res.status(400).json(err));
       break;
-    case 'sport':
+    case "sport":
       Sport.findOne({ _id: req.params.objectId })
         .then((sport) => res.status(200).json(sport))
         .catch((err) => res.status(400).json(err));
       break;
-    case 'sportCenter':
+    case "sportCenter":
       SportCenter.findOne({ _id: req.params.objectId })
         .then((sportCenter) => res.status(200).json(sportCenter))
         .catch((err) => res.status(400).json(err));
       break;
-    case 'event':
+    case "event":
       Event.findOne({ _id: req.params.objectId })
         .then((event) => res.status(200).json(event))
         .catch((err) => res.status(400).json(err));

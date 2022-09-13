@@ -83,6 +83,7 @@ router.post("/register", (req, res) => {
         dateOfBirth: req.body.dateOfBirth,
         phoneNumber: req.body.phoneNumber,
         type: req.body.type,
+        status: 'pending',
       });
       // Hash password before saving in database
       bcrypt.genSalt(10, (err, salt) => {
@@ -248,6 +249,7 @@ router.patch("/changePassword", (req, res) => {
 });
 
 router.patch("/", (req, res) => {
+  console.log(req.body);
   User.findOneAndUpdate(
     { _id: req.body.user._id },
     {
@@ -290,6 +292,7 @@ router.get("/:userId", (req, res) => {
         name: user.name,
         phoneNumber: user.phoneNumber,
         type: user.type,
+        status: user.status,
       },
       sportCenter: {},
     };
@@ -306,6 +309,28 @@ router.get("/:userId", (req, res) => {
       res.status(200).json(payload);
     }
   });
+});
+
+router.get("/", (req, res) => {
+  User.find({})
+    .then((users) => {
+      const returnValue = users.map((user) => {
+        return {
+          _id: user.id,
+          email: user.email,
+          name: user.name,
+          lastName: user.lastName,
+          dateOfBirth: user.dateOfBirth,
+          phoneNumber: user.phoneNumber,
+          type: user.type,
+          status: user.status,
+        };
+      });
+      res.status(200).json(returnValue);
+    })
+    .catch((error) => {
+      res.status(400).send(error);
+    });
 });
 
 router.get("/sportcenter/:sportcenterId", (req, res) => {

@@ -5,6 +5,7 @@ import General from './General';
 import Profile from './Profile';
 import Events from './Events';
 import Tickets from './Tickets';
+import Users from './Users';
 import Sports from './Sports';
 import Locations from './Locations';
 import PrivateRoute from '../../container/PrivateRoute';
@@ -19,6 +20,7 @@ const Dashboard = () => (
                 <Route path="/dashboard/sports" exact component={Sports} />
                 <Route path="/dashboard/locations" exact component={Locations} />
                 <Route path="/dashboard/tickets/:ticketId?/(change|cancel)?" exact component={Tickets} />
+                <Route path="/dashboard/users" exact component={Users} />
             </Switch>
         </BrowserRouter>
     </PrivateRoute>
