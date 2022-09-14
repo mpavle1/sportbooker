@@ -50,6 +50,7 @@ const TicketItem = ({ ticket }) => {
           row: {ticket.seat.row} column: {ticket.seat.column}
         </div>
         <div style={{ margin: "10px 0" }}>{description}</div>
+        <div>Ticket ID: {ticket._id}</div>
       </div>
       {!moment(date).isBefore(new Date()) && (
         <StyledButtonContainer>

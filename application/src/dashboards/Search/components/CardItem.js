@@ -1,9 +1,38 @@
 import React from "react";
 import { format } from "date-fns";
 import styled from "styled-components";
+import moment from "moment";
+import { useSelector } from "react-redux";
 
 const CardItem = ({ event }) => {
-  const { title, description, startTime, endTime, date, active, sport } = event;
+  const {
+    title,
+    description,
+    startTime,
+    endTime,
+    date,
+    active,
+    sportId,
+    locationId,
+  } = event;
+
+  const locations = useSelector((state) => state.locations);
+  const sports = useSelector((state) => state.sports);
+
+  const today = moment().format(`YYYY-MM-DD HH:mm`);
+  const eventDate = moment(new Date(date).toString()).format("YYYY-MM-DD");
+  const endDateTime = moment(`${eventDate} ${endTime}`);
+  const startDateTime = moment(`${eventDate} ${startTime}`);
+
+  const isEventOngoing = moment(today).isBetween(startDateTime, endDateTime);
+
+  const location = locations.find(
+    (singleLocation) => singleLocation._id === locationId
+  )?.name;
+  const sport = sports.find(
+    (singleLocation) => singleLocation._id === sportId
+  )?.name;
+
   return (
     <StyledEventItem>
       <StyledHeader>
@@ -12,8 +41,13 @@ const CardItem = ({ event }) => {
           {format(new Date(date), "PPP")} {startTime} - {endTime}
         </span>
       </StyledHeader>
-      <div>{sport}</div>
-      <div>{description}</div>
+      <SpacingBottom>{location}</SpacingBottom>
+      <SpacingBottom>{sport}</SpacingBottom>
+      <StyledDescription>{description}</StyledDescription>
+      <br />
+      {isEventOngoing && (
+        <StyledEventInProgress>Event is in progress!</StyledEventInProgress>
+      )}
     </StyledEventItem>
   );
 };
@@ -48,4 +82,22 @@ const StyledButton = styled.button`
   outline: none;
   box-shadow: none;
   cursor: pointer;
+`;
+
+const StyledEventInProgress = styled.div`
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  color: green;
+`;
+
+const StyledDescription = styled.div`
+  width: 350px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const SpacingBottom = styled.div`
+  margin-bottom: 10px;
 `;

@@ -32,8 +32,9 @@ const SelectSeat = ({
 
   const getSeatButton = (i, j) => (
     <StyledButton
+      disabled
       key={uuidv4()}
-      $bookedSeat={isSpaceBooked(i, j+1)}
+      $bookedSeat={isSpaceBooked(i, j + 1)}
     ></StyledButton>
   );
 
@@ -191,7 +192,7 @@ const StyledRowContainer = styled.div`
 const StyledButton = styled(Button)`
   border: 1px solid #777 !important;
   background-color: ${({ $bookedSeat }) =>
-    $bookedSeat ? "#B01414" : "transparent"} !important;
+    $bookedSeat ? "#072e6e" : "transparent"} !important;
 `;
 
 const StyledInfoButton = styled(Button)``;

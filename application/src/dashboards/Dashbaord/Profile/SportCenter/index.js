@@ -6,6 +6,9 @@ import {
   Checkbox,
   FormGroup,
   Button,
+  TextField,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import styled from "styled-components";
 
@@ -18,50 +21,50 @@ import { updateSportCenterProfile } from "../../../../redux/actions/auth";
 import { isSportCenterComplete } from "../../../../utils/validators/sportCenter";
 
 const DEFAULT_STADIUM = {
-N: {
-  active: false,
-  sections: {
-    A: { active: false, row: 0, column: 0 },
-    B: { active: false, row: 0, column: 0 },
-    C: { active: false, row: 0, column: 0 },
-    D: { active: false, row: 0, column: 0 },
-    E: { active: false, row: 0, column: 0 },
-    F: { active: false, row: 0, column: 0 },
+  N: {
+    active: false,
+    sections: {
+      A: { active: false, row: 0, column: 0 },
+      B: { active: false, row: 0, column: 0 },
+      C: { active: false, row: 0, column: 0 },
+      D: { active: false, row: 0, column: 0 },
+      E: { active: false, row: 0, column: 0 },
+      F: { active: false, row: 0, column: 0 },
+    },
   },
-},
-E: {
-  active: false,
-  sections: {
-    A: { active: false, row: 0, column: 0 },
-    B: { active: false, row: 0, column: 0 },
-    C: { active: false, row: 0, column: 0 },
-    D: { active: false, row: 0, column: 0 },
-    E: { active: false, row: 0, column: 0 },
-    F: { active: false, row: 0, column: 0 },
+  E: {
+    active: false,
+    sections: {
+      A: { active: false, row: 0, column: 0 },
+      B: { active: false, row: 0, column: 0 },
+      C: { active: false, row: 0, column: 0 },
+      D: { active: false, row: 0, column: 0 },
+      E: { active: false, row: 0, column: 0 },
+      F: { active: false, row: 0, column: 0 },
+    },
   },
-},
-W: {
-  active: false,
-  sections: {
-    A: { active: false, row: 0, column: 0 },
-    B: { active: false, row: 0, column: 0 },
-    C: { active: false, row: 0, column: 0 },
-    D: { active: false, row: 0, column: 0 },
-    E: { active: false, row: 0, column: 0 },
-    F: { active: false, row: 0, column: 0 },
+  W: {
+    active: false,
+    sections: {
+      A: { active: false, row: 0, column: 0 },
+      B: { active: false, row: 0, column: 0 },
+      C: { active: false, row: 0, column: 0 },
+      D: { active: false, row: 0, column: 0 },
+      E: { active: false, row: 0, column: 0 },
+      F: { active: false, row: 0, column: 0 },
+    },
   },
-},
-S: {
-  active: false,
-  sections: {
-    A: { active: false, row: 0, column: 0 },
-    B: { active: false, row: 0, column: 0 },
-    C: { active: false, row: 0, column: 0 },
-    D: { active: false, row: 0, column: 0 },
-    E: { active: false, row: 0, column: 0 },
-    F: { active: false, row: 0, column: 0 },
+  S: {
+    active: false,
+    sections: {
+      A: { active: false, row: 0, column: 0 },
+      B: { active: false, row: 0, column: 0 },
+      C: { active: false, row: 0, column: 0 },
+      D: { active: false, row: 0, column: 0 },
+      E: { active: false, row: 0, column: 0 },
+      F: { active: false, row: 0, column: 0 },
+    },
   },
-},
 };
 
 const SportCenter = ({
@@ -77,7 +80,9 @@ const SportCenter = ({
   const [name, setName] = useState(user.name);
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
   const [locationId, setLocationId] = useState(sportCenter.locationId || null);
-  const [checkedSportIds, setCheckedSportIds] = useState(sportCenter.sportIds || []);
+  const [checkedSportIds, setCheckedSportIds] = useState(
+    sportCenter.sportIds || []
+  );
   const [stadium, setStadium] = useState(
     sportCenter?.stadium || DEFAULT_STADIUM
   );
@@ -147,38 +152,41 @@ const SportCenter = ({
     return (
       <Fragment>
         <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Name</StyledInfoFiledName>
-          <input
+          <StyledInfoFiledName>Email</StyledInfoFiledName>
+          <div>{user.email}</div>
+        </StyledInfoFieldContainer>
+        <StyledInfoFieldContainer>
+          <TextField
+            label="Name"
+            variant="outlined"
             type="text"
             value={name}
             onChange={(event) => setName(event.target.value)}
           />
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Email</StyledInfoFiledName>
-          <div>{user.email}</div>
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Phone Number</StyledInfoFiledName>
-          <input
-            type="text"
+          <TextField
+            label="Phone Number"
+            variant="outlined"
+            type="number"
             value={phoneNumber}
             onChange={(event) => setPhoneNumber(event.target.value)}
           />
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Location</StyledInfoFiledName>
-          <select
+          <Select
+            label="Location"
             value={locationId}
             onChange={(event) => setLocationId(event.target.value)}
           >
-            <option value="">Please select a location</option>
+            <MenuItem value="">Please select a location</MenuItem>
             {locations.map((location) => (
-              <option value={location._id} key={location.name}>
+              <MenuItem value={location._id} key={location.name}>
                 {location.name}
-              </option>
+              </MenuItem>
             ))}
-          </select>
+          </Select>
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Capacity</StyledInfoFiledName>
@@ -202,7 +210,7 @@ const SportCenter = ({
                     <Checkbox
                       checked={checkedSportIds.includes(sport._id)}
                       onChange={(event) => {
-                        handleCheckboxChange(event.target.id)
+                        handleCheckboxChange(event.target.id);
                       }}
                       name={sport.name}
                       id={sport._id}
@@ -222,12 +230,12 @@ const SportCenter = ({
     return (
       <Fragment>
         <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Name</StyledInfoFiledName>
-          <div>{name}</div>
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
           <StyledInfoFiledName>Email</StyledInfoFiledName>
           <div>{user.email}</div>
+        </StyledInfoFieldContainer>
+        <StyledInfoFieldContainer>
+          <StyledInfoFiledName>Name</StyledInfoFiledName>
+          <div>{name}</div>
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Phone Number</StyledInfoFiledName>
@@ -249,10 +257,7 @@ const SportCenter = ({
           </div>
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
-          <Stadium
-            isViewModeActive
-            stadium={stadium}
-          />
+          <Stadium isViewModeActive stadium={stadium} />
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Sports</StyledInfoFiledName>
@@ -273,7 +278,7 @@ const SportCenter = ({
   };
 
   return (
-    <div style={{ paddingBottom: '30px' }}>
+    <div style={{ paddingBottom: "30px" }}>
       <h1>Profile</h1>
       {!isComplete && (
         <Chip
@@ -320,7 +325,7 @@ export default connect(mapStateToProps, {
 })(SportCenter);
 
 const StyledInfoFieldContainer = styled.div`
-  margin: 10px 0;
+  margin: 20px 0;
 `;
 
 const StyledInfoFiledName = styled.div`

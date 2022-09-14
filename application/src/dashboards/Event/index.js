@@ -4,13 +4,23 @@ import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 import { Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import moment from "moment";
+
+import PlaceIcon from "@mui/icons-material/Place";
+import StadiumIcon from "@mui/icons-material/Stadium";
+import EventIcon from "@mui/icons-material/Event";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SportsHandballIcon from "@mui/icons-material/SportsHandball";
+import EventSeatRoundedIcon from "@mui/icons-material/EventSeatRounded";
+import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 
 import BookATicketModal from "./components/BookATicketModal";
 
-import { bookATicket } from '../../redux/actions/tickets';
-import { getAllEventTickets } from '../../redux/actions/tickets';
-import { getAllSports } from '../../redux/actions/sports';
-import { getAllLocations } from '../../redux/actions/locations';
+import { bookATicket } from "../../redux/actions/tickets";
+import { getAllEventTickets } from "../../redux/actions/tickets";
+import { getAllSports } from "../../redux/actions/sports";
+import { getAllLocations } from "../../redux/actions/locations";
 
 const Event = () => {
   const dispatch = useDispatch();
@@ -59,48 +69,71 @@ const Event = () => {
   }
 
   const onBookATicketClick = (stand, section, seats) => {
-    dispatch(bookATicket({
-      userId: user._id,
-      sportCenterId: sportCenter._id,
-      eventId: eventId,
-      stand,
-      section,
-      seats
-    }));
+    dispatch(
+      bookATicket({
+        userId: user._id,
+        sportCenterId: sportCenter._id,
+        eventId: eventId,
+        stand,
+        section,
+        seats,
+      })
+    );
     dispatch(getAllEventTickets(eventId));
-  }
+  };
 
-  let canBookATicket = user.type !== undefined && user.type === "user"
+  let canBookATicket = user.type !== undefined && user.type === "user";
+
+  const { date, description, endTime, locationId, sportId, startTime, title } =
+    event;
+
+  const location = locations.find(
+    (singleLocation) => singleLocation._id === locationId
+  )?.name;
+  const sport = sports.find(
+    (singleLocation) => singleLocation._id === sportId
+  )?.name;
 
   const {
-    active,
-    date,
-    description,
-    endTime,
-    locationId,
-    sportId,
-    startTime,
-    title,
-  } = event;
-
-  const location = locations.find((singleLocation) => singleLocation._id === locationId)?.name;
-  const sport = sports.find((singleLocation) => singleLocation._id === sportId)?.name;
-
-  const { user: { name: scName } } = scUser;
+    user: { name: scName },
+  } = scUser;
   const { capacity } = sportCenter;
-  return (
-    <Fragment>
-      <h1>{title}</h1>
-      <div>
-        {scName} / {location} ({capacity})
-      </div>
-      <div>{format(new Date(date), "PPP")}</div>
-      <div>
-        {startTime}-{endTime}
-      </div>
-      <div>{sport}</div>
-      <div>{description}</div>
-      {canBookATicket && (
+
+  const today = moment().format(`YYYY-MM-DD HH:mm`);
+  const eventDate = moment(new Date(date).toString()).format("YYYY-MM-DD");
+  const endDateTime = moment(`${eventDate} ${endTime}`);
+  const startDateTime = moment(`${eventDate} ${startTime}`);
+
+  const renderBookATicket = () => {
+    if (["admin", "sportCenter"].includes(user.type)) {
+      if (moment(today).isBetween(startDateTime, endDateTime)) {
+        return <div style={{ color: "green" }}> Event is in progress!</div>;
+      }
+  
+      if (moment(today).isAfter(endDateTime)) {
+        return <div style={{ color: "darkred" }}>This event has ended</div>;
+      }
+    }
+  
+    if (!canBookATicket) {
+      return (
+        <StyledLoginRequired>
+          An active account is required to book a ticket. Login or register to
+          preceed.
+        </StyledLoginRequired>
+      );
+    }
+
+    if (moment(today).isBetween(startDateTime, endDateTime)) {
+      return <div style={{ color: "green" }}> Event is in progress!</div>;
+    }
+
+    if (moment(today).isAfter(endDateTime)) {
+      return <div style={{ color: "darkred" }}>This event has ended</div>;
+    }
+
+    return (
+      <Fragment>
         <Button
           variant="contained"
           color="primary"
@@ -109,15 +142,84 @@ const Event = () => {
         >
           Book a ticket
         </Button>
-      )}
-      <BookATicketModal
-        isVisible={isModalVisible}
-        handleCloseModal={setIsModalVisible}
-        stadium={sportCenter.stadium}
-        onBookATicketClick={onBookATicketClick}
-      />
+        <BookATicketModal
+          isVisible={isModalVisible}
+          handleCloseModal={setIsModalVisible}
+          stadium={sportCenter.stadium}
+          onBookATicketClick={onBookATicketClick}
+        />
+      </Fragment>
+    );
+  };
+
+  return (
+    <Fragment>
+      <StyledTitleContainer>
+        {title} {renderBookATicket()}
+      </StyledTitleContainer>
+      <hr />
+      <br />
+      <div>
+        <StyledIconContainer>
+          <StyledLocationIcon fontSize="large" /> {location}
+        </StyledIconContainer>
+        <StyledIconContainer>
+          <StadiumIcon fontSize="large" /> {scName}
+        </StyledIconContainer>
+        <StyledIconContainer>
+          <EventSeatRoundedIcon fontSize="large" /> {capacity}
+        </StyledIconContainer>
+        <StyledIconContainer>
+          <EventIcon fontSize="large" /> {format(new Date(date), "PPP")}
+        </StyledIconContainer>
+        <StyledIconContainer>
+          <AccessTimeIcon fontSize="large" /> {startTime} - {endTime}
+        </StyledIconContainer>
+        <StyledIconContainer>
+          <SportsHandballIcon fontSize="large" /> {sport}
+        </StyledIconContainer>
+      </div>
+      <br />
+      <StyledDescription>{description}</StyledDescription>
     </Fragment>
   );
 };
 
 export default Event;
+
+const StyledLocationIcon = styled(PlaceIcon)`
+  color: #3f51b5;
+`;
+
+const StyledIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 20px;
+  font-size: 20px;
+`;
+
+const StyledEventContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-size: 20px;
+`;
+
+const StyledTitleContainer = styled.h1`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const StyledDescription = styled.div`
+  width: 650px;
+  line-height: 1.4;
+`;
+
+const StyledLoginRequired = styled.div`
+  font-size: 15px;
+  width: 200px;
+  color: #777;
+  text-align: center;
+`;
