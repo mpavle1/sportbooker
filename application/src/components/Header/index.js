@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector, dispatch, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { AppBar, Toolbar, makeStyles, Button } from "@material-ui/core";
 import { NavLink, useLocation, useHistory } from "react-router-dom";
 
 import { logoutUser } from "../../redux/actions/auth";
+
 import CONST from "../../constants";
 
 const useStyles = makeStyles(() => ({
@@ -17,7 +18,7 @@ const useStyles = makeStyles(() => ({
 const Header = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { isAuthenticated, user } = useSelector(state => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
   const { toolbar } = useStyles();
   const { pathname } = useLocation();
 
@@ -55,23 +56,15 @@ const Header = () => {
           color: "inherit",
         }}
         onClick={() => {
+          if (user.type === "admin") {
+            history.push(`/dashboard/users`);
+            return;
+          }
           history.push(`/dashboard/profile`);
         }}
       >
         {user.name}
       </Button>
-      {/* {user.type !== "user" && (
-        <Button
-          {...{
-            color: "inherit",
-          }}
-          onClick={() => {
-            history.push(`/dashboard`);
-          }}
-        >
-          Dashboard
-        </Button>
-      )} */}
       <Button
         {...{
           color: "inherit",
@@ -106,10 +99,6 @@ const Header = () => {
     </header>
   );
 };
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
 
 export default Header;
 

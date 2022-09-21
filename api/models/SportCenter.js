@@ -11,6 +11,10 @@ const SportCenterSchema = new Schema({
     type: String,
     required: false
   },
+  profilePhoto: {
+    type: String,
+    required: false
+  },
   locationId: {
     type: Schema.Types.ObjectId,
     ref: 'Location',

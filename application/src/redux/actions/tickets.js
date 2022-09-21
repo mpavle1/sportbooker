@@ -90,7 +90,6 @@ export const bookATicket = (postData) => (dispatch) => {
 };
 
 export const cancelATicket = (ticketId) => (dispatch) => {
-  console.log({ action: ticketId });
   dispatch({ type: CANCEL_TICKET });
   return axios
     .post(`api/tickets/cancel`, { data: { ticketId } })

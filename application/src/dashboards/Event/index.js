@@ -13,9 +13,9 @@ import EventIcon from "@mui/icons-material/Event";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SportsHandballIcon from "@mui/icons-material/SportsHandball";
 import EventSeatRoundedIcon from "@mui/icons-material/EventSeatRounded";
-import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 
 import BookATicketModal from "./components/BookATicketModal";
+import SearchBox from "../../components/SearchBox";
 
 import { bookATicket } from "../../redux/actions/tickets";
 import { getAllEventTickets } from "../../redux/actions/tickets";
@@ -109,12 +109,12 @@ const Event = () => {
       if (moment(today).isBetween(startDateTime, endDateTime)) {
         return <div style={{ color: "green" }}> Event is in progress!</div>;
       }
-  
+
       if (moment(today).isAfter(endDateTime)) {
         return <div style={{ color: "darkred" }}>This event has ended</div>;
       }
     }
-  
+
     if (!canBookATicket) {
       return (
         <StyledLoginRequired>
@@ -153,35 +153,43 @@ const Event = () => {
   };
 
   return (
-    <Fragment>
-      <StyledTitleContainer>
-        {title} {renderBookATicket()}
-      </StyledTitleContainer>
-      <hr />
-      <br />
-      <div>
-        <StyledIconContainer>
-          <StyledLocationIcon fontSize="large" /> {location}
-        </StyledIconContainer>
-        <StyledIconContainer>
-          <StadiumIcon fontSize="large" /> {scName}
-        </StyledIconContainer>
-        <StyledIconContainer>
-          <EventSeatRoundedIcon fontSize="large" /> {capacity}
-        </StyledIconContainer>
-        <StyledIconContainer>
-          <EventIcon fontSize="large" /> {format(new Date(date), "PPP")}
-        </StyledIconContainer>
-        <StyledIconContainer>
-          <AccessTimeIcon fontSize="large" /> {startTime} - {endTime}
-        </StyledIconContainer>
-        <StyledIconContainer>
-          <SportsHandballIcon fontSize="large" /> {sport}
-        </StyledIconContainer>
+    <StyledEventPage>
+      <SearchBox />
+      <div style={{ width: "100%" }}>
+        <StyledTitleContainer>
+          {title} {renderBookATicket()}
+        </StyledTitleContainer>
+        <hr />
+        <br />
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div>
+            <StyledIconContainer>
+              <StyledLocationIcon fontSize="large" /> {location}
+            </StyledIconContainer>
+            <StyledIconContainer>
+              <StadiumIcon fontSize="large" /> {scName}
+            </StyledIconContainer>
+            <StyledIconContainer>
+              <EventSeatRoundedIcon fontSize="large" /> {capacity}
+            </StyledIconContainer>
+            <StyledIconContainer>
+              <EventIcon fontSize="large" /> {format(new Date(date), "PPP")}
+            </StyledIconContainer>
+            <StyledIconContainer>
+              <AccessTimeIcon fontSize="large" /> {startTime} - {endTime}
+            </StyledIconContainer>
+            <StyledIconContainer>
+              <SportsHandballIcon fontSize="large" /> {sport}
+            </StyledIconContainer>
+          </div>
+          <div>
+            <StyledImg src={sportCenter.profilePhoto} />
+          </div>
+        </div>
+        <br />
+        <StyledDescription>{description}</StyledDescription>
       </div>
-      <br />
-      <StyledDescription>{description}</StyledDescription>
-    </Fragment>
+    </StyledEventPage>
   );
 };
 
@@ -222,4 +230,15 @@ const StyledLoginRequired = styled.div`
   width: 200px;
   color: #777;
   text-align: center;
+`;
+
+const StyledEventPage = styled.div`
+  display: flex;
+  gap: 50px;
+  margin-top: 50px;
+`;
+
+const StyledImg = styled.img`
+  height: 300px;
+  width: 553px;
 `;

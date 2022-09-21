@@ -1,22 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 
-import withNavigationContainer from '../withNavigationContainer';
+import withNavigationContainer from "../withNavigationContainer";
 
-import User from './User';
-import Admin from './Admin';
+import User from "./User";
+import Admin from "./Admin";
 
-const Tickets = ({ auth }) => {
-    switch(auth.user.type) {
-        case 'user': return <User />;
-        case 'admin': return <Admin />;
-    }    
+const Tickets = () => {
+  const userType = useSelector((state) => state.auth.user.type);
+  switch (userType) {
+    case "user":
+      return <User />;
+    case "admin":
+      return <Admin />;
+  }
 };
 
-const mapStateToProps = state => ({
-    auth: state.auth
-});
-
-export default connect(
-    mapStateToProps
-)(withNavigationContainer(Tickets));
+export default withNavigationContainer(Tickets);

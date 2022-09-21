@@ -29,11 +29,13 @@ const Navigation = () => {
             </NavLink>
           </StyledButton>
         )}
-        <StyledButton>
-          <NavLink to="/dashboard/profile" activeStyle={{ color: "#3f51b5" }}>
-            Profile
-          </NavLink>
-        </StyledButton>
+        {userType !== "admin" && (
+          <StyledButton>
+            <NavLink to="/dashboard/profile" activeStyle={{ color: "#3f51b5" }}>
+              Profile
+            </NavLink>
+          </StyledButton>
+        )}
         {userType === "admin" && (
           <Fragment>
             <StyledButton>

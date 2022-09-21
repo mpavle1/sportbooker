@@ -6,8 +6,6 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const cors = require("cors");
 
-const app = express();
-
 const users = require("./routes/api/users");
 const sports = require("./routes/api/sports");
 const locations = require("./routes/api/locations");
@@ -15,6 +13,8 @@ const events = require("./routes/api/events");
 const search = require("./routes/api/search");
 const sportCenters = require("./routes/api/sportCenters");
 const tickets = require("./routes/api/tickets");
+
+const app = express();
 
 app.use(cors());
 
@@ -56,6 +56,8 @@ app.use("/api/events", events);
 app.use("/api/search", search);
 app.use("/api/sportCenters", sportCenters);
 app.use("/api/tickets", tickets);
+
+app.use(express.static(__dirname));
 
 const port = process.env.PORT || 5000;
 

@@ -29,7 +29,6 @@ const Change = () => {
     );
   }, []);
 
-  console.log(sportCenter);
 
   if (sportCenter === null) {
     return null;

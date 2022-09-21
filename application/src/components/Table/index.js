@@ -12,51 +12,12 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
-const Styles = styled.div`
-  padding: 1rem;
-
-  table {
-    border-radius: 5px;
-    border-spacing: 0;
-    border: 1px solid black;
-
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      :last-child {
-        border-right: 0;
-      }
-    }
-  }
-
-  .pagination {
-    padding: 0.5rem;
-  }
-`;
-
 const Table = ({ columns, data }) => {
-  // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
-    getTableBodyProps,
     headerGroups,
     prepareRow,
-    page, // Instead of using 'rows', we'll use page,
-    // which has only the rows for the active page
-
-    // The rest of these things are super handy, too ;)
+    page,
     canPreviousPage,
     canNextPage,
     pageOptions,
@@ -88,7 +49,6 @@ const Table = ({ columns, data }) => {
     });
   }
 
-  // Render the UI for your table
   return (
     <div>
       <MaUTable {...getTableProps()}>
@@ -120,10 +80,6 @@ const Table = ({ columns, data }) => {
           })}
         </TableBody>
       </MaUTable>
-      {/* 
-        Pagination can be built however you'd like. 
-        This is just a very basic UI implementation:
-      */}
       <div style={{ margin: '10px 0 0 0'}}>
         <Button
           variant="contained"

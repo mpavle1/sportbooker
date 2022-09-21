@@ -22,7 +22,7 @@ const Register = ({ registerUser, auth, errors }) => {
         if (auth.isAuthenticated) {
             history.push("/")
         }
-    });
+    }, []);
 
     useEffect(() => {
         console.log(errors)

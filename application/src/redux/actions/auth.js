@@ -27,7 +27,7 @@ export const registerUser = (userData, history) => (dispatch) => {
 
 // Login - get user token
 export const loginUser = (userData) => (dispatch) => {
-  axios
+  return axios
     .post("/api/users/login", userData)
     .then((res) => {
       // Save to localStorage
@@ -44,12 +44,12 @@ export const loginUser = (userData) => (dispatch) => {
         dispatch(setCurrentSportCenter(decoded.sportCenter));
       }
     })
-    .catch((err) =>
+    .catch((response) => {
       dispatch({
         type: GET_ERRORS,
-        payload: err.message,
-      })
-    );
+        payload: response.response.data.error,
+      });
+    });
 };
 
 // Login - get user token
@@ -117,4 +117,29 @@ export const updateSportCenterProfile = (data) => (dispatch) => {
 
 export const getSportCenter = (sportCenterId) => {
   return axios.get(`/api/users/sportcenter/${sportCenterId}`);
+};
+
+export const cleanErrors = () => dispatch => {
+  dispatch({
+    type: GET_ERRORS,
+    payload: {},
+  });
+};
+
+
+export const updateProfilePhoto = (userId, photoFile) => (dispatch) => {
+  const formData = new FormData();
+  formData.append("photo", photoFile);
+  formData.append("sportCenterId", userId);
+
+  return axios
+    .post("/api/sportCenters/profilePhoto", formData, {
+      headers: {
+        "Content-Type": `multipart/form-data`,
+      },
+    })
+    .then((res) => {
+      dispatch(setCurrentSportCenter(res.data.sportCenter));
+      dispatch(setCurrentUser(res.data.user));
+    });
 };

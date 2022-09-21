@@ -17,9 +17,8 @@ import moment from "moment";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-// import { DateRangePicker } from '@mui/lab';
 
-import { setSearchParameters } from "../../redux/actions/search";
+import { setSearchParameters } from "../redux/actions/search";
 
 const PER_PAGE = 50;
 
@@ -61,7 +60,7 @@ function makeAndHandleRequest(query, type) {
     });
 }
 
-class Home extends React.Component {
+class SeatchBox extends React.Component {
   state = {
     isLoading: false,
     options: [],
@@ -101,8 +100,10 @@ class Home extends React.Component {
       <div style={{ position: "relative" }}>
         <StyledSearchBarContainer>
           <FormControl component="fieldset">
-            <FormLabel component="legend">Select search option</FormLabel>
-            <RadioGroup
+            <FormLabel component="legend">
+              Looking for something else?
+            </FormLabel>
+            <StyledRadioGroup
               row
               aria-label="option"
               name="row-radio-buttons-group"
@@ -131,9 +132,9 @@ class Home extends React.Component {
                 control={<Radio color="primary" />}
                 label="Sport Center"
               />
-            </RadioGroup>
+            </StyledRadioGroup>
           </FormControl>
-          <div style={{ marginTop: "15px" }}>
+          <div>
             <StyledDateConainer>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
@@ -196,21 +197,24 @@ class Home extends React.Component {
                 this.state.selectedOption[0].id
               );
               if (this.state.type === "event") {
-                this.props.history.push({
-                  pathname: `/${this.state.type}/${this.state.selectedOption[0].id}`,
-                });
+                window.location.replace(
+                  `/${this.state.type}/${this.state.selectedOption[0].id}`
+                );
+                // this.props.history.push({
+                //   pathname: `/${this.state.type}/${this.state.selectedOption[0].id}`,
+                // });
               }
-              this.props.history.push({
-                pathname: `/search/${this.state.type}/${this.state.selectedOption[0].id}`,
-              });
+              window.location.replace(
+                `/search/${this.state.type}/${this.state.selectedOption[0].id}`
+              );
+              //   this.props.history.push({
+              //     pathname: `/search/${this.state.type}/${this.state.selectedOption[0].id}`,
+              //   });
             }}
           >
             Search
           </Button>
         </StyledSearchBarContainer>
-        <StyledBackgroundWrapper>
-          <StyledBackground></StyledBackground>
-        </StyledBackgroundWrapper>
       </div>
     );
   }
@@ -261,19 +265,14 @@ class Home extends React.Component {
 
 export default connect(() => ({}), {
   setSearchParameters,
-})(withRouter(Home));
+})(withRouter(SeatchBox));
 
 const StyledSearchBarContainer = styled.div`
-  width: 500px;
+  width: 300px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 25px;
-  position: absolute;
-  top: 100px;
-  left: 50%;
-  transform: translate(-50%);
+  padding: 15px;
   background-color: white;
-  z-index: 1000;
 `;
 
 const StyledSeatchBar = styled(AsyncTypeahead)`
@@ -283,27 +282,11 @@ const StyledSeatchBar = styled(AsyncTypeahead)`
 const StyledDateConainer = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 15px;
+  gap: 5px;
+  flex-direction: column;
 `;
 
-const StyledBackgroundWrapper = styled.div`
-  overflow: hidden;
-  position: relative;
-  top: 20px;
-`;
-
-const StyledBackground = styled.div`
-  @keyframes slide {
-    0% {
-      transform: translate3d(0, 0, 0);
-    }
-    100% {
-      transform: translate3d(-1692px, 0, 0);
-    }
-  }
-  background: url("/public/home_page_banner.jpg") repeat-x;
-  height: 500px;
-  width: 3960px;
-  animation: slide 45s linear infinite;
-  background-position: center;
+const StyledRadioGroup = styled(RadioGroup)`
+  flex-direction: column !important;
+  margin-top: 10px;
 `;

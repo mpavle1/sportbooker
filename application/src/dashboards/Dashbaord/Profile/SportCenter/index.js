@@ -17,6 +17,7 @@ import Stadium from "../../../../components/Stadium";
 import { getAllSports } from "../../../../redux/actions/sports";
 import { getAllLocations } from "../../../../redux/actions/locations";
 import { updateSportCenterProfile } from "../../../../redux/actions/auth";
+import { updateProfilePhoto } from "../../../../redux/actions/auth";
 
 import { isSportCenterComplete } from "../../../../utils/validators/sportCenter";
 
@@ -75,9 +76,11 @@ const SportCenter = ({
   getAllSports,
   getAllLocations,
   updateSportCenterProfile,
+  updateProfilePhoto,
 }) => {
   const [isEditActive, setIsEditActive] = useState(false);
   const [name, setName] = useState(user.name);
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
   const [locationId, setLocationId] = useState(sportCenter.locationId || null);
   const [checkedSportIds, setCheckedSportIds] = useState(
@@ -150,163 +153,265 @@ const SportCenter = ({
 
   const getEditMode = () => {
     return (
-      <Fragment>
-        <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Email</StyledInfoFiledName>
-          <div>{user.email}</div>
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
-          <TextField
-            label="Name"
-            variant="outlined"
-            type="text"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
-          <TextField
-            label="Phone Number"
-            variant="outlined"
-            type="number"
-            value={phoneNumber}
-            onChange={(event) => setPhoneNumber(event.target.value)}
-          />
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Location</StyledInfoFiledName>
-          <Select
-            label="Location"
-            value={locationId}
-            onChange={(event) => setLocationId(event.target.value)}
-          >
-            <MenuItem value="">Please select a location</MenuItem>
-            {locations.map((location) => (
-              <MenuItem value={location._id} key={location.name}>
-                {location.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Capacity</StyledInfoFiledName>
-          <div>{calculateCapacity()}</div>
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
-          <Stadium
-            isViewModeActive={false}
-            stadium={stadium}
-            onChangeStadium={handleChangeStadium}
-          />
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Sports</StyledInfoFiledName>
-          {
-            <FormGroup>
-              {sports.map((sport) => (
-                <FormControlLabel
-                  key={sport.name}
-                  control={
-                    <Checkbox
-                      checked={checkedSportIds.includes(sport._id)}
-                      onChange={(event) => {
-                        handleCheckboxChange(event.target.id);
-                      }}
-                      name={sport.name}
-                      id={sport._id}
-                    />
-                  }
-                  label={sport.name}
-                />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <StyledInfoFieldContainer>
+            <StyledInfoFiledName>Email</StyledInfoFiledName>
+            <div>{user.email}</div>
+          </StyledInfoFieldContainer>
+          <StyledInfoFieldContainer>
+            <TextField
+              label="Name"
+              variant="outlined"
+              type="text"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+            />
+          </StyledInfoFieldContainer>
+          <StyledInfoFieldContainer>
+            <TextField
+              label="Phone Number"
+              variant="outlined"
+              type="number"
+              value={phoneNumber}
+              onChange={(event) => setPhoneNumber(event.target.value)}
+            />
+          </StyledInfoFieldContainer>
+          <StyledInfoFieldContainer>
+            <StyledInfoFiledName>Location</StyledInfoFiledName>
+            <Select
+              label="Location"
+              value={locationId}
+              onChange={(event) => setLocationId(event.target.value)}
+            >
+              <MenuItem value="">Please select a location</MenuItem>
+              {locations.map((location) => (
+                <MenuItem value={location._id} key={location.name}>
+                  {location.name}
+                </MenuItem>
               ))}
-            </FormGroup>
-          }
-        </StyledInfoFieldContainer>
-      </Fragment>
+            </Select>
+          </StyledInfoFieldContainer>
+          <StyledInfoFieldContainer>
+            <StyledInfoFiledName>Sports</StyledInfoFiledName>
+            {
+              <FormGroup>
+                {sports.map((sport) => (
+                  <FormControlLabel
+                    key={sport.name}
+                    control={
+                      <Checkbox
+                        checked={checkedSportIds.includes(sport._id)}
+                        onChange={(event) => {
+                          handleCheckboxChange(event.target.id);
+                        }}
+                        name={sport.name}
+                        id={sport._id}
+                      />
+                    }
+                    label={sport.name}
+                  />
+                ))}
+              </FormGroup>
+            }
+          </StyledInfoFieldContainer>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <StyledInfoFieldContainer>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              {/* <StyledInfoFiledName>Profile photo</StyledInfoFiledName> */}
+              <StyledProfilePhoto
+                alt="profile photo"
+                src={
+                  profilePhotoUrl ||
+                  sportCenter.profilePhoto ||
+                  "/public/placeholder.png"
+                }
+                height={300}
+                width={500}
+              />
+              <div>
+                <Button component="label">
+                  Upload Profile Image
+                  <input
+                    type="file"
+                    hidden
+                    onInput={(event) => {
+                      setProfilePhotoUrl(
+                        URL.createObjectURL(event.target.files[0])
+                      );
+                      updateProfilePhoto(
+                        sportCenter._id,
+                        event.target.files[0]
+                      ).then(() => {
+                        setProfilePhotoUrl(null);
+                      });
+                    }}
+                    accept="image/jpeg, image/jpg, image/png"
+                    multiple={false}
+                  />
+                </Button>
+              </div>
+            </div>
+          </StyledInfoFieldContainer>
+          {/* <StyledInfoFieldContainer>
+            <StyledInfoFiledName>
+              Current capacity is{calculateCapacity()}
+            </StyledInfoFiledName>
+          </StyledInfoFieldContainer> */}
+          <StyledInfoFieldContainer>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <StyledInfoFiledName>Stadium design</StyledInfoFiledName>
+              <Stadium
+                isViewModeActive={false}
+                stadium={stadium}
+                onChangeStadium={handleChangeStadium}
+              />
+            </div>
+          </StyledInfoFieldContainer>
+        </div>
+      </div>
     );
   };
 
   const getViewMode = () => {
     return (
-      <Fragment>
-        <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Email</StyledInfoFiledName>
-          <div>{user.email}</div>
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Name</StyledInfoFiledName>
-          <div>{name}</div>
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Phone Number</StyledInfoFiledName>
-          <div>
-            {phoneNumber || "Your phone number is missing, please add it."}
-          </div>
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Location</StyledInfoFiledName>
-          <div>
-            {locations.find((location) => location._id === locationId)?.name ||
-              "Your location is missing, please add it."}
-          </div>
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Capacity</StyledInfoFiledName>
-          <div>
-            {calculateCapacity() || "Your capacity is missing, please add it."}
-          </div>
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
-          <Stadium isViewModeActive stadium={stadium} />
-        </StyledInfoFieldContainer>
-        <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Sports</StyledInfoFiledName>
-          {checkedSportIds.length > 0 ? (
-            <ul>
-              {checkedSportIds.map((sportId) => (
-                <li key={sportId}>
-                  {sports.find((sport) => sport._id === sportId).name}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            "Sports that are available for viewing in you center are missing, please add them."
-          )}
-        </StyledInfoFieldContainer>
-      </Fragment>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <StyledInfoFieldContainer>
+            <StyledInfoFiledName>Email</StyledInfoFiledName>
+            <div>{user.email}</div>
+          </StyledInfoFieldContainer>
+          <StyledInfoFieldContainer>
+            <StyledInfoFiledName>Name</StyledInfoFiledName>
+            <div>{name}</div>
+          </StyledInfoFieldContainer>
+          <StyledInfoFieldContainer>
+            <StyledInfoFiledName>Phone Number</StyledInfoFiledName>
+            <div>
+              {phoneNumber || "Your phone number is missing, please add it."}
+            </div>
+          </StyledInfoFieldContainer>
+          <StyledInfoFieldContainer>
+            <StyledInfoFiledName>Location</StyledInfoFiledName>
+            <div>
+              {locations.find((location) => location._id === locationId)
+                ?.name || "Your location is missing, please add it."}
+            </div>
+          </StyledInfoFieldContainer>
+          <StyledInfoFieldContainer>
+            <StyledInfoFiledName>Capacity</StyledInfoFiledName>
+            <div>
+              {calculateCapacity() ||
+                "Your capacity is missing, please add it."}
+            </div>
+          </StyledInfoFieldContainer>
+          <StyledInfoFieldContainer>
+            <StyledInfoFiledName>Sports</StyledInfoFiledName>
+            {checkedSportIds.length > 0 ? (
+              <ul>
+                {checkedSportIds.map((sportId) => (
+                  <li key={sportId}>
+                    {sports.find((sport) => sport._id === sportId).name}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              "Sports that are available for viewing in you center are missing, please add them."
+            )}
+          </StyledInfoFieldContainer>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <StyledInfoFieldContainer>
+            {/* <StyledInfoFiledName>Profile photo</StyledInfoFiledName> */}
+            <StyledProfilePhoto
+              alt="profile photo"
+              src={
+                profilePhotoUrl ||
+                sportCenter.profilePhoto ||
+                "/public/placeholder.png"
+              }
+              height={300}
+              width={500}
+            />
+          </StyledInfoFieldContainer>
+          <StyledInfoFieldContainer>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <StyledInfoFiledName>Stadium design</StyledInfoFiledName>
+              <Stadium isViewModeActive stadium={stadium} />
+            </div>
+          </StyledInfoFieldContainer>
+        </div>
+      </div>
     );
   };
 
   return (
     <div style={{ paddingBottom: "30px" }}>
-      <h1>Profile</h1>
-      {!isComplete && (
-        <Chip
-          color="secondary"
-          label="You havent finished you profile yet. Please fill in the missing information if you want to be able to create events."
-        />
-      )}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        {isEditActive ? (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              setIsEditActive(false);
+              updateProfile();
+            }}
+          >
+            Save
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setIsEditActive(true)}
+          >
+            Edit
+          </Button>
+        )}
+        {!isComplete && (
+          <Chip
+            color="secondary"
+            label="You havent finished you profile yet. Please fill in the missing information if you want to be able to create events."
+          />
+        )}
+      </div>
       {isEditActive ? getEditMode() : getViewMode()}
-      {isEditActive ? (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            setIsEditActive(false);
-            updateProfile();
-          }}
-        >
-          Save
-        </Button>
-      ) : (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setIsEditActive(true)}
-        >
-          Edit
-        </Button>
-      )}
     </div>
   );
 };
@@ -322,13 +427,20 @@ export default connect(mapStateToProps, {
   getAllLocations,
   getAllSports,
   updateSportCenterProfile,
+  updateProfilePhoto,
 })(SportCenter);
 
 const StyledInfoFieldContainer = styled.div`
   margin: 20px 0;
+  display: inline-block;
 `;
 
 const StyledInfoFiledName = styled.div`
   font-size: 18px;
   font-weight: bold;
+`;
+
+const StyledProfilePhoto = styled.img`
+  border: 1px solid #777;
+  border-radius: 5px;
 `;

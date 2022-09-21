@@ -1,24 +1,26 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { connect, useDispatch } from "react-redux";
-import { useParams, NavLink, Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useParams, Redirect } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 
-import CardItem from "./components/CardItem";
+import CardItem from "./CardItem";
+import SearchBox from "../../components/SearchBox";
 
 import { setSearchParameters } from "../../redux/actions/search";
 import { getAllSports } from "../../redux/actions/sports";
 import { getAllLocations } from "../../redux/actions/locations";
 
-const Search = ({ search }) => {
+const Search = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
+
   const [searchResults, setSearchResults] = useState([]);
   const [searchResultObject, setSearchResultObject] = useState(null);
   const { searchType, searchId } = useParams();
-  const history = useHistory();
 
   useEffect(() => {
     dispatch(setSearchParameters(searchType, null, searchId));
@@ -63,7 +65,9 @@ const Search = ({ search }) => {
       const eventDate = moment(new Date(event.date).toString()).format(
         "YYYY-MM-DD"
       );
-      const eventDateTime = moment(`${eventDate} ${event.endTime}`).format(`YYYY-MM-DD HH:mm`);
+      const eventDateTime = moment(`${eventDate} ${event.endTime}`).format(
+        `YYYY-MM-DD HH:mm`
+      );
 
       return moment(today).isBefore(eventDateTime);
     });
@@ -74,41 +78,56 @@ const Search = ({ search }) => {
 
   return (
     <Fragment>
-      {hasSearchResults && <h2>{renderTitle()}</h2>}
-      <div>
-        {!hasSearchResults && <h2>No Search results for selected parametes</h2>}
-        {!hasSearchResults && (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              history.push("/");
-            }}
-          >
-            Back to search
-          </Button>
-        )}
-        {hasSearchResults &&
-          getSearchResults().map((searchResult) => (
-            <StyledNavLink
-              to={`/event/${searchResult._id}`}
-              key={searchResult._id}
+      <StyledTitle>
+        {hasSearchResults ? (
+          renderTitle()
+        ) : (
+          <Fragment>
+            No Search results for selected parametes, please change your seatch options
+            {/* <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                history.push("/");
+              }}
             >
-              <CardItem event={searchResult} />
-            </StyledNavLink>
+              Back to search
+            </Button> */}
+          </Fragment>
+        )}
+      </StyledTitle>
+      <StyledContent>
+        <div>
+          <SearchBox />
+        </div>
+        <StyledResults>
+          {getSearchResults().map((searchResult) => (
+            <CardItem event={searchResult} key={searchResult._id} />
           ))}
-      </div>
+        </StyledResults>
+      </StyledContent>
     </Fragment>
   );
 };
 
-const mapStateToProps = (state) => ({
-  search: state.search,
-});
+export default Search;
 
-export default connect(mapStateToProps)(Search);
+const StyledContent = styled.div`
+  display: flex;
+`;
 
-const StyledNavLink = styled(NavLink)`
-  text-decoration: none;
-  color: #333;
+const StyledResults = styled.div`
+  width: calc(100% - 300px);
+  display: flex;
+  justify-content: center;
+`;
+
+const StyledTitle = styled.div`
+  font-size: 30px;
+  margin: 25px 0;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;

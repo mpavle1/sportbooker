@@ -15,7 +15,12 @@ const User = () => {
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
 
   const updateProfile = () => {
-    dispatch(updateUser({}));
+    dispatch(updateUser({
+      ...user,
+      name,
+      lastName,
+      phoneNumber
+    }));
   };
 
   const isComplete = user.name && user.lastName && user.phoneNumber;

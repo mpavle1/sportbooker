@@ -3,18 +3,13 @@ import { format } from "date-fns";
 import styled from "styled-components";
 import moment from "moment";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const CardItem = ({ event }) => {
-  const {
-    title,
-    description,
-    startTime,
-    endTime,
-    date,
-    active,
-    sportId,
-    locationId,
-  } = event;
+  const { title, description, startTime, endTime, date, sportId, locationId } =
+    event;
+
+  const history = useHistory();
 
   const locations = useSelector((state) => state.locations);
   const sports = useSelector((state) => state.sports);
@@ -34,7 +29,11 @@ const CardItem = ({ event }) => {
   )?.name;
 
   return (
-    <StyledEventItem>
+    <StyledEventItem
+      onClick={() => {
+        history.push(`/event/${event._id}`);
+      }}
+    >
       <StyledHeader>
         <span style={{ fontWeight: "bold", fontSize: "20px" }}>{title}</span>{" "}
         <span>
@@ -57,12 +56,17 @@ export default CardItem;
 const StyledEventItem = styled.div`
   border: 1px solid #ccc;
   border-radius: 5px;
-  min-height: 100px;
   width: 600px;
   margin-bottom: 10px;
   padding: 15px;
   position: relative;
   display: inline-block;
+  color: #333 !important;
+  &:hover {
+    color: #333 !important;
+  }
+  height: fit-content;
+  cursor: pointer;
 `;
 
 const StyledHeader = styled.div`

@@ -1,4 +1,7 @@
 export const isSportCenterComplete = (sportCenter) => {
+    if (!sportCenter.profilePhoto) {
+        return false;
+    }
     if (sportCenter.capacity === '' || sportCenter.capacity === 0) {
         return false;
     }

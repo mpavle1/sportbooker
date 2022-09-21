@@ -12,7 +12,6 @@ import {
 import store from "./redux/store";
 
 import Header from './components/Header';
-import withHeader from './container/withHeader';
 import DashboardContainer from "./container/DashbordContainer";
 
 import setAuthToken from "./utils/auth/setAuthToken";

@@ -31,7 +31,6 @@ router.post("/", (req, res) => {
 });
 
 router.patch("/", (req, res) => {
-  console.log(req.body.newState);
   Event.findOneAndUpdate(
     {
       _id: req.body.eventId,

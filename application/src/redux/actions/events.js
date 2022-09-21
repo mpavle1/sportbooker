@@ -92,7 +92,6 @@ export const toggleActivated =
   };
 
 export const deleteEvent = (eventId) => (dispatch) => {
-  console.log({ action: eventId });
   dispatch({ type: DELETE_EVENT });
   return axios
     .post(`api/events/delete`, { data: { eventId } })

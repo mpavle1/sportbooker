@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, Fragment } from "react";
+import React, { useLayoutEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
@@ -15,7 +15,6 @@ import { getAllUsers, updateUser } from "../../../redux/actions/users";
 
 const Users = () => {
   const dispatch = useDispatch();
-
   const user = useSelector((state) => state?.auth?.user);
   const isInitialized = useSelector((state) => state.users.isInitialized);
   const users = useSelector((state) => state.users.users);
@@ -44,6 +43,10 @@ const Users = () => {
     {
       Header: "Phone Number",
       accessor: "phoneNumber",
+    },
+    {
+      Header: "Email",
+      accessor: "email"
     },
     {
       Header: "Status",

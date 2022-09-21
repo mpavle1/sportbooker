@@ -83,7 +83,7 @@ router.post("/register", (req, res) => {
         dateOfBirth: req.body.dateOfBirth,
         phoneNumber: req.body.phoneNumber,
         type: req.body.type,
-        status: 'pending',
+        status: "pending",
       });
       // Hash password before saving in database
       bcrypt.genSalt(10, (err, salt) => {
@@ -141,7 +141,7 @@ router.post("/login", (req, res) => {
   User.findOne({ email }).then((user) => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ emailnotfound: "Email not found" });
+      return res.status(403).json({ error: "Email not found" });
     }
     // Check password
     bcrypt
@@ -159,9 +159,28 @@ router.post("/login", (req, res) => {
               name: user.name,
               phoneNumber: user.phoneNumber,
               type: user.type,
+              status: user.status,
             },
             sportCenter: {},
           };
+
+          // check if user is active
+          if (user.status === "deactive") {
+            return res
+              .status(403)
+              .json({
+                error:
+                  "Your account has not yet been activated. Please try again later.",
+              });
+          }
+          if (user.status === "disabled") {
+            return res
+              .status(403)
+              .json({
+                error:
+                  "Your account has been disable due tu inapropirate behavior",
+              });
+          }
 
           if (user.type === "sportCenter") {
             SportCenter.findOne({ userId: user._id })
@@ -203,9 +222,7 @@ router.post("/login", (req, res) => {
             );
           }
         } else {
-          return res
-            .status(400)
-            .json({ passwordincorrect: "Password incorrect" });
+          return res.status(400).json({ error: "Password incorrect" });
         }
       })
       .catch((error) => console.log(error));
@@ -226,6 +243,9 @@ router.patch("/changePassword", (req, res) => {
                 },
                 {
                   password: hash,
+                },
+                {
+                  new: true
                 }
               )
                 .then((u) => {
@@ -253,6 +273,9 @@ router.patch("/", (req, res) => {
     { _id: req.body.user._id },
     {
       $set: req.body.user,
+    },
+    {
+      new: true
     }
   )
     .then((newUser) => {
@@ -261,6 +284,9 @@ router.patch("/", (req, res) => {
           { _id: req.body.sportCenter._id },
           {
             $set: req.body.sportCenter,
+          },
+          {
+            new: true
           }
         )
           .then((newSportCenter) => {
