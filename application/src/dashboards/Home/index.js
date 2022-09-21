@@ -72,13 +72,6 @@ class Home extends React.Component {
     selectedOption: {},
   };
 
-  componentWillUnmount() {
-    var cssId = "myCss";
-    if (document.getElementById(cssId)) {
-      document.getElementById("myCss").remove();
-    }
-  }
-
   _cache = {};
 
   handlePlaceHolder = () => {
@@ -200,6 +193,9 @@ class Home extends React.Component {
                   pathname: `/${this.state.type}/${this.state.selectedOption[0].id}`,
                 });
               }
+
+              
+
               this.props.history.push({
                 pathname: `/search/${this.state.type}/${this.state.selectedOption[0].id}`,
               });

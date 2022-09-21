@@ -83,7 +83,7 @@ router.post("/register", (req, res) => {
         dateOfBirth: req.body.dateOfBirth,
         phoneNumber: req.body.phoneNumber,
         type: req.body.type,
-        status: "pending",
+        status: "deactive",
       });
       // Hash password before saving in database
       bcrypt.genSalt(10, (err, salt) => {
@@ -98,8 +98,7 @@ router.post("/register", (req, res) => {
                   sports: [],
                   sportIds: [],
                   capacity: "",
-                  location: "",
-                  locationId: "",
+                  locationId: null,
                   stadium: DEFAULT_STADIUM,
                   userId: user._id,
                 });

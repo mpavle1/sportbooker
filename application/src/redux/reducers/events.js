@@ -11,6 +11,9 @@ import {
   GET_ALL_EVENTS,
   GET_ALL_EVENTS_SUCCESS,
   GET_ALL_EVENTS_FAIL,
+  UPDATE_EVENT,
+  UPDATE_EVENT_SUCCESS,
+  UPDATE_EVENT_FAIL,
 } from "../actions/events";
 
 const initialState = {
@@ -45,6 +48,7 @@ export default function (state = initialState, action) {
         user: [...state.user],
         all: [...action.payload],
       };
+    case UPDATE_EVENT_SUCCESS:
     case TOGGLE_ACTIVATED_SUCCESS:
       const newState = state.user.filter(
         (event) => event._id !== action.payload._id
@@ -72,6 +76,8 @@ export default function (state = initialState, action) {
     case ADD_EVENT_FAIL:
     case TOGGLE_ACTIVATED:
     case TOGGLE_ACTIVATED_FAIL:
+    case UPDATE_EVENT_FAIL:
+    case UPDATE_EVENT:
     default:
       return state;
   }

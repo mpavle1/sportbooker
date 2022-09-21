@@ -1,26 +1,37 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect, Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import EditIcon from "@mui/icons-material/Edit";
 import EventIcon from "@mui/icons-material/Event";
 import { format } from "date-fns";
 import { useHistory, withRouter } from "react-router-dom";
 
+import EditModal from "../../../../components/EventModal";
 import Table from "../../../../components/Table";
 
-import { getAllEvents, deleteEvent } from "../../../../redux/actions/events";
-import { toggleActivated } from "../../../../redux/actions/events";
+import {
+  getAllEvents,
+  deleteEvent,
+  toggleActivated,
+} from "../../../../redux/actions/events";
+import { getAllSportCenters } from "../../../../redux/actions/sportCenters";
+import { getAllUsers } from "../../../../redux/actions/users";
 
 const Admin = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const sportCenters = useSelector((state) => state.sportCenters);
+  const users = useSelector((state) => state.users.users);
   const events = useSelector((state) => state.events.all);
   const isInitialized = useSelector((state) => state.events.isInitialized);
   const sports = useSelector((state) => state.sports);
   const locations = useSelector((state) => state.locations);
+
+  const [editModalEvent, setEditModalEvent] = useState(null);
 
   const columns = [
     {
@@ -37,7 +48,7 @@ const Admin = () => {
       Cell: ({ cell }) => format(new Date(cell.value), "PPP"),
     },
     {
-      Header: "SportId",
+      Header: "Sport",
       accessor: "sportId",
       Cell: ({ cell }) => {
         const { value } = cell;
@@ -53,7 +64,7 @@ const Admin = () => {
       },
     },
     {
-      Header: "LocationId",
+      Header: "Location",
       accessor: "locationId",
       Cell: ({ cell }) => {
         const { value } = cell;
@@ -71,6 +82,20 @@ const Admin = () => {
     {
       Header: "SportCenterId",
       accessor: "sportCenterId",
+      Cell: ({ cell }) => {
+        const { value } = cell;
+        const sc =
+          sportCenters.length > 0
+            ? sportCenters.find((sc) => sc._id == value)
+            : null;
+        const tooltip = sc?._id ?? "";
+        const content = users.find((user) => user._id === sc.userId)?.name;
+        return (
+          <Tooltip title={tooltip}>
+            <div>{content}</div>
+          </Tooltip>
+        );
+      },
     },
     {
       Header: "StartTime",
@@ -138,20 +163,42 @@ const Admin = () => {
               <EventIcon />
             </IconButton>
           </Tooltip>
+          <Tooltip title="Edit Event">
+            <IconButton onClick={() => setEditModalEvent(cell.row.original)}>
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
         </Fragment>
       ),
     },
   ];
 
   useEffect(() => {
+    dispatch(getAllUsers());
     dispatch(getAllEvents());
+    dispatch(getAllSportCenters());
   }, []);
 
-  if (!isInitialized) {
+  if (!isInitialized || users.length === 0 || sportCenters.length === 0) {
     return null;
   }
 
-  return <Table columns={columns} data={events} />;
+  return (
+    <Fragment>
+      {editModalEvent && (
+        <EditModal
+          event={editModalEvent}
+          onClose={() => setEditModalEvent(null)}
+          onChange={() => {
+            alert("Event has been udpated");
+            setEditModalEvent(null);
+            dispatch(getAllEvents());
+          }}
+        />
+      )}
+      <Table columns={columns} data={events} />
+    </Fragment>
+  );
 };
 
 export default Admin;

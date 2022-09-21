@@ -21,6 +21,10 @@ export const DELETE_EVENT = "DELETE_EVENT";
 export const DELETE_EVENT_SUCCESS = "DELETE_EVENT_SUCCESS";
 export const DELETE_EVENT_FAIL = "DELETE_EVENT_FAIL";
 
+export const UPDATE_EVENT = "UPDATE_EVENT";
+export const UPDATE_EVENT_SUCCESS = "UPDATE_EVENT_SUCCESS";
+export const UPDATE_EVENT_FAIL = "UPDATE_EVENT_FAIL";
+
 export const getAllEventsForSportCenter = (sportCenterId) => (dispatch) => {
   dispatch({ type: GET_ALL_EVENTS_FOR_USER });
   axios
@@ -77,7 +81,10 @@ export const toggleActivated =
   (dispatch) => {
     dispatch({ type: TOGGLE_ACTIVATED });
     return axios
-      .patch("/api/events", { eventId, newState: { active, setByAdmin } })
+      .patch("/api/events/toggleActivated", {
+        eventId,
+        newState: { active, setByAdmin },
+      })
       .then((res) => {
         dispatch({
           type: TOGGLE_ACTIVATED_SUCCESS,
@@ -90,6 +97,25 @@ export const toggleActivated =
         })
       );
   };
+
+export const updateEvent = (event) => (dispatch) => {
+  dispatch({ type: UPDATE_EVENT });
+  return axios
+    .patch("/api/events/", {
+      event,
+    })
+    .then((res) => {
+      dispatch({
+        type: UPDATE_EVENT_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) =>
+      dispatch({
+        type: UPDATE_EVENT_FAIL,
+      })
+    );
+};
 
 export const deleteEvent = (eventId) => (dispatch) => {
   dispatch({ type: DELETE_EVENT });
@@ -106,4 +132,16 @@ export const deleteEvent = (eventId) => (dispatch) => {
         type: DELETE_EVENT_FAIL,
       });
     });
+};
+
+export const getOtherEventsForSportCenter = (sportCenterId, eventId, limit) => {
+  return axios.get(
+    `api/events/otherEventsFromSc/${sportCenterId}/${eventId}/${limit}`
+  );
+};
+
+export const getOtherEventsForLocation = (sportCenterId, locationId, limit) => {
+  return axios.get(
+    `api/events/otherEventsForLocation/${sportCenterId}/${locationId}/${limit}`
+  );
 };

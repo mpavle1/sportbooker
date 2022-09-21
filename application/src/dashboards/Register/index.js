@@ -4,7 +4,7 @@ import { Link, withRouter, useHistory } from 'react-router-dom';
 import { Button, InputLabel, Select, TextField, MenuItem, FormControl } from '@material-ui/core';
 import styled from "styled-components";
 
-import { registerUser } from "../../redux/actions/auth";
+import { registerUser, cleanErrors } from "../../redux/actions/auth";
 
 const Register = ({ registerUser, auth, errors }) => {
     const [email, setEmail] = useState('');
@@ -25,8 +25,11 @@ const Register = ({ registerUser, auth, errors }) => {
     }, []);
 
     useEffect(() => {
-        console.log(errors)
-    }, [errors]);
+        if (typeof errors !== 'object') {
+          alert(`An error occured: ${errors}`);
+          dispatch(cleanErrors());
+        }
+      }, [errors]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -37,7 +40,7 @@ const Register = ({ registerUser, auth, errors }) => {
             name: type !== 'admin' ? name : '',
             lastName: type === 'user' ? lastName : '',
             dateOfBirth: type === 'user' ? dateOfBirth : '',
-            phoneNumber: type !== 'admin' ? dateOfBirth : '',
+            phoneNumber: type !== 'admin' ? phoneNumber : '',
             type
         }, history);
     }

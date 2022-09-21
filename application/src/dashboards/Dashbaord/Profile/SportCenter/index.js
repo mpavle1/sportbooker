@@ -9,6 +9,8 @@ import {
   TextField,
   Select,
   MenuItem,
+  InputLabel,
+  FormControl,
 } from "@material-ui/core";
 import styled from "styled-components";
 
@@ -154,44 +156,72 @@ const SportCenter = ({
   const getEditMode = () => {
     return (
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <StyledInfoFieldContainer>
-            <StyledInfoFiledName>Email</StyledInfoFiledName>
-            <div>{user.email}</div>
-          </StyledInfoFieldContainer>
-          <StyledInfoFieldContainer>
-            <TextField
-              label="Name"
-              variant="outlined"
-              type="text"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-            />
-          </StyledInfoFieldContainer>
-          <StyledInfoFieldContainer>
-            <TextField
-              label="Phone Number"
-              variant="outlined"
-              type="number"
-              value={phoneNumber}
-              onChange={(event) => setPhoneNumber(event.target.value)}
-            />
-          </StyledInfoFieldContainer>
-          <StyledInfoFieldContainer>
-            <StyledInfoFiledName>Location</StyledInfoFiledName>
-            <Select
-              label="Location"
-              value={locationId}
-              onChange={(event) => setLocationId(event.target.value)}
+        <div
+          style={{ display: "flex", flexDirection: "column", width: "600px" }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "20px",
+            }}
+          >
+            <div
+              style={{
+                width: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "15px",
+              }}
             >
-              <MenuItem value="">Please select a location</MenuItem>
-              {locations.map((location) => (
-                <MenuItem value={location._id} key={location.name}>
-                  {location.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </StyledInfoFieldContainer>
+              <div style={{ height: "56px" }}>
+                <StyledInfoFiledName>Email</StyledInfoFiledName>
+                <div>{user.email}</div>
+              </div>
+              <TextField
+                fullWidth
+                label="Name"
+                variant="outlined"
+                type="text"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
+            </div>
+            <div
+              style={{
+                width: "50%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "15px",
+              }}
+            >
+              <TextField
+                fullWidth
+                label="Phone Number"
+                variant="outlined"
+                type="number"
+                value={phoneNumber}
+                onChange={(event) => setPhoneNumber(event.target.value)}
+              />
+              <FormControl variant="outlined" fullWidth>
+                <InputLabel id="demo-simple-select-label">Location</InputLabel>
+                <Select
+                  label="Location"
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
+                  value={locationId}
+                  onChange={(event) => setLocationId(event.target.value)}
+                >
+                  <MenuItem value="">Please select a location</MenuItem>
+                  {locations.map((location) => (
+                    <MenuItem value={location._id} key={location.name}>
+                      {location.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+          </div>
           <StyledInfoFieldContainer>
             <StyledInfoFiledName>Sports</StyledInfoFiledName>
             {
@@ -223,54 +253,46 @@ const SportCenter = ({
             alignItems: "center",
           }}
         >
-          <StyledInfoFieldContainer>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              {/* <StyledInfoFiledName>Profile photo</StyledInfoFiledName> */}
-              <StyledProfilePhoto
-                alt="profile photo"
-                src={
-                  profilePhotoUrl ||
-                  sportCenter.profilePhoto ||
-                  "/public/placeholder.png"
-                }
-                height={300}
-                width={500}
-              />
-              <div>
-                <Button component="label">
-                  Upload Profile Image
-                  <input
-                    type="file"
-                    hidden
-                    onInput={(event) => {
-                      setProfilePhotoUrl(
-                        URL.createObjectURL(event.target.files[0])
-                      );
-                      updateProfilePhoto(
-                        sportCenter._id,
-                        event.target.files[0]
-                      ).then(() => {
-                        setProfilePhotoUrl(null);
-                      });
-                    }}
-                    accept="image/jpeg, image/jpg, image/png"
-                    multiple={false}
-                  />
-                </Button>
-              </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <StyledProfilePhoto
+              alt="profile photo"
+              src={
+                profilePhotoUrl ||
+                sportCenter.profilePhoto ||
+                "/public/placeholder.png"
+              }
+              height={300}
+              width={500}
+            />
+            <div>
+              <Button component="label">
+                Upload Profile Image
+                <input
+                  type="file"
+                  hidden
+                  onInput={(event) => {
+                    setProfilePhotoUrl(
+                      URL.createObjectURL(event.target.files[0])
+                    );
+                    updateProfilePhoto(
+                      sportCenter._id,
+                      event.target.files[0]
+                    ).then(() => {
+                      setProfilePhotoUrl(null);
+                    });
+                  }}
+                  accept="image/jpeg, image/jpg, image/png"
+                  multiple={false}
+                />
+              </Button>
             </div>
-          </StyledInfoFieldContainer>
-          {/* <StyledInfoFieldContainer>
-            <StyledInfoFiledName>
-              Current capacity is{calculateCapacity()}
-            </StyledInfoFiledName>
-          </StyledInfoFieldContainer> */}
+          </div>
           <StyledInfoFieldContainer>
             <div
               style={{
@@ -295,49 +317,96 @@ const SportCenter = ({
   const getViewMode = () => {
     return (
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <StyledInfoFieldContainer>
-            <StyledInfoFiledName>Email</StyledInfoFiledName>
-            <div>{user.email}</div>
-          </StyledInfoFieldContainer>
-          <StyledInfoFieldContainer>
-            <StyledInfoFiledName>Name</StyledInfoFiledName>
-            <div>{name}</div>
-          </StyledInfoFieldContainer>
-          <StyledInfoFieldContainer>
-            <StyledInfoFiledName>Phone Number</StyledInfoFiledName>
-            <div>
-              {phoneNumber || "Your phone number is missing, please add it."}
+        <div
+          style={{ display: "flex", flexDirection: "column", width: "600px" }}
+        >
+          <div
+            style={{
+              display: "flex",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                width: "50%",
+
+                gap: "15px",
+              }}
+            >
+              <div
+                style={{
+                  height: "56px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <StyledInfoFiledName>Email</StyledInfoFiledName>
+                <div>{user.email}</div>
+              </div>
+              <div
+                style={{
+                  height: "56px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <StyledInfoFiledName>Name</StyledInfoFiledName>
+                <div>{name}</div>
+              </div>
             </div>
-          </StyledInfoFieldContainer>
-          <StyledInfoFieldContainer>
-            <StyledInfoFiledName>Location</StyledInfoFiledName>
-            <div>
-              {locations.find((location) => location._id === locationId)
-                ?.name || "Your location is missing, please add it."}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                width: "50%",
+                gap: "15px",
+              }}
+            >
+              <div
+                style={{
+                  height: "56px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <StyledInfoFiledName>Phone Number</StyledInfoFiledName>
+                <div>
+                  {phoneNumber ||
+                    "Your phone number is missing, please add it."}
+                </div>
+              </div>
+              <div
+                style={{
+                  height: "56px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <StyledInfoFiledName>Location</StyledInfoFiledName>
+                <div>
+                  {locations.find((location) => location._id === locationId)
+                    ?.name || "Your location is missing, please add it."}
+                </div>
+              </div>
             </div>
-          </StyledInfoFieldContainer>
-          <StyledInfoFieldContainer>
-            <StyledInfoFiledName>Capacity</StyledInfoFiledName>
-            <div>
-              {calculateCapacity() ||
-                "Your capacity is missing, please add it."}
-            </div>
-          </StyledInfoFieldContainer>
-          <StyledInfoFieldContainer>
+          </div>
+          <div>
             <StyledInfoFiledName>Sports</StyledInfoFiledName>
             {checkedSportIds.length > 0 ? (
               <ul>
                 {checkedSportIds.map((sportId) => (
                   <li key={sportId}>
-                    {sports.find((sport) => sport._id === sportId).name}
+                    {sports.find((sport) => sport._id === sportId)?.name}
                   </li>
                 ))}
               </ul>
             ) : (
               "Sports that are available for viewing in you center are missing, please add them."
             )}
-          </StyledInfoFieldContainer>
+          </div>
         </div>
         <div
           style={{
@@ -367,7 +436,10 @@ const SportCenter = ({
                 alignItems: "center",
               }}
             >
-              <StyledInfoFiledName>Stadium design</StyledInfoFiledName>
+              <StyledInfoFiledName>
+                {`Current capacity: ${calculateCapacity()}` ||
+                  "Your capacity is missing, please seats."}
+              </StyledInfoFiledName>
               <Stadium isViewModeActive stadium={stadium} />
             </div>
           </StyledInfoFieldContainer>
@@ -382,6 +454,7 @@ const SportCenter = ({
         style={{
           display: "flex",
           justifyContent: "space-between",
+          marginBottom: "20px",
         }}
       >
         {isEditActive ? (
@@ -393,7 +466,7 @@ const SportCenter = ({
               updateProfile();
             }}
           >
-            Save
+            Save Changes
           </Button>
         ) : (
           <Button
@@ -401,7 +474,7 @@ const SportCenter = ({
             color="primary"
             onClick={() => setIsEditActive(true)}
           >
-            Edit
+            Edit Profile
           </Button>
         )}
         {!isComplete && (

@@ -14,6 +14,8 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SportsHandballIcon from "@mui/icons-material/SportsHandball";
 import EventSeatRoundedIcon from "@mui/icons-material/EventSeatRounded";
 
+import EventsFromSc from "./components/EventsFromSc";
+import OtherEventsFromLocation from "./components/OtherEventsFromLocation";
 import BookATicketModal from "./components/BookATicketModal";
 import SearchBox from "../../components/SearchBox";
 
@@ -21,6 +23,8 @@ import { bookATicket } from "../../redux/actions/tickets";
 import { getAllEventTickets } from "../../redux/actions/tickets";
 import { getAllSports } from "../../redux/actions/sports";
 import { getAllLocations } from "../../redux/actions/locations";
+import { getAllSportCenters } from "../../redux/actions/sportCenters";
+import { getAllUsers } from "../../redux/actions/users";
 
 const Event = () => {
   const dispatch = useDispatch();
@@ -38,6 +42,8 @@ const Event = () => {
     dispatch(getAllEventTickets(eventId));
     dispatch(getAllSports());
     dispatch(getAllLocations());
+    dispatch(getAllSportCenters());
+    dispatch(getAllUsers());
   }, []);
 
   useEffect(() => {
@@ -78,7 +84,9 @@ const Event = () => {
         section,
         seats,
       })
-    );
+    ).then(() => {
+      alert("You have successfully booked a ticket for this event");
+    });
     dispatch(getAllEventTickets(eventId));
   };
 
@@ -153,43 +161,57 @@ const Event = () => {
   };
 
   return (
-    <StyledEventPage>
-      <SearchBox />
-      <div style={{ width: "100%" }}>
-        <StyledTitleContainer>
-          {title} {renderBookATicket()}
-        </StyledTitleContainer>
-        <hr />
-        <br />
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div>
-            <StyledIconContainer>
-              <StyledLocationIcon fontSize="large" /> {location}
-            </StyledIconContainer>
-            <StyledIconContainer>
-              <StadiumIcon fontSize="large" /> {scName}
-            </StyledIconContainer>
-            <StyledIconContainer>
-              <EventSeatRoundedIcon fontSize="large" /> {capacity}
-            </StyledIconContainer>
-            <StyledIconContainer>
-              <EventIcon fontSize="large" /> {format(new Date(date), "PPP")}
-            </StyledIconContainer>
-            <StyledIconContainer>
-              <AccessTimeIcon fontSize="large" /> {startTime} - {endTime}
-            </StyledIconContainer>
-            <StyledIconContainer>
-              <SportsHandballIcon fontSize="large" /> {sport}
-            </StyledIconContainer>
+    <div>
+      <StyledEventPage>
+        <SearchBox />
+        <div style={{ width: "100%" }}>
+          <StyledTitleContainer>
+            {title} {renderBookATicket()}
+          </StyledTitleContainer>
+          <hr />
+          <br />
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div>
+              <StyledIconContainer>
+                <StyledLocationIcon fontSize="large" /> {location}
+              </StyledIconContainer>
+              <StyledIconContainer>
+                <StadiumIcon fontSize="large" /> {scName}
+              </StyledIconContainer>
+              <StyledIconContainer>
+                <EventSeatRoundedIcon fontSize="large" /> {capacity}
+              </StyledIconContainer>
+              <StyledIconContainer>
+                <EventIcon fontSize="large" /> {format(new Date(date), "PPP")}
+              </StyledIconContainer>
+              <StyledIconContainer>
+                <AccessTimeIcon fontSize="large" /> {startTime} - {endTime}
+              </StyledIconContainer>
+              <StyledIconContainer>
+                <SportsHandballIcon fontSize="large" /> {sport}
+              </StyledIconContainer>
+            </div>
+            <div>
+              <StyledImg src={sportCenter.profilePhoto} />
+            </div>
           </div>
-          <div>
-            <StyledImg src={sportCenter.profilePhoto} />
-          </div>
+          <br />
+          <StyledDescription>{description}</StyledDescription>
         </div>
-        <br />
-        <StyledDescription>{description}</StyledDescription>
+      </StyledEventPage>
+      <div>
+        {sportCenter && (
+          <EventsFromSc sportCenterId={sportCenter._id} eventId={eventId} />
+        )}
+        {sportCenter && (
+          <OtherEventsFromLocation
+            sportCenterId={sportCenter._id}
+            locationId={event.locationId}
+            location={location}
+          />
+        )}
       </div>
-    </StyledEventPage>
+    </div>
   );
 };
 

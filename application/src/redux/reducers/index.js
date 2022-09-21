@@ -8,6 +8,7 @@ import events from "./events";
 import tickets from "./tickets";
 import search from "./search";
 import users from "./users";
+import sportCenters from "./sportCenters";
 
 export default combineReducers({
     auth,
@@ -17,5 +18,6 @@ export default combineReducers({
     events,
     tickets,
     search,
-    users
+    users,
+    sportCenters
 });

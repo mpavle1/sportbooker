@@ -96,7 +96,7 @@ const StyledEventInProgress = styled.div`
 `;
 
 const StyledDescription = styled.div`
-  width: 350px;
+  width: 500px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

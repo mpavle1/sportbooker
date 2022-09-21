@@ -1,41 +1,50 @@
 import React from "react";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 import { format } from "date-fns";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import moment from "moment";
+// import moment from "moment";
+// import { toggleActivated } from "../../../../../redux/actions/events";
 
-import { toggleActivated } from "../../../../../redux/actions/events";
-
-const EventItem = ({ event, toggleActivated }) => {
+const EventItem = ({ event }) => {
   const { title, description, startTime, endTime, date, active } = event;
   const history = useHistory();
 
-  const renderToggleButton = () => {
-    if (moment(date).isBefore(new Date())) {
-      return;
-    }
-    if (active) {
-      return (
-        <StyledButton
-          onClick={() => toggleActivated(event._id, false)}
-          variant="outlined"
-          active={!active}
-        >
-          Deacivate
-        </StyledButton>
-      );
-    }
-    return (
-      <StyledButton
-        onClick={() => toggleActivated(event._id, true)}
-        variant="contained"
-        active={!active}
-      >
-        Activate
-      </StyledButton>
-    );
-  };
+  // const renderActions = () => {
+  //   if (moment(date).isBefore(new Date())) {
+  //     return;
+  //   }
+  //   return (
+  //     <div
+  //       style={{
+  //         display: "flex",
+  //         justifyContent: "flex-end",
+  //         gap: "10px",
+  //       }}
+  //     >
+  //       <Tooltip title="Edit Event">
+  //         <EditIcon onClick={handleEventEdit} />
+  //       </Tooltip>
+  //       {active ? (
+  //         <Tooltip title="Hide event">
+  //           <VisibilityOffIcon
+  //             onClick={() => {
+  //               toggleActivated(event._id, true);
+  //             }}
+  //           />
+  //         </Tooltip>
+  //       ) : (
+  //         <Tooltip title="Make event visible">
+  //           <VisibilityIcon
+  //             onClick={() => {
+  //               toggleActivated(event._id, false);
+  //             }}
+  //           />
+  //         </Tooltip>
+  //       )}
+  //     </div>
+  //   );
+  // };
 
   return (
     <StyledEventItem
@@ -50,14 +59,12 @@ const EventItem = ({ event, toggleActivated }) => {
         </span>
       </StyledHeader>
       <div>{description}</div>
-      {renderToggleButton()}
+      {/* {renderActions()} */}
     </StyledEventItem>
   );
 };
 
-export default connect(() => ({}), {
-  toggleActivated,
-})(EventItem);
+export default EventItem;
 
 const StyledEventItem = styled.div`
   border: 1px solid #ccc;

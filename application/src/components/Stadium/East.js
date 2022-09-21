@@ -7,24 +7,24 @@ const East = ({ stand: { sections, active }, handleOpenModal }) => {
     <StyledEast>
       <StyledGridColumn>
         <StyledButton onClick={() => handleOpenModal("E", "A")}>
-          <div>A</div> #r:{sections.A.row} #c:{sections.A.column}
+          <div>A</div> r:{sections.A.row} c:{sections.A.column}
         </StyledButton>
         <StyledButton onClick={() => handleOpenModal("E", "B")}>
-          <div>B</div> #r:{sections.B.row} #c:{sections.B.column}
+          <div>B</div> r:{sections.B.row} c:{sections.B.column}
         </StyledButton>
         <StyledButton onClick={() => handleOpenModal("E", "C")}>
-          <div>C</div> #r:{sections.C.row} #c:{sections.C.column}
+          <div>C</div> r:{sections.C.row} c:{sections.C.column}
         </StyledButton>
       </StyledGridColumn>
       <StyledGridColumn>
         <StyledButton onClick={() => handleOpenModal("E", "D")}>
-          <div>D</div> #r:{sections.D.row} #c:{sections.D.column}
+          <div>D</div> r:{sections.D.row} c:{sections.D.column}
         </StyledButton>
         <StyledButton onClick={() => handleOpenModal("E", "E")}>
-          <div>E</div> #r:{sections.E.row} #c:{sections.E.column}
+          <div>E</div> r:{sections.E.row} c:{sections.E.column}
         </StyledButton>
         <StyledButton onClick={() => handleOpenModal("E", "F")}>
-          <div>F</div> #r:{sections.F.row} #c:{sections.F.column}
+          <div>F</div> r:{sections.F.row} c:{sections.F.column}
         </StyledButton>
       </StyledGridColumn>
     </StyledEast>

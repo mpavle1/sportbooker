@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const ObjectId = require('mongodb').ObjectId;
 
 const Event = require("../../models/Event");
 
@@ -21,6 +22,33 @@ router.get("/sportCenter/:sportCenterId", (req, res) => {
     .catch((err) => res.status(400).json(err));
 });
 
+router.get("/otherEventsFromSc/:sportCenterId/:eventId/:limit", (req, res) => {
+  // console.log(req.params.eventId, ObjectId(req.params.eventId));
+  Event.find({
+    sportCenterId: req.params.sportCenterId,
+    _id: { $nin: [ObjectId(req.params.eventId)] },
+    date: {
+      $gte: new Date().toISOString()
+    }
+  })
+    .limit(parseInt(req.params.limit, 10))
+    .then((events) => res.status(200).json(events))
+    .catch((err) => res.status(400).json(err));
+});
+
+router.get("/otherEventsForLocation/:sportCenterId/:locationId/:limit", (req, res) => {
+  Event.find({
+    locationId: req.params.locationId,
+    sportCenterId: { $nin: [ObjectId(req.params.sportCenterId)] },
+    date: {
+      $gte: new Date().toISOString()
+    }
+  })
+    .limit(parseInt(req.params.limit, 10))
+    .then((events) => res.status(200).json(events))
+    .catch((err) => res.status(400).json(err));
+});
+
 router.post("/", (req, res) => {
   const event = req.body.event;
   const newEvent = new Event(event);
@@ -30,7 +58,7 @@ router.post("/", (req, res) => {
     .catch((error) => res.status(400).send(error));
 });
 
-router.patch("/", (req, res) => {
+router.patch("/toggleActivated", (req, res) => {
   Event.findOneAndUpdate(
     {
       _id: req.body.eventId,
@@ -38,6 +66,26 @@ router.patch("/", (req, res) => {
     {
       active: req.body.newState.active,
       setByAdmin: req.body.newState.setByAdmin,
+    },
+    {
+      new: true,
+    }
+  )
+    .then((u) => {
+      res.status(200).send(u);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+router.patch("/", (req, res) => {
+  Event.findOneAndUpdate(
+    {
+      _id: req.body.event._id,
+    },
+    {
+      $set: req.body.event
     },
     {
       new: true,

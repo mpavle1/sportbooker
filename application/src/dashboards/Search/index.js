@@ -83,7 +83,8 @@ const Search = () => {
           renderTitle()
         ) : (
           <Fragment>
-            No Search results for selected parametes, please change your seatch options
+            No Search results for selected parametes, please change your seatch
+            options
             {/* <Button
               variant="contained"
               color="primary"
@@ -120,6 +121,10 @@ const StyledResults = styled.div`
   width: calc(100% - 300px);
   display: flex;
   justify-content: center;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 `;
 
 const StyledTitle = styled.div`

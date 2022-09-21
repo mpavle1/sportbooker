@@ -6,12 +6,18 @@ import AllEventScreen from "./AllEventScreen";
 import SingleEventScreen from "./SingleEventScreen";
 
 import { getAllEventsForSportCenter } from "../../../../redux/actions/events";
+import { getAllSports } from "../../../../redux/actions/sports";
+import { getAllLocations } from "../../../../redux/actions/locations";
+import { getAllSportCenters } from "../../../../redux/actions/sportCenters";
 
 const Events = () => {
   const dispatch = useDispatch();
   const sportCenter = useSelector((state) => state.auth.sportCenter);
 
   useEffect(() => {
+    dispatch(getAllSports());
+    dispatch(getAllLocations());
+    dispatch(getAllSportCenters());
     dispatch(getAllEventsForSportCenter(sportCenter._id));
   }, []);
 

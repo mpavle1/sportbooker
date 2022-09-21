@@ -5,9 +5,11 @@ import { Button } from "@material-ui/core";
 import moment from "moment";
 import TextField from "@mui/material/TextField";
 import styled from "styled-components";
+import EditIcon from "@mui/icons-material/Edit";
 
 import ViewStadium from "./ViewStadium";
 import TicketItem from "./TicketItem";
+import EditModal from "../../../../../components/EventModal";
 
 import { getAllEventTickets } from "../../../../../redux/actions/tickets";
 import { getAllUsers } from "../../../../../redux/actions/users";
@@ -24,6 +26,7 @@ const SingleEventScreen = () => {
   const users = useSelector((state) => state.users.users);
   const isInitializedUsers = useSelector((state) => state.users.isInitialized);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [filteredTicketId, setFilteredTicketId] = useState("");
 
   useEffect(() => {
@@ -41,7 +44,17 @@ const SingleEventScreen = () => {
 
   return (
     <div>
-      <h2>Information for event:</h2>
+      <StyledTitle>
+        <div>Information for event:</div>
+        <Button
+          type="button"
+          onClick={() => setIsEditModalVisible(true)}
+          variant="contained"
+          color="primary"
+        >
+          Edit event
+        </Button>
+      </StyledTitle>
       <h3>{event.title}</h3>
       <div>{moment(event.date).format("MMMM Do YYYY")}</div>
       <div>
@@ -68,6 +81,16 @@ const SingleEventScreen = () => {
       >
         Open stadium view
       </Button>
+      {isEditModalVisible && (
+        <EditModal
+          event={event}
+          onClose={() => setIsEditModalVisible(false)}
+          onChange={() => {
+            alert("Event has been updated");
+            setIsEditModalVisible(false);
+          }}
+        />
+      )}
       <h2>Tickets for this event:</h2>
       <StyledTextInputContainer>
         <TextField
@@ -97,4 +120,10 @@ export default SingleEventScreen;
 const StyledTextInputContainer = styled.div`
   margin-bottom: 10px;
   width: 450px;
+`;
+
+const StyledTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
