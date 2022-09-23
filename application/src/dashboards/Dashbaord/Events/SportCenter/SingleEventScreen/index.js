@@ -45,27 +45,61 @@ const SingleEventScreen = () => {
   return (
     <div>
       <StyledTitle>
-        <div>Information for event:</div>
-        <Button
-          type="button"
-          onClick={() => setIsEditModalVisible(true)}
-          variant="contained"
-          color="primary"
+        <div
+          style={{
+            fontSize: "20px",
+            fontWeight: "bold",
+          }}
         >
-          Edit event
-        </Button>
+          Information for event:
+        </div>
       </StyledTitle>
-      <h3>{event.title}</h3>
-      <div>{moment(event.date).format("MMMM Do YYYY")}</div>
-      <div>
-        {event.startTime} - {event.endTime}
-      </div>
-      <div>{sports.find((sport) => sport._id === event.sportId)?.name}</div>
-      <br />
-      <div>{event.description}</div>
-      <br />
-      <div>
-        Booked tickets: {tickets.length} / {sportCenter.capacity}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px",
+            width: "500px",
+            marginTop: "30px",
+          }}
+        >
+          <div>{event.title}</div>
+          <div>
+            {event.startTime} - {event.endTime}
+          </div>
+          <div>{sports.find((sport) => sport._id === event.sportId)?.name}</div>
+          <div>{event.description}</div>
+          <div>
+            Booked tickets: {tickets.length} / {sportCenter.capacity}
+          </div>
+        </div>
+        <div>
+          <Button
+            type="button"
+            onClick={() => setIsEditModalVisible(true)}
+            variant="contained"
+            color="primary"
+          >
+            Edit event
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            type="button"
+            onClick={() => setIsModalVisible(true)}
+            style={{
+              marginLeft: "50px",
+            }}
+          >
+            Open stadium view
+          </Button>
+        </div>
       </div>
       <br />
       <ViewStadium
@@ -73,14 +107,6 @@ const SingleEventScreen = () => {
         handleCloseModal={setIsModalVisible}
         stadium={sportCenter.stadium}
       />
-      <Button
-        variant="contained"
-        color="primary"
-        type="button"
-        onClick={() => setIsModalVisible(true)}
-      >
-        Open stadium view
-      </Button>
       {isEditModalVisible && (
         <EditModal
           event={event}

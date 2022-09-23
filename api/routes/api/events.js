@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const ObjectId = require('mongodb').ObjectId;
+const ObjectId = require("mongodb").ObjectId;
 
 const Event = require("../../models/Event");
+const Ticket = require("../../models/Ticket");
 
 router.get("/", (req, res) => {
   Event.find({})
@@ -28,23 +29,65 @@ router.get("/otherEventsFromSc/:sportCenterId/:eventId/:limit", (req, res) => {
     sportCenterId: req.params.sportCenterId,
     _id: { $nin: [ObjectId(req.params.eventId)] },
     date: {
-      $gte: new Date().toISOString()
-    }
+      $gte: new Date().toISOString(),
+    },
   })
     .limit(parseInt(req.params.limit, 10))
     .then((events) => res.status(200).json(events))
     .catch((err) => res.status(400).json(err));
 });
 
-router.get("/otherEventsForLocation/:sportCenterId/:locationId/:limit", (req, res) => {
+router.get(
+  "/otherEventsForLocation/:sportCenterId/:locationId/:limit",
+  (req, res) => {
+    Event.find({
+      locationId: req.params.locationId,
+      sportCenterId: { $nin: [ObjectId(req.params.sportCenterId)] },
+      date: {
+        $gte: new Date().toISOString(),
+      },
+    })
+      .limit(parseInt(req.params.limit, 10))
+      .then((events) => res.status(200).json(events))
+      .catch((err) => res.status(400).json(err));
+  }
+);
+
+router.get("/sportCenterUpcomingEvents/:sportCenterId/:limit", (req, res) => {
   Event.find({
-    locationId: req.params.locationId,
-    sportCenterId: { $nin: [ObjectId(req.params.sportCenterId)] },
+    sportCenterId: req.params.sportCenterId,
     date: {
-      $gte: new Date().toISOString()
-    }
+      $gte: new Date().toISOString(),
+    },
   })
+    .sort({ date: 1, startTime: 1 })
     .limit(parseInt(req.params.limit, 10))
+    .then((events) => res.status(200).json(events))
+    .catch((err) => res.status(400).json(err));
+});
+
+router.get("/upcomingEventsForUser/:userId/:limit", (req, res) => {
+  Ticket.find({
+    userId: req.params.userId,
+  })
+    .then((tickets) => {
+      const ticketIds = new Set([...tickets.map((ticket) => ticket.eventId)]);
+      return Event.find({ _id: { $in: [...ticketIds] } }).sort({
+        date: 1,
+        startTime: 1,
+      });
+    })
+    .then((events) => res.status(200).json(events))
+    .catch((err) => res.status(400).json(err));
+});
+
+router.get("/upcomingPopularEvents/:limit", (req, res) => {
+  Ticket.aggregate([{ $group: { _id: "$eventId", count: { $sum: 1 } } }])
+    .sort("-count")
+    .then((events) => {
+      const evnts = new Set([...events.map((event) => event._id)]);
+      return Event.find({ _id: { $in: [...evnts] } });
+    })
     .then((events) => res.status(200).json(events))
     .catch((err) => res.status(400).json(err));
 });
@@ -85,7 +128,7 @@ router.patch("/", (req, res) => {
       _id: req.body.event._id,
     },
     {
-      $set: req.body.event
+      $set: req.body.event,
     },
     {
       new: true,
@@ -111,6 +154,5 @@ router.post("/delete", (req, res) => {
       res.status(400).json(err);
     });
 });
-
 
 module.exports = router;

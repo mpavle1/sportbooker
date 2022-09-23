@@ -74,6 +74,7 @@ const StyledEventItem = styled.div`
   margin-bottom: 10px;
   padding: 15px;
   position: relative;
+  cursor: pointer;
 `;
 
 const StyledHeader = styled.div`

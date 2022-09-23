@@ -42,13 +42,19 @@ const EventsFromSc = ({ sportCenterId, eventId }) => {
       </div>
       <div
         style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: "30px",
+          overflow: "auto",
+          whiteSpace: "nowrap",
         }}
       >
         {events.map((event) => (
-          <EventCard event={event} />
+          <div
+            style={{
+              display: "inline-block",
+              marginRight: "20px",
+            }}
+          >
+            <EventCard event={event} />
+          </div>
         ))}
       </div>
     </div>

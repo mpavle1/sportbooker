@@ -19,7 +19,15 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 // import { DateRangePicker } from '@mui/lab';
 
+import YourUpcomingEvents from './YourUpcomingEvents';
+import SportCenterUpcomingEvents from './SportCenterUpcomingEvents';
+import UpcomingEvents from './UpcomingEvents';
+
 import { setSearchParameters } from "../../redux/actions/search";
+import { getAllSports } from "../../redux/actions/sports";
+import { getAllLocations } from "../../redux/actions/locations";
+import { getAllUsers } from "../../redux/actions/users";
+import { getAllSportCenters } from "../../redux/actions/sportCenters";
 
 const PER_PAGE = 50;
 
@@ -74,6 +82,15 @@ class Home extends React.Component {
 
   _cache = {};
 
+  componentDidMount() {
+    const { getAllSports, getAllLocations, getAllUsers, getAllSportCenters } =
+      this.props;
+    getAllSports();
+    getAllLocations();
+    getAllUsers();
+    getAllSportCenters();
+  }
+
   handlePlaceHolder = () => {
     switch (this.state.type) {
       case "location":
@@ -90,6 +107,7 @@ class Home extends React.Component {
   };
 
   render() {
+    const { isAuthenticated, user, sportCenter } = this.props;
     return (
       <div style={{ position: "relative" }}>
         <StyledSearchBarContainer>
@@ -194,8 +212,6 @@ class Home extends React.Component {
                 });
               }
 
-              
-
               this.props.history.push({
                 pathname: `/search/${this.state.type}/${this.state.selectedOption[0].id}`,
               });
@@ -207,6 +223,10 @@ class Home extends React.Component {
         <StyledBackgroundWrapper>
           <StyledBackground></StyledBackground>
         </StyledBackgroundWrapper>
+        {user?.type === 'user' && <YourUpcomingEvents user={user} />}
+        {user?.type === 'sportCenter' && <SportCenterUpcomingEvents sportCenterId={sportCenter._id} />}
+        {user?.type !== 'sportCenter' && <UpcomingEvents />}
+        <br />
       </div>
     );
   }
@@ -255,8 +275,16 @@ class Home extends React.Component {
   };
 }
 
-export default connect(() => ({}), {
+export default connect((state) => ({
+  user: state.auth.user,
+  isAuthenticated: state.auth.isAuthenticated,
+  sportCenter: state.auth.sportCenter
+}), {
   setSearchParameters,
+  getAllSports,
+  getAllLocations,
+  getAllUsers,
+  getAllSportCenters,
 })(withRouter(Home));
 
 const StyledSearchBarContainer = styled.div`

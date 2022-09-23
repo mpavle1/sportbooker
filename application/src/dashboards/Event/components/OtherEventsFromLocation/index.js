@@ -29,6 +29,22 @@ const EventsFromSc = ({ sportCenterId, locationId, location }) => {
     return null;
   }
 
+  {
+    /* <div
+        style={{
+          overflow: "auto",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {events.map((event) => (
+          <div
+            style={{
+              display: "inline-block",
+              marginRight: "20px",
+            }}
+          ></div> */
+  }
+
   return (
     <div style={{ paddingBottom: "20px" }}>
       <div
@@ -42,13 +58,19 @@ const EventsFromSc = ({ sportCenterId, locationId, location }) => {
       </div>
       <div
         style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: "30px",
+          overflow: "auto",
+          whiteSpace: "nowrap",
         }}
       >
         {events.map((event) => (
-          <EventCard event={event} />
+          <div
+            style={{
+              display: "inline-block",
+              marginRight: "20px",
+            }}
+          >
+            <EventCard event={event} />
+          </div>
         ))}
       </div>
     </div>

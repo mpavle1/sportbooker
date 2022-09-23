@@ -13,10 +13,15 @@ import {
   cancelATicket,
 } from "../../../../redux/actions/tickets";
 import { getAllEvents } from "../../../../redux/actions/events";
+import { getAllUsers } from "../../../../redux/actions/users";
+import { getAllSportCenters } from "../../../../redux/actions/sportCenters";
 
 const Admin = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const sportCenters = useSelector((state) => state.sportCenters);
+  const users = useSelector((state) => state.users.users);
 
   const tickets = useSelector((state) => state.tickets.all);
   const events = useSelector((state) => state.events.all);
@@ -43,12 +48,36 @@ const Admin = () => {
       },
     },
     {
-      Header: "SportCenterId",
+      Header: "SportCenter",
       accessor: "sportCenterId",
+      Cell: ({ cell }) => {
+        const { value } = cell;
+        const sc =
+          sportCenters.length > 0
+            ? sportCenters.find((sc) => sc._id == value)
+            : null;
+        const tooltip = sc?._id ?? "";
+        const content = users.find((user) => user._id === sc.userId)?.name;
+        return (
+          <Tooltip title={tooltip}>
+            <div>{content}</div>
+          </Tooltip>
+        );
+      },
     },
     {
       Header: "User",
       accessor: "userId",
+      Cell: ({ cell }) => {
+        const { value } = cell;
+        const user = users.find((user) => user._id === value);
+        const content = `${user.name} ${user.lastName}`;
+        return (
+          <Tooltip title={value}>
+            <div>{content}</div>
+          </Tooltip>
+        );
+      },
     },
     {
       Header: "Seat (row/column)",
@@ -87,9 +116,11 @@ const Admin = () => {
               <DeleteIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="View Ticket">
+          <Tooltip title="View Event">
             <IconButton
-              onClick={() => alert('add view ticket')}
+              onClick={() =>
+                history.push(`/event/${cell.row.original.eventId}`)
+              }
             >
               <EventIcon />
             </IconButton>
@@ -100,11 +131,18 @@ const Admin = () => {
   ];
 
   useEffect(() => {
+    dispatch(getAllUsers());
     dispatch(getAllTickets());
     dispatch(getAllEvents());
+    dispatch(getAllSportCenters());
   }, []);
 
-  if (tickets.lenght === 0) {
+  if (
+    tickets.lenght === 0 ||
+    users.length === 0 ||
+    sportCenters.length === 0 ||
+    events.length === 0
+  ) {
     return <div>No tickets to show</div>;
   }
 

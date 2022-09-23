@@ -31,6 +31,7 @@ const Event = () => {
   const user = useSelector((state) => state.auth.user);
   const locations = useSelector((state) => state.locations);
   const sports = useSelector((state) => state.sports);
+  const tickets = useSelector((state) => state.tickets.event);
 
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
@@ -45,6 +46,25 @@ const Event = () => {
     dispatch(getAllSportCenters());
     dispatch(getAllUsers());
   }, []);
+
+  const calculateCapacity = () => {
+    let sum = 0;
+    Object.values(sportCenter.stadium).forEach((stand) => {
+      let tempSum = 0;
+
+      Object.values(stand.sections).forEach((section) => {
+        tempSum += +section.active ? section.row * section.column : 0;
+      });
+
+      sum += tempSum;
+    });
+
+    return sum;
+  };
+
+  const calculateRemainingSeats = () => {
+    return calculateCapacity() - tickets.length;
+  };
 
   useEffect(() => {
     axios.get(`api/events/${eventId}`).then((response) => {
@@ -173,7 +193,7 @@ const Event = () => {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div>
               <StyledIconContainer>
-                <StyledLocationIcon fontSize="large" /> {location}
+                <PlaceIcon color="error" fontSize="large" /> {location}
               </StyledIconContainer>
               <StyledIconContainer>
                 <StadiumIcon fontSize="large" /> {scName}
@@ -182,13 +202,16 @@ const Event = () => {
                 <EventSeatRoundedIcon fontSize="large" /> {capacity}
               </StyledIconContainer>
               <StyledIconContainer>
-                <EventIcon fontSize="large" /> {format(new Date(date), "PPP")}
+                <EventIcon color="primary" fontSize="large" /> {format(new Date(date), "PPP")}
               </StyledIconContainer>
               <StyledIconContainer>
                 <AccessTimeIcon fontSize="large" /> {startTime} - {endTime}
               </StyledIconContainer>
               <StyledIconContainer>
-                <SportsHandballIcon fontSize="large" /> {sport}
+                <SportsHandballIcon fontSize="large" color="success" /> {sport}
+              </StyledIconContainer>
+              <StyledIconContainer>
+                {calculateRemainingSeats()} seats remaining
               </StyledIconContainer>
             </div>
             <div>
@@ -197,29 +220,26 @@ const Event = () => {
           </div>
           <br />
           <StyledDescription>{description}</StyledDescription>
+          <br />
+          <div>
+            {sportCenter && (
+              <EventsFromSc sportCenterId={sportCenter._id} eventId={eventId} />
+            )}
+            {sportCenter && (
+              <OtherEventsFromLocation
+                sportCenterId={sportCenter._id}
+                locationId={event.locationId}
+                location={location}
+              />
+            )}
+          </div>
         </div>
       </StyledEventPage>
-      <div>
-        {sportCenter && (
-          <EventsFromSc sportCenterId={sportCenter._id} eventId={eventId} />
-        )}
-        {sportCenter && (
-          <OtherEventsFromLocation
-            sportCenterId={sportCenter._id}
-            locationId={event.locationId}
-            location={location}
-          />
-        )}
-      </div>
     </div>
   );
 };
 
 export default Event;
-
-const StyledLocationIcon = styled(PlaceIcon)`
-  color: #3f51b5;
-`;
 
 const StyledIconContainer = styled.div`
   display: flex;
@@ -240,6 +260,7 @@ const StyledTitleContainer = styled.h1`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 0;
 `;
 
 const StyledDescription = styled.div`

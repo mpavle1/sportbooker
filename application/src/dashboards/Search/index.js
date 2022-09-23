@@ -3,11 +3,11 @@ import { useDispatch } from "react-redux";
 import { useParams, Redirect } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
-import { Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 
 import CardItem from "./CardItem";
+import Filters from "./Filters";
 import SearchBox from "../../components/SearchBox";
 
 import { setSearchParameters } from "../../redux/actions/search";
@@ -15,11 +15,12 @@ import { getAllSports } from "../../redux/actions/sports";
 import { getAllLocations } from "../../redux/actions/locations";
 
 const Search = () => {
-  const history = useHistory();
   const dispatch = useDispatch();
 
   const [searchResults, setSearchResults] = useState([]);
   const [searchResultObject, setSearchResultObject] = useState(null);
+  const [filterCheckedOptions, setFilterCheckedOptions] = useState([]);
+  const [filterType, setFilterType] = useState("sportId");
   const { searchType, searchId } = useParams();
 
   useEffect(() => {
@@ -42,6 +43,22 @@ const Search = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const path = window.location.pathname.split("/")[2];
+    switch (path) {
+      case "sportCenter":
+      case "location":
+        setFilterType("sportId");
+        break;
+      case "sportCenter":
+      case "sport":
+        setFilterType("locationId");
+        break;
+      default:
+        break;
+    }
+  }, []);
+
   const renderTitle = () => {
     switch (searchType) {
       case "location":
@@ -59,6 +76,8 @@ const Search = () => {
     return <Redirect to={`/event/${searchId}`} />;
   }
 
+  console.log(filterCheckedOptions, filterType);
+
   const getSearchResults = () => {
     return searchResults.filter((event) => {
       const today = moment().format(`YYYY-MM-DD HH:mm`);
@@ -68,6 +87,13 @@ const Search = () => {
       const eventDateTime = moment(`${eventDate} ${event.endTime}`).format(
         `YYYY-MM-DD HH:mm`
       );
+
+      if (filterCheckedOptions.length !== 0) {
+        return (
+          moment(today).isBefore(eventDateTime) &&
+          filterCheckedOptions.includes(event[filterType])
+        );
+      }
 
       return moment(today).isBefore(eventDateTime);
     });
@@ -85,21 +111,18 @@ const Search = () => {
           <Fragment>
             No Search results for selected parametes, please change your seatch
             options
-            {/* <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                history.push("/");
-              }}
-            >
-              Back to search
-            </Button> */}
           </Fragment>
         )}
       </StyledTitle>
       <StyledContent>
         <div>
           <SearchBox />
+          <br />
+          <Filters
+            type={filterType}
+            filterCheckedOptions={filterCheckedOptions}
+            setFilterCheckedOptions={setFilterCheckedOptions}
+          />
         </div>
         <StyledResults>
           {getSearchResults().map((searchResult) => (
@@ -107,6 +130,7 @@ const Search = () => {
           ))}
         </StyledResults>
       </StyledContent>
+      <br />
     </Fragment>
   );
 };

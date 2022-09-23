@@ -145,3 +145,21 @@ export const getOtherEventsForLocation = (sportCenterId, locationId, limit) => {
     `api/events/otherEventsForLocation/${sportCenterId}/${locationId}/${limit}`
   );
 };
+
+export const getUpcomingEventsForUser = (userId, limit) => {
+  return axios.get(
+    `api/events/upcomingEventsForUser/${userId}/${limit}`
+  );
+};
+
+export const getUpcomingPopularEvents = (limit) => {
+  return axios.get(
+    `api/events/upcomingPopularEvents/${limit}`
+  );
+};
+
+export const getSportCenterUpcomingEvents = (sportCenterID, limit) => {
+  return axios.get(
+    `api/events/sportCenterUpcomingEvents/${sportCenterID}/${limit}`
+  );
+};

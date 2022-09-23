@@ -13,8 +13,6 @@ const Events = () => {
   const dispatch = useDispatch();
   const userType = useSelector((state) => state.auth.user.type);
 
-  
-
   useEffect(() => {
     dispatch(getAllSports());
     dispatch(getAllLocations());
