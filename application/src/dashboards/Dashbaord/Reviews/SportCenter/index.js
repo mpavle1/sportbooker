@@ -48,10 +48,20 @@ const SportCenter = () => {
           Review Statisctics
         </div>
         <StyledScore>
-          <Alert severity="success">Number of reviews: {reviews.length}</Alert>
-          <Alert severity="success">
-            Average Score: {calculateRating()} / 5
-          </Alert>
+          {reviews.length === 0 ? (
+            <div>
+              Your statistics will be visible once you get atleast one review
+            </div>
+          ) : (
+            <Fragment>
+              <Alert severity="success">
+                Number of reviews: {reviews.length}
+              </Alert>
+              <Alert severity="success">
+                Average Score: {calculateRating()} / 5
+              </Alert>
+            </Fragment>
+          )}
         </StyledScore>
       </div>
     );

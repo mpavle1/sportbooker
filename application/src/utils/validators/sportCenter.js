@@ -1,5 +1,8 @@
 export const isSportCenterComplete = (sportCenter) => {
-    if (!sportCenter.profilePhoto) {
+    if (!sportCenter?.profilePhoto) {
+        return false;
+    }
+    if (!sportCenter?.coordinates?.lng || !sportCenter?.coordinates?.lat) {
         return false;
     }
     if (sportCenter.capacity === '' || sportCenter.capacity === 0) {

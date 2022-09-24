@@ -3,24 +3,21 @@ import { Marker } from "@react-google-maps/api";
 
 import Map from "../../../../components/Map";
 
-const MyMap = ({ scPosition, newPostion, onChangePostion }) => {
+const MyMap = ({ coordinates, changeCoordinates, location }) => {
   const center = useMemo(() => {
-    if (scPosition?.lat && scPosition?.lng) {
-      return scPosition;
+    if (coordinates?.lat && coordinates?.lng) {
+      return coordinates;
     }
-    if (newPostion) {
-      return newPostion;
+    if (location?.coordinates?.lat && location?.coordinates?.lng) {
+      return location.coordinates;
     }
 
     return { lat: 44.8125, lng: 20.4612 };
-  }, [newPostion, scPosition]);
+  }, [coordinates]);
 
   const renderMarker = () => {
-    if (scPosition?.lat && scPosition?.lng) {
-      return <Marker position={scPosition} />;
-    }
-    if (newPostion) {
-      return <Marker position={newPostion} />;
+    if (coordinates?.lat && coordinates?.lng) {
+      return <Marker position={coordinates} />;
     }
     return null;
   };
@@ -37,7 +34,7 @@ const MyMap = ({ scPosition, newPostion, onChangePostion }) => {
       </div>
       <Map
         onClick={(ev) => {
-          onChangePostion({
+          changeCoordinates({
             lat: ev.latLng.lat(),
             lng: ev.latLng.lng(),
           });

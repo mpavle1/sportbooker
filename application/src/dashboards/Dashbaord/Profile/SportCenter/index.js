@@ -1,7 +1,6 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import {
-  Chip,
   FormControlLabel,
   Checkbox,
   FormGroup,
@@ -13,6 +12,7 @@ import {
   FormControl,
 } from "@material-ui/core";
 import styled from "styled-components";
+import Alert from "@mui/material/Alert";
 
 import Stadium from "../../../../components/Stadium";
 import MyMap from "./MyMap";
@@ -84,7 +84,7 @@ const SportCenter = ({
   const [isEditActive, setIsEditActive] = useState(false);
   const [name, setName] = useState(user.name);
   const [profilePhotoUrl, setProfilePhotoUrl] = useState(null);
-  const [newCoordinates, setNewCoordinates] = useState(null);
+  const [coordinates, setCoordinates] = useState(sportCenter.coordinates);
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
   const [locationId, setLocationId] = useState(sportCenter.locationId || null);
   const [checkedSportIds, setCheckedSportIds] = useState(
@@ -143,7 +143,7 @@ const SportCenter = ({
         capacity: calculateCapacity(),
         sportIds: checkedSportIds,
         stadium,
-        coordinates: newCoordinates,
+        coordinates,
       },
     });
   };
@@ -248,12 +248,44 @@ const SportCenter = ({
               </FormGroup>
             }
           </StyledInfoFieldContainer>
+          <StyledInfoFiledName
+            style={{
+              width: "100%",
+            }}
+          >
+            Profile photo
+          </StyledInfoFiledName>
+          <StyledProfilePhoto
+            alt="profile photo"
+            src={
+              profilePhotoUrl ||
+              sportCenter.profilePhoto ||
+              "/public/placeholder.png"
+            }
+            height={300}
+            width={500}
+          />
           <div>
-            <MyMap
-              scPosition={sportCenter.coordinates}
-              newPostion={newCoordinates}
-              onChangePostion={setNewCoordinates}
-            />
+            <Button component="label">
+              Upload Profile Image
+              <input
+                type="file"
+                hidden
+                onInput={(event) => {
+                  setProfilePhotoUrl(
+                    URL.createObjectURL(event.target.files[0])
+                  );
+                  updateProfilePhoto(
+                    sportCenter._id,
+                    event.target.files[0]
+                  ).then(() => {
+                    setProfilePhotoUrl(null);
+                  });
+                }}
+                accept="image/jpeg, image/jpg, image/png"
+                multiple={false}
+              />
+            </Button>
           </div>
         </div>
         <div
@@ -270,44 +302,14 @@ const SportCenter = ({
               flexDirection: "column",
             }}
           >
-            <StyledInfoFiledName
-              style={{
-                width: "100%",
-              }}
-            >
-              Profile photo
-            </StyledInfoFiledName>
-            <StyledProfilePhoto
-              alt="profile photo"
-              src={
-                profilePhotoUrl ||
-                sportCenter.profilePhoto ||
-                "/public/placeholder.png"
-              }
-              height={300}
-              width={500}
-            />
             <div>
-              <Button component="label">
-                Upload Profile Image
-                <input
-                  type="file"
-                  hidden
-                  onInput={(event) => {
-                    setProfilePhotoUrl(
-                      URL.createObjectURL(event.target.files[0])
-                    );
-                    updateProfilePhoto(
-                      sportCenter._id,
-                      event.target.files[0]
-                    ).then(() => {
-                      setProfilePhotoUrl(null);
-                    });
-                  }}
-                  accept="image/jpeg, image/jpg, image/png"
-                  multiple={false}
-                />
-              </Button>
+              <MyMap
+                coordinates={coordinates}
+                changeCoordinates={setCoordinates}
+                location={locations?.find(
+                  (loc) => loc._id === sportCenter.locatinId
+                )}
+              />
             </div>
           </div>
           <StyledInfoFieldContainer>
@@ -424,25 +426,10 @@ const SportCenter = ({
               "Sports that are available for viewing in you center are missing, please add them."
             )}
           </div>
-          <div>
-            <MyMap
-              scPosition={sportCenter.coordinates}
-              newPostion={null}
-              onChangePostion={() => {}}
-            />
-          </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
           <div
             style={{
               display: "inline-block",
-              marginBottom: "20px",
+              margin: "20px 0",
             }}
           >
             <StyledInfoFiledName>Profile photo</StyledInfoFiledName>
@@ -455,6 +442,23 @@ const SportCenter = ({
               }
               height={300}
               width={500}
+            />
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div>
+            <MyMap
+              coordinates={coordinates}
+              changeCoordinates={() => {}}
+              location={locations?.find(
+                (loc) => loc._id === sportCenter.locatinId
+              )}
             />
           </div>
           <StyledInfoFieldContainer>
@@ -507,10 +511,10 @@ const SportCenter = ({
           </Button>
         )}
         {!isComplete && (
-          <Chip
-            color="secondary"
-            label="You havent finished you profile yet. Please fill in the missing information if you want to be able to create events."
-          />
+          <Alert severity="error">
+            You havent finished you profile yet. Please fill in the missing
+            information if you want to be able to create events.
+          </Alert>
         )}
       </div>
       {isEditActive ? getEditMode() : getViewMode()}
