@@ -13,7 +13,11 @@ import EventIcon from "@mui/icons-material/Event";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SportsHandballIcon from "@mui/icons-material/SportsHandball";
 import EventSeatRoundedIcon from "@mui/icons-material/EventSeatRounded";
+import StarIcon from "@mui/icons-material/Star";
+import Alert from "@mui/material/Alert";
 
+import SportCenterMap from './components/SportCenterMap';
+import Reviews from "./components/ReviewSection";
 import EventsFromSc from "./components/EventsFromSc";
 import OtherEventsFromLocation from "./components/OtherEventsFromLocation";
 import BookATicketModal from "./components/BookATicketModal";
@@ -25,6 +29,7 @@ import { getAllSports } from "../../redux/actions/sports";
 import { getAllLocations } from "../../redux/actions/locations";
 import { getAllSportCenters } from "../../redux/actions/sportCenters";
 import { getAllUsers } from "../../redux/actions/users";
+import { getAllSportCenterReviews } from "../../redux/actions/reviews";
 
 const Event = () => {
   const dispatch = useDispatch();
@@ -32,6 +37,7 @@ const Event = () => {
   const locations = useSelector((state) => state.locations);
   const sports = useSelector((state) => state.sports);
   const tickets = useSelector((state) => state.tickets.event);
+  const reviews = useSelector((state) => state.reviews.sportCenter);
 
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
@@ -47,6 +53,12 @@ const Event = () => {
     dispatch(getAllUsers());
   }, []);
 
+  useEffect(() => {
+    if (sportCenter) {
+      dispatch(getAllSportCenterReviews(sportCenter._id));
+    }
+  }, [sportCenter]);
+
   const calculateCapacity = () => {
     let sum = 0;
     Object.values(sportCenter.stadium).forEach((stand) => {
@@ -60,6 +72,23 @@ const Event = () => {
     });
 
     return sum;
+  };
+
+  const calculateRating = () => {
+    if (reviews.length === 0) {
+      return null;
+    }
+
+    const sumScore = reviews.reduce(function (acc, obj) {
+      return acc + obj.score;
+    }, 0);
+
+    return (
+      <StyledIconContainer>
+        <StarIcon color="warning" fontSize="large" />{" "}
+        {sumScore / reviews.length} / 5
+      </StyledIconContainer>
+    );
   };
 
   const calculateRemainingSeats = () => {
@@ -135,29 +164,37 @@ const Event = () => {
   const renderBookATicket = () => {
     if (["admin", "sportCenter"].includes(user.type)) {
       if (moment(today).isBetween(startDateTime, endDateTime)) {
-        return <div style={{ color: "green" }}> Event is in progress!</div>;
+        return (
+          <Alert icon={false} severity="success">
+            Event is in progress!
+          </Alert>
+        );
       }
 
       if (moment(today).isAfter(endDateTime)) {
-        return <div style={{ color: "darkred" }}>This event has ended</div>;
+        return <Alert severity="error">This Event has ended</Alert>;
       }
     }
 
     if (!canBookATicket) {
       return (
-        <StyledLoginRequired>
+        <Alert severity="warning" sx={{ textAlign: "center", width: '300px' }}>
           An active account is required to book a ticket. Login or register to
-          preceed.
-        </StyledLoginRequired>
+          proceed.
+        </Alert>
       );
     }
 
     if (moment(today).isBetween(startDateTime, endDateTime)) {
-      return <div style={{ color: "green" }}> Event is in progress!</div>;
+      return (
+        <Alert icon={false} severity="success">
+          Event is in progress!
+        </Alert>
+      );
     }
 
     if (moment(today).isAfter(endDateTime)) {
-      return <div style={{ color: "darkred" }}>This event has ended</div>;
+      return <Alert severity="error">This Event has ended</Alert>;
     }
 
     return (
@@ -180,10 +217,20 @@ const Event = () => {
     );
   };
 
+  const renderMap = () => {
+    if (!sportCenter) {
+      return null;
+    }
+    return <SportCenterMap scCoordinates={sportCenter.coordinates} />;
+  };
+
   return (
     <div>
       <StyledEventPage>
-        <SearchBox />
+        <div>
+          {renderMap()}
+          <SearchBox />
+        </div>
         <div style={{ width: "100%" }}>
           <StyledTitleContainer>
             {title} {renderBookATicket()}
@@ -192,6 +239,7 @@ const Event = () => {
           <br />
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div>
+              {calculateRating()}
               <StyledIconContainer>
                 <PlaceIcon color="error" fontSize="large" /> {location}
               </StyledIconContainer>
@@ -199,19 +247,18 @@ const Event = () => {
                 <StadiumIcon fontSize="large" /> {scName}
               </StyledIconContainer>
               <StyledIconContainer>
-                <EventSeatRoundedIcon fontSize="large" /> {capacity}
+                <EventSeatRoundedIcon fontSize="large" />{" "}
+                {calculateRemainingSeats()} / {capacity} seats remaining
               </StyledIconContainer>
               <StyledIconContainer>
-                <EventIcon color="primary" fontSize="large" /> {format(new Date(date), "PPP")}
+                <EventIcon color="primary" fontSize="large" />{" "}
+                {format(new Date(date), "PPP")}
               </StyledIconContainer>
               <StyledIconContainer>
                 <AccessTimeIcon fontSize="large" /> {startTime} - {endTime}
               </StyledIconContainer>
               <StyledIconContainer>
                 <SportsHandballIcon fontSize="large" color="success" /> {sport}
-              </StyledIconContainer>
-              <StyledIconContainer>
-                {calculateRemainingSeats()} seats remaining
               </StyledIconContainer>
             </div>
             <div>
@@ -221,6 +268,7 @@ const Event = () => {
           <br />
           <StyledDescription>{description}</StyledDescription>
           <br />
+          <Reviews sportCenterId={sportCenter._id} />
           <div>
             {sportCenter && (
               <EventsFromSc sportCenterId={sportCenter._id} eventId={eventId} />
@@ -266,13 +314,6 @@ const StyledTitleContainer = styled.h1`
 const StyledDescription = styled.div`
   width: 650px;
   line-height: 1.4;
-`;
-
-const StyledLoginRequired = styled.div`
-  font-size: 15px;
-  width: 200px;
-  color: #777;
-  text-align: center;
 `;
 
 const StyledEventPage = styled.div`

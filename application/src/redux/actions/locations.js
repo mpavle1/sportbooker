@@ -47,6 +47,23 @@ export const addLocation = (location) => dispatch => {
         );
 }
 
+export const updateLocation = (location) => {
+  // dispatch({ type: ADD_LOCATION });
+  return axios.patch("/api/locations", { location });
+  // .then(res => {
+  //     dispatch({
+  //         type: ADD_LOCATION_SUCCESS,
+  //         payload: res.data
+  //     });
+  // })
+  // .catch(err =>
+  //     dispatch({
+  //         type: ADD_LOCATION_FAIL,
+  //         payload: err.message
+  //     })
+  // );
+};
+
 export const deleteLocation = (location) => dispatch => {
     dispatch({ type: DELETE_LOCATION });
     axios

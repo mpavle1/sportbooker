@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import EventCard from "../EventCard";
+import Alert from "@mui/material/Alert";
 
 import { getOtherEventsForLocation } from "../../../../redux/actions/events";
 
@@ -50,11 +51,17 @@ const EventsFromSc = ({ sportCenterId, locationId, location }) => {
       <div
         style={{
           margin: "20px 0",
-          fontWeight: "bold",
-          fontSize: "20px",
+          width: "fit-content",
         }}
       >
-        Other events from {location}
+        <Alert
+          severity="info"
+          sx={{
+            fontWeight: "bold"
+          }}
+        >
+          Other events from {location}
+        </Alert>
       </div>
       <div
         style={{

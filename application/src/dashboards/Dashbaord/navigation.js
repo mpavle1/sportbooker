@@ -10,11 +10,6 @@ const Navigation = () => {
   return (
     <nav>
       <StyledUl>
-        {/* <StyledButton>
-          <NavLink to="/dashboard" exact activeStyle={{ color: "#3f51b5" }}>
-            General
-          </NavLink>
-        </StyledButton> */}
         {userType !== "user" && (
           <StyledButton>
             <NavLink to="/dashboard/events" activeStyle={{ color: "#3f51b5" }}>
@@ -61,6 +56,11 @@ const Navigation = () => {
             </StyledButton>
           </Fragment>
         )}
+        <StyledButton>
+          <NavLink to="/dashboard/reviews" exact activeStyle={{ color: "#3f51b5" }}>
+            Reviews
+          </NavLink>
+        </StyledButton>
       </StyledUl>
     </nav>
   );

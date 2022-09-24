@@ -3,6 +3,7 @@ const router = express.Router();
 const ObjectId = require("mongodb").ObjectId;
 
 const Event = require("../../models/Event");
+const Review = require("../../models/Review");
 const Ticket = require("../../models/Ticket");
 
 router.get("/", (req, res) => {
@@ -81,12 +82,81 @@ router.get("/upcomingEventsForUser/:userId/:limit", (req, res) => {
     .catch((err) => res.status(400).json(err));
 });
 
+router.get("/getPastEventsForUser/:userId/", (req, res) => {
+  Ticket.find({
+    userId: req.params.userId,
+  })
+    .then((tickets) => {
+      const eventIds = new Set([...tickets.map((ticket) => ticket.eventId)]);
+      Event.find({
+        _id: {
+          $in: [...eventIds],
+        },
+        date: {
+          $lt: new Date().toISOString(),
+        },
+      })
+        .sort({
+          date: -1,
+          startTime: 1,
+        })
+        .then((events) => {
+          res.status(200).json(events);
+        })
+        .catch((err) => res.status(400).json(err));
+    })
+    .catch((err) => res.status(400).json(err));
+});
+
+router.get("/getPastEventsForUserWithOutReviews/:userId/", (req, res) => {
+  Ticket.find({
+    userId: req.params.userId,
+  })
+    .then((tickets) => {
+      Event.find({
+        _id: {
+          $in: [...new Set([...tickets.map((ticket) => ticket.eventId)])],
+        },
+        date: {
+          $lt: new Date().toISOString(),
+        },
+      })
+        .sort({
+          date: -1,
+          startTime: 1,
+        })
+        .then((events) => {
+          Review.find({
+            userId: req.params.userId,
+          })
+            .then((reviews) => {
+              const reviewEventIds = new Set([
+                ...reviews.map((review) => review.eventId),
+              ]);
+              const returnValue = events.filter(
+                (event) => !reviewEventIds.includes(event._id)
+              );
+
+              res.status(200).json(returnValue);
+            })
+            .catch((err) => res.status(400).json(err));
+        })
+        .catch((err) => res.status(400).json(err));
+    })
+    .catch((err) => res.status(400).json(err));
+});
+
 router.get("/upcomingPopularEvents/:limit", (req, res) => {
   Ticket.aggregate([{ $group: { _id: "$eventId", count: { $sum: 1 } } }])
     .sort("-count")
     .then((events) => {
       const evnts = new Set([...events.map((event) => event._id)]);
-      return Event.find({ _id: { $in: [...evnts] } });
+      return Event.find({
+        _id: { $in: [...evnts] },
+        date: {
+          $gte: new Date().toISOString(),
+        },
+      });
     })
     .then((events) => res.status(200).json(events))
     .catch((err) => res.status(400).json(err));

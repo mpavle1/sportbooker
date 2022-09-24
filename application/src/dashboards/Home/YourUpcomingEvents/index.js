@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import EventCard from "../EventCard";
+import Alert from "@mui/material/Alert";
 
 import { getUpcomingEventsForUser } from "../../../redux/actions/events";
 
@@ -21,23 +22,29 @@ const YourUpcomingEvents = ({ user }) => {
       <div
         style={{
           margin: "20px 0",
-          fontWeight: "bold",
-          fontSize: "20px"
         }}
       >
-        Don't forget, you have reserved tickets for these upcoming events
+        <Alert
+          severity="warning"
+          sx={{
+            fontWeight: "bold"
+          }}
+        >
+          Don't forget, You have reserved tickets for these upcoming events
+        </Alert>
       </div>
       <div
         style={{
-            overflow: 'auto',
-            whiteSpace: 'nowrap'
+          overflow: "auto",
+          whiteSpace: "nowrap",
         }}
       >
         {events.map((event) => (
           <div
+            key={`userupcoming${event._id}`}
             style={{
               display: "inline-block",
-              marginRight: '20px'
+              marginRight: "20px",
             }}
           >
             <EventCard event={event} />

@@ -13,6 +13,7 @@ const events = require("./routes/api/events");
 const search = require("./routes/api/search");
 const sportCenters = require("./routes/api/sportCenters");
 const tickets = require("./routes/api/tickets");
+const reviews = require("./routes/api/reviews");
 
 const app = express();
 
@@ -56,6 +57,7 @@ app.use("/api/events", events);
 app.use("/api/search", search);
 app.use("/api/sportCenters", sportCenters);
 app.use("/api/tickets", tickets);
+app.use("/api/reviews", reviews);
 
 app.use(express.static(__dirname));
 

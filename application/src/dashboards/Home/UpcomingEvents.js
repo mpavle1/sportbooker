@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Alert from "@mui/material/Alert";
 
 import EventCard from "./EventCard";
 
@@ -22,11 +23,11 @@ const UpcomingEvents = () => {
       <div
         style={{
           margin: "20px 0",
-          fontWeight: "bold",
-          fontSize: "20px",
         }}
       >
-        Most popular upcoming events
+        <Alert severity="info" sx={{ fontWeight: "bold" }}>
+          Most popular upcoming events
+        </Alert>
       </div>
       <div
         style={{
@@ -36,6 +37,7 @@ const UpcomingEvents = () => {
       >
         {events.map((event) => (
           <div
+            key={`upcoming${event._id}`}
             style={{
               display: "inline-block",
               marginRight: "20px",

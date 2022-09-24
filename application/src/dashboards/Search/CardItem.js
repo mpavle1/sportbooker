@@ -4,6 +4,11 @@ import styled from "styled-components";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Button } from "@material-ui/core";
+
+import PlaceIcon from "@mui/icons-material/Place";
+import SportsHandballIcon from "@mui/icons-material/SportsHandball";
+import Alert from "@mui/material/Alert";
 
 const CardItem = ({ event }) => {
   const { title, description, startTime, endTime, date, sportId, locationId } =
@@ -29,24 +34,44 @@ const CardItem = ({ event }) => {
   )?.name;
 
   return (
-    <StyledEventItem
-      onClick={() => {
-        history.push(`/event/${event._id}`);
-      }}
-    >
+    <StyledEventItem>
       <StyledHeader>
         <span style={{ fontWeight: "bold", fontSize: "20px" }}>{title}</span>{" "}
-        <span>
-          {format(new Date(date), "PPP")} {startTime} - {endTime}
+        <span style={{ textAlign: "right" }}>
+          {format(new Date(date), "PPP")}{" "}
+          <span style={{ display: "block" }}>
+            {startTime} - {endTime}
+          </span>
         </span>
       </StyledHeader>
-      <SpacingBottom>{location}</SpacingBottom>
-      <SpacingBottom>{sport}</SpacingBottom>
-      <StyledDescription>{description}</StyledDescription>
+      <SpacingBottom>
+        <PlaceIcon color="error" />
+        {location}
+      </SpacingBottom>
+      <SpacingBottom>
+        <SportsHandballIcon color="success" />
+        {sport}
+      </SpacingBottom>
       <br />
-      {isEventOngoing && (
-        <StyledEventInProgress>Event is in progress!</StyledEventInProgress>
-      )}
+      <StyledDescription>{description}</StyledDescription>
+      <StyledEventInProgress>
+        {isEventOngoing ? (
+          <Alert severity="success" icon={false} variant="outlined">
+            Event is in progress!
+          </Alert>
+        ) : (
+          <Button
+            type="button"
+            onClick={() => {
+              history.push(`/event/${event._id}`);
+            }}
+            variant="contained"
+            color="primary"
+          >
+            View Event
+          </Button>
+        )}
+      </StyledEventInProgress>
     </StyledEventItem>
   );
 };
@@ -66,42 +91,37 @@ const StyledEventItem = styled.div`
     color: #333 !important;
   }
   height: fit-content;
-  cursor: pointer;
+  /* cursor: pointer; */
 `;
 
 const StyledHeader = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-`;
-
-const StyledButton = styled.button`
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
-  color: ${({ active }) => (active ? "#1B8E2B" : "#B01414")};
-  border-color: ${({ active }) => (active ? "#1B8E2B" : "#B01414")};
-  border-radius: 5px;
-  background: transparent;
-  outline: none;
-  box-shadow: none;
-  cursor: pointer;
+  align-items: center;
+  gap: 5px;
 `;
 
 const StyledEventInProgress = styled.div`
   position: absolute;
   bottom: 15px;
   right: 15px;
-  color: green;
 `;
 
 const StyledDescription = styled.div`
-  width: 500px;
-  white-space: nowrap;
+  width: 400px;
+  /* white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 `;
 
 const SpacingBottom = styled.div`
-  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 7px;
 `;

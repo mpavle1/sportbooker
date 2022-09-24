@@ -8,6 +8,7 @@ import Tickets from "./Tickets";
 import Users from "./Users";
 import Sports from "./Sports";
 import Locations from "./Locations";
+import Reviews from "./Reviews";
 import PrivateRoute from "../../container/PrivateRoute";
 import PageNotFound from "../../components/PageNotFound";
 
@@ -25,6 +26,7 @@ const Dashboard = () => (
         component={Tickets}
       />
       <Route path="/dashboard/users" exact component={Users} />
+      <Route path="/dashboard/reviews" exact component={Reviews} />
       <Route path="*" exact component={PageNotFound} />
     </Switch>
   </PrivateRoute>

@@ -15,6 +15,7 @@ import {
 import styled from "styled-components";
 
 import Stadium from "../../../../components/Stadium";
+import MyMap from "./MyMap";
 
 import { getAllSports } from "../../../../redux/actions/sports";
 import { getAllLocations } from "../../../../redux/actions/locations";
@@ -83,6 +84,7 @@ const SportCenter = ({
   const [isEditActive, setIsEditActive] = useState(false);
   const [name, setName] = useState(user.name);
   const [profilePhotoUrl, setProfilePhotoUrl] = useState(null);
+  const [newCoordinates, setNewCoordinates] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
   const [locationId, setLocationId] = useState(sportCenter.locationId || null);
   const [checkedSportIds, setCheckedSportIds] = useState(
@@ -141,6 +143,7 @@ const SportCenter = ({
         capacity: calculateCapacity(),
         sportIds: checkedSportIds,
         stadium,
+        coordinates: newCoordinates,
       },
     });
   };
@@ -245,6 +248,13 @@ const SportCenter = ({
               </FormGroup>
             }
           </StyledInfoFieldContainer>
+          <div>
+            <MyMap
+              scPosition={sportCenter.coordinates}
+              newPostion={newCoordinates}
+              onChangePostion={setNewCoordinates}
+            />
+          </div>
         </div>
         <div
           style={{
@@ -260,6 +270,13 @@ const SportCenter = ({
               flexDirection: "column",
             }}
           >
+            <StyledInfoFiledName
+              style={{
+                width: "100%",
+              }}
+            >
+              Profile photo
+            </StyledInfoFiledName>
             <StyledProfilePhoto
               alt="profile photo"
               src={
@@ -407,6 +424,13 @@ const SportCenter = ({
               "Sports that are available for viewing in you center are missing, please add them."
             )}
           </div>
+          <div>
+            <MyMap
+              scPosition={sportCenter.coordinates}
+              newPostion={null}
+              onChangePostion={() => {}}
+            />
+          </div>
         </div>
         <div
           style={{
@@ -415,8 +439,13 @@ const SportCenter = ({
             alignItems: "center",
           }}
         >
-          <StyledInfoFieldContainer>
-            {/* <StyledInfoFiledName>Profile photo</StyledInfoFiledName> */}
+          <div
+            style={{
+              display: "inline-block",
+              marginBottom: "20px",
+            }}
+          >
+            <StyledInfoFiledName>Profile photo</StyledInfoFiledName>
             <StyledProfilePhoto
               alt="profile photo"
               src={
@@ -427,7 +456,7 @@ const SportCenter = ({
               height={300}
               width={500}
             />
-          </StyledInfoFieldContainer>
+          </div>
           <StyledInfoFieldContainer>
             <div
               style={{

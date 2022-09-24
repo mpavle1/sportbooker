@@ -163,3 +163,21 @@ export const getSportCenterUpcomingEvents = (sportCenterID, limit) => {
     `api/events/sportCenterUpcomingEvents/${sportCenterID}/${limit}`
   );
 };
+
+export const getPastEventsForUser = (userId) => {
+  return axios.get(
+    `api/events/getPastEventsForUser/${userId}/`
+  );
+};
+
+export const getPastEventsForUserWithOutReviews = (userId) => {
+  return axios.get(
+    `api/events/getPastEventsForUserWithOutReviews/${userId}/`
+  );
+};
+
+export const getAllSCEvents = (sportCenterId) => {
+  return axios.get(
+    `/api/events/sportCenter/${sportCenterId}`
+  );
+};

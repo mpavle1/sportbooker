@@ -76,8 +76,6 @@ const Search = () => {
     return <Redirect to={`/event/${searchId}`} />;
   }
 
-  console.log(filterCheckedOptions, filterType);
-
   const getSearchResults = () => {
     return searchResults.filter((event) => {
       const today = moment().format(`YYYY-MM-DD HH:mm`);
