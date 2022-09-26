@@ -73,7 +73,12 @@ router.get("/upcomingEventsForUser/:userId/:limit", (req, res) => {
   })
     .then((tickets) => {
       const ticketIds = new Set([...tickets.map((ticket) => ticket.eventId)]);
-      return Event.find({ _id: { $in: [...ticketIds] } }).sort({
+      return Event.find({
+        _id: { $in: [...ticketIds] },
+        date: {
+          $gte: new Date().toISOString(),
+        },
+      }).sort({
         date: 1,
         startTime: 1,
       });

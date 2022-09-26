@@ -120,6 +120,7 @@ const AddReviewModal = ({ onClose, event }) => {
                 score
               })
             );
+            dispatch(getAllUserReviews(user._id));
           }}
         >
           Post review

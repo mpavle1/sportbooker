@@ -44,7 +44,15 @@ const Locations = ({ getAllLocations, locations, deleteLocation }) => {
                   gap: "40px",
                 }}
               >
-                {location.name} {coordinates}
+                <div
+                  style={{
+                    display: "inline-block",
+                    width: "100px"
+                  }}
+                >
+                  {location.name}
+                </div>{" "}
+                {coordinates}
               </div>
               <div>
                 <EditIcon

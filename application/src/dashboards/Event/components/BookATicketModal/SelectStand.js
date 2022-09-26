@@ -111,13 +111,13 @@ const StyledSouthButton = styled(Button)`
 const StyledEastButton = styled(Button)`
   height: 178px;
   position: absolute !important;
-  transform: translate(446%, -50%);
+  transform: translate(460%, -50%);
   top: 50%;
 `;
 
 const StyledWestButton = styled(Button)`
   height: 178px;
   position: absolute !important;
-  transform: translate(153%, -50%);
+  transform: translate(165%, -50%);
   top: 50%;
 `;

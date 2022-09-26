@@ -111,6 +111,7 @@ const User = () => {
             fontWeight: "bold",
             fontSize: "20px",
             marginBottom: "20px",
+            marginTop: "20px",
             borderBottom: "1px solid #777",
             paddingBottom: "15px",
           }}
@@ -171,6 +172,7 @@ const User = () => {
       )}
       {renderEvents()}
       {renderReviews()}
+      <br />
     </div>
   );
 };
