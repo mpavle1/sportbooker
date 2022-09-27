@@ -1,7 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Chip, Button } from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 import styled from "styled-components";
+import { Alert } from "@mui/material";
 
 import { updateUser } from "../../../../redux/actions/users";
 
@@ -15,12 +16,14 @@ const User = () => {
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
 
   const updateProfile = () => {
-    dispatch(updateUser({
-      ...user,
-      name,
-      lastName,
-      phoneNumber
-    }));
+    dispatch(
+      updateUser({
+        ...user,
+        name,
+        lastName,
+        phoneNumber,
+      })
+    );
   };
 
   const isComplete = user.name && user.lastName && user.phoneNumber;
@@ -29,16 +32,16 @@ const User = () => {
     return (
       <Fragment>
         <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Name</StyledInfoFiledName>
-          <input
+          <TextField
+            label="Name"
             type="text"
             value={name}
             onChange={(event) => setName(event.target.value)}
           />
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Last Name</StyledInfoFiledName>
-          <input
+          <TextField
+            label="Last Name"
             type="text"
             value={lastName}
             onChange={(event) => setLastName(event.target.value)}
@@ -49,9 +52,9 @@ const User = () => {
           <div>{user.email}</div>
         </StyledInfoFieldContainer>
         <StyledInfoFieldContainer>
-          <StyledInfoFiledName>Phone Number</StyledInfoFiledName>
-          <input
-            type="text"
+          <TextField
+            label="Phone Number"
+            type="number"
             value={phoneNumber}
             onChange={(event) => setPhoneNumber(event.target.value)}
           />
@@ -62,7 +65,7 @@ const User = () => {
 
   const getViewMode = () => {
     return (
-      <Fragment>
+      <StyledViewMode>
         <StyledInfoFieldContainer>
           <StyledInfoFiledName>Name</StyledInfoFiledName>
           <div>{name}</div>
@@ -81,18 +84,37 @@ const User = () => {
             {phoneNumber || "Your phone number is missing, please add it."}
           </div>
         </StyledInfoFieldContainer>
-      </Fragment>
+      </StyledViewMode>
     );
   };
 
   return (
     <div style={{ paddingBottom: "30px" }}>
-      <h1>Profile</h1>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "20px",
+        }}
+      >
+        <div
+          style={{
+            fontSize: "30px",
+            fontWeight: "bold",
+          }}
+        >
+          Profile
+        </div>
+        <Button variant="contained" color="primary">
+          Change Password
+        </Button>
+      </div>
       {!isComplete && (
-        <Chip
-          color="secondary"
-          label="You havent finished you profile yet. Please fill in the missing information if you want to be able to book tickets."
-        />
+        <Alert severity="error">
+          You havent finished you profile yet. Please fill in the missing
+          information if you want to be able to book tickets.
+        </Alert>
       )}
       {isEditActive ? getEditMode() : getViewMode()}
       {isEditActive ? (
@@ -128,4 +150,9 @@ const StyledInfoFieldContainer = styled.div`
 const StyledInfoFiledName = styled.div`
   font-size: 18px;
   font-weight: bold;
+`;
+
+const StyledViewMode = styled.div`
+  display: flex;
+  flex-direction: column;
 `;

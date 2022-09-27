@@ -4,7 +4,7 @@ import styled from "styled-components";
 const TicketItem = ({ ticket, user }) => {
   return (
     <StyledEventItem>
-      <div>
+      <StyledTicket>
         <div>
             {user.name} {user.lastName}
         </div>
@@ -17,7 +17,7 @@ const TicketItem = ({ ticket, user }) => {
         <div>
           <b>row:</b> {ticket.seat.row} <b>column:</b> {ticket.seat.column}
         </div>
-      </div>
+      </StyledTicket>
     </StyledEventItem>
   );
 };
@@ -40,8 +40,8 @@ const StyledHeader = styled.div`
   margin-bottom: 10px;
 `;
 
-const StyledButtonContainer = styled.div`
+const StyledTicket = styled.div`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   gap: 8px;
 `;

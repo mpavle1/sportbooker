@@ -3,6 +3,16 @@ import { useParams, useHistory } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { format } from "date-fns";
+import styled from "styled-components";
+
+import PlaceIcon from "@mui/icons-material/Place";
+import StadiumIcon from "@mui/icons-material/Stadium";
+import EventIcon from "@mui/icons-material/Event";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SportsHandballIcon from "@mui/icons-material/SportsHandball";
+import EventSeatRoundedIcon from "@mui/icons-material/EventSeatRounded";
+import StarIcon from "@mui/icons-material/Star";
+import Alert from "@mui/material/Alert";
 
 import { getSportCenter } from "../../../../../redux/actions/auth";
 import { cancelATicket } from "../../../../../redux/actions/tickets";
@@ -47,40 +57,88 @@ const Cancel = () => {
   };
 
   return (
-    <div>
-      <h3>Are you sure you want to cancel this ticket?</h3>
-      <div>
-        <div style={{ fontWeight: "bold", fontSize: "20px" }}>{title}</div>{" "}
-        <div>
-          {format(new Date(date), "PPP")} {startTime} - {endTime}
-        </div>
+    <StyledPageContainer>
+      <StyledTitle>Are you sure you want to cancel this ticket?</StyledTitle>
+      <div style={{ fontWeight: "bold", fontSize: "20px", margin: "15px 0" }}>
+        {title}
       </div>
-      <div>
-        <div>{sportCenter.user.name}</div>
+      <StyledInfoContainer>
+        <EventIcon color="primary" /> {format(new Date(date), "PPP")}{" "}
+        {startTime} - {endTime}
+      </StyledInfoContainer>
+      <StyledInfoContainer>
+        <StadiumIcon /> {sportCenter.user.name}
+      </StyledInfoContainer>
+      <StyledInfoContainer>
+        <PlaceIcon color="error" />{" "}
+        {locations.find((location) => location._id === event.locationId).name}
+      </StyledInfoContainer>
+      <StyledInfoContainer>
+        <SportsHandballIcon color="success" />{" "}
+        {sports.find((sport) => sport._id === event.sportId).name}
+      </StyledInfoContainer>
+      <StyledInfoContainer>
+        <EventSeatRoundedIcon />
+
         <div>
-          {locations.find((location) => location._id === event.locationId).name}
+          <div>
+            stand: {ticket.stand} section: {ticket.section}
+          </div>
+          <div>
+            row: {ticket.seat.row} column: {ticket.seat.column}
+          </div>
         </div>
-        <div>{sports.find((sport) => sport._id === event.sportId).name}</div>
-        <div>
-          stand: {ticket.stand} section: {ticket.section}
-        </div>
-        <div>
-          row: {ticket.seat.row} column: {ticket.seat.column}
-        </div>
-        <div style={{ margin: "10px 0" }}>{description}</div>
-      </div>
-      <Button variant="contained" color="default" onClick={handleCancelTicket}>
-        Cancel Ticket
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => history.push(`/dashboard/tickets/`)}
-      >
-        Back
-      </Button>
-    </div>
+      </StyledInfoContainer>
+      <div style={{ margin: "10px 0", width: '500px' }}>{description}</div>
+      <ButtonContainer>
+        <Button
+          variant="contained"
+          color="default"
+          onClick={handleCancelTicket}
+        >
+          Cancel Ticket
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => history.push(`/event/${event._id}`)}
+        >
+          View this event
+        </Button>
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => history.push(`/dashboard/tickets/`)}
+        >
+          Back
+        </Button>
+      </ButtonContainer>
+    </StyledPageContainer>
   );
 };
 
 export default Cancel;
+
+const StyledInfoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const StyledPageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const StyledTitle = styled.div`
+  font-weight: bold;
+  font-size: 20px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;

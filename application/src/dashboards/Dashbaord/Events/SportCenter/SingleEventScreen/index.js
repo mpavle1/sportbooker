@@ -5,7 +5,16 @@ import { Button } from "@material-ui/core";
 import moment from "moment";
 import TextField from "@mui/material/TextField";
 import styled from "styled-components";
-import EditIcon from "@mui/icons-material/Edit";
+import { format } from "date-fns";
+
+import PlaceIcon from "@mui/icons-material/Place";
+import StadiumIcon from "@mui/icons-material/Stadium";
+import EventIcon from "@mui/icons-material/Event";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SportsHandballIcon from "@mui/icons-material/SportsHandball";
+import EventSeatRoundedIcon from "@mui/icons-material/EventSeatRounded";
+import StarIcon from "@mui/icons-material/Star";
+import Alert from "@mui/material/Alert";
 
 import ViewStadium from "./ViewStadium";
 import TicketItem from "./TicketItem";
@@ -69,15 +78,22 @@ const SingleEventScreen = () => {
             marginTop: "30px",
           }}
         >
-          <div>{event.title}</div>
-          <div>
-            {event.startTime} - {event.endTime}
-          </div>
-          <div>{sports.find((sport) => sport._id === event.sportId)?.name}</div>
+          <StyledEventInfo>{event.title}</StyledEventInfo>
+          <StyledEventInfo>
+            <EventIcon color="primary" /> {format(new Date(event.date), "PPP")}
+          </StyledEventInfo>
+          <StyledEventInfo>
+            <AccessTimeIcon /> {event.startTime} - {event.endTime}
+          </StyledEventInfo>
+          <StyledEventInfo>
+            <SportsHandballIcon color="success"/>{" "}
+            {sports.find((sport) => sport._id === event.sportId)?.name}
+          </StyledEventInfo>
+          <StyledEventInfo>
+            <EventSeatRoundedIcon /> Booked tickets: {tickets.length} /{" "}
+            {sportCenter.capacity}
+          </StyledEventInfo>
           <div>{event.description}</div>
-          <div>
-            Booked tickets: {tickets.length} / {sportCenter.capacity}
-          </div>
         </div>
         <div>
           <Button
@@ -151,5 +167,11 @@ const StyledTextInputContainer = styled.div`
 const StyledTitle = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+`;
+
+const StyledEventInfo = styled.div`
+  display: flex;
+  gap: 10px;
   align-items: center;
 `;
