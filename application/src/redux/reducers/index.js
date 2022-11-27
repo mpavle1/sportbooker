@@ -3,7 +3,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import auth from "./auth";
 import error from "./error";
 import { sportsReducer } from "../features/sports";
-import locations from "./locations";
+import { locationsReducer } from "../features/locations";
 import events from "./events";
 import tickets from "./tickets";
 import search from "./search";
@@ -15,7 +15,7 @@ export default combineReducers({
   auth,
   errors: error,
   sports: sportsReducer,
-  locations,
+  locations: locationsReducer,
   events,
   tickets,
   search,

@@ -3,9 +3,14 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { FormControlLabel, Checkbox, FormGroup } from "@material-ui/core";
 
+import { locationsSelectors } from "../../redux/features/locations";
+import { sportsSelectors } from "../../redux/features/sports";
+
 const Filters = ({ type, filterCheckedOptions, setFilterCheckedOptions }) => {
-  const sports = useSelector((state) => state.sports);
-  const locations = useSelector((state) => state.locations);
+  const sports = useSelector(sportsSelectors.selectAll);
+  const locations = useSelector(locationsSelectors.selectAll);
+  const isSportsInitialized = useSelector(sportsSelectors.selectIsInitialized);
+  const isLocationsInitialized = useSelector(locationsSelectors.selectIsInitialized);
 
   const renderTitle = () => {
     if (type === "sportId") {
@@ -19,6 +24,8 @@ const Filters = ({ type, filterCheckedOptions, setFilterCheckedOptions }) => {
     if (type === "sportId") {
       options = sports;
     }
+
+    console.log({ locations });
 
     return (
       <FormGroup>
@@ -46,6 +53,10 @@ const Filters = ({ type, filterCheckedOptions, setFilterCheckedOptions }) => {
       </FormGroup>
     );
   };
+
+  if (!isLocationsInitialized || !isSportsInitialized) {
+    return null;
+  }
 
   return (
     <StyledFilterConteiner>

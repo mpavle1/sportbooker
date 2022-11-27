@@ -6,6 +6,7 @@ import { Rating } from "@mui/material";
 import moment from "moment";
 
 import { addReview } from "../../../../redux/actions/reviews";
+import { locationsSelectors } from "../../../../redux/features/locations";
 
 const style = {
   position: "absolute",
@@ -30,7 +31,7 @@ const AddReviewModal = ({ onClose, event }) => {
   const scUser = useSelector((state) => state.users.users)?.find(
     (usr) => usr._id === sportCenter.userId
   );
-  const location = useSelector((state) => state.locations)?.find(
+  const location = useSelector(locationsSelectors.selectAll)?.find(
     (loc) => loc._id === sportCenter.locationId
   );
 

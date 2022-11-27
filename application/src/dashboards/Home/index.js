@@ -23,10 +23,10 @@ import SportCenterUpcomingEvents from "./SportCenterUpcomingEvents";
 import UpcomingEvents from "./UpcomingEvents";
 
 import { setSearchParameters } from "../../redux/actions/search";
-import { getAllLocations } from "../../redux/actions/locations";
 import { getAllUsers } from "../../redux/actions/users";
 import { getAllSportCenters } from "../../redux/actions/sportCenters";
 import { fetchSports } from "../../redux/features/sports";
+import { fetchLocations } from "../../redux/features/locations";
 
 const PER_PAGE = 50;
 
@@ -82,10 +82,10 @@ class Home extends React.Component {
   _cache = {};
 
   componentDidMount() {
-    const { fetchSports, getAllLocations, getAllUsers, getAllSportCenters } =
+    const { fetchSports, fetchLocations, getAllUsers, getAllSportCenters } =
       this.props;
     fetchSports();
-    getAllLocations();
+    fetchLocations();
     getAllUsers();
     getAllSportCenters();
   }
@@ -285,7 +285,7 @@ export default connect(
   {
     setSearchParameters,
     fetchSports,
-    getAllLocations,
+    fetchLocations,
     getAllUsers,
     getAllSportCenters,
   }

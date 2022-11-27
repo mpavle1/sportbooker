@@ -7,7 +7,7 @@ import SingleEventScreen from "./SingleEventScreen";
 
 import { getAllEventsForSportCenter } from "../../../../redux/actions/events";
 import { fetchSports } from "../../../../redux/features/sports";
-import { getAllLocations } from "../../../../redux/actions/locations";
+import { fetchLocations } from "../../../../redux/features/locations";
 import { getAllSportCenters } from "../../../../redux/actions/sportCenters";
 
 const Events = () => {
@@ -16,7 +16,7 @@ const Events = () => {
 
   useEffect(() => {
     dispatch(fetchSports());
-    dispatch(getAllLocations());
+    dispatch(fetchLocations());
     dispatch(getAllSportCenters());
     dispatch(getAllEventsForSportCenter(sportCenter._id));
   }, []);

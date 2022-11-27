@@ -1,4 +1,9 @@
-import { createSlice, createAsyncThunk, createEntityAdapter,createSelector } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  createEntityAdapter,
+  createSelector
+} from "@reduxjs/toolkit";
 
 import * as API from './sportsAPI';
 

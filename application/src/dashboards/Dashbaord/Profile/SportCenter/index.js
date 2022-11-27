@@ -18,7 +18,7 @@ import Stadium from "../../../../components/Stadium";
 import MyMap from "./MyMap";
 
 import { fetchSports } from "../../../../redux/features/sports";
-import { getAllLocations } from "../../../../redux/actions/locations";
+import { fetchLocations, locationsSelectors } from "../../../../redux/features/locations";
 import { updateSportCenterProfile } from "../../../../redux/actions/auth";
 import { updateProfilePhoto } from "../../../../redux/actions/auth";
 
@@ -76,7 +76,7 @@ const SportCenter = ({
   sportCenter,
   sports,
   locations,
-  getAllLocations,
+  fetchLocations,
   updateSportCenterProfile,
   updateProfilePhoto,
   fetchSports
@@ -96,7 +96,7 @@ const SportCenter = ({
 
   useEffect(() => {
     fetchSports();
-    getAllLocations();
+    fetchLocations();
   }, []);
 
   if (sports.length === 0 && locations.length === 0) {
@@ -525,13 +525,13 @@ const SportCenter = ({
 const mapStateToProps = (state) => ({
   user: state.auth.user,
   sportCenter: state.auth.sportCenter,
-  locations: state.locations,
+  locations: locationsSelectors.selectAll,
   sports: state.sports,
 });
 
 export default connect(mapStateToProps, {
   fetchSports,
-  getAllLocations,
+  fetchLocations,
   updateSportCenterProfile,
   updateProfilePhoto,
 })(SportCenter);

@@ -7,7 +7,7 @@ import SingleTicket from "./SingleTicket";
 
 import { getAllUserTickets } from "../../../../redux/actions/tickets";
 import { getAllEvents } from "../../../../redux/actions/events";
-import { getAllLocations } from "../../../../redux/actions/locations";
+import { fetchLocations } from "../../../../redux/features/locations";
 import { fetchSports } from "../../../../redux/features/sports";
 
 const Tickets = () => {
@@ -21,7 +21,7 @@ const Tickets = () => {
     dispatch(getAllUserTickets(user._id));
     dispatch(getAllEvents());
     dispatch(fetchSports());
-    dispatch(getAllLocations());
+    dispatch(fetchLocations());
   }, []);
 
   if (!isEventsInitialized) {

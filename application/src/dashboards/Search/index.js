@@ -10,7 +10,7 @@ import Filters from "./Filters";
 import SearchBox from "../../components/SearchBox";
 
 import { setSearchParameters } from "../../redux/actions/search";
-import { getAllLocations } from "../../redux/actions/locations";
+import { fetchLocations } from "../../redux/features/locations";
 
 import { fetchSports } from "../../redux/features/sports";
 
@@ -26,7 +26,7 @@ const Search = () => {
   useEffect(() => {
     dispatch(setSearchParameters(searchType, null, searchId));
     dispatch(fetchSports());
-    dispatch(getAllLocations());
+    dispatch(fetchLocations());
 
     axios
       .get(`/api/search/getObject/${searchType}/${searchId}`)

@@ -7,7 +7,7 @@ import Admin from "./Admin";
 import SportCenter from "./SportCenter";
 
 import { fetchSports } from "../../../redux/features/sports";
-import { getAllLocations } from "../../../redux/actions/locations";
+import { fetchLocations } from "../../../redux/features/locations";
 
 const Events = () => {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const Events = () => {
 
   useEffect(() => {
     dispatch(fetchSports());
-    dispatch(getAllLocations());
+    dispatch(fetchLocations());
   }, []);
 
   switch (userType) {

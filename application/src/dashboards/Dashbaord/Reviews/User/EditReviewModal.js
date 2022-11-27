@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Box, Typography, Modal, TextField, Button } from "@material-ui/core";
 import { Rating } from "@mui/material";
-import moment from "moment";
 
+import { locationsSelectors } from "../../../../redux/features/locations";
 import { updateReview } from "../../../../redux/actions/reviews";
 
 const style = {

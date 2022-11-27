@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Box, Typography, Modal, TextField, Button } from "@material-ui/core";
 
-import { updateLocation } from "../../../redux/actions/locations";
+import { updateLocation } from "../../../redux/features/locations";
 
 const style = {
   position: "absolute",
@@ -85,7 +85,6 @@ const EditLocationModal = ({ onClose, location }) => {
                 },
               })
             );
-            alert("Location has been updated");
           }}
         >
           Update Location

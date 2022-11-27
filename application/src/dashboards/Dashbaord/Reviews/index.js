@@ -9,7 +9,7 @@ import User from "./User";
 import PageNotFound from "../../../components/PageNotFound";
 
 import { fetchSports } from "../../../redux/features/sports";
-import { getAllLocations } from "../../../redux/actions/locations";
+import { fetchLocations } from "../../../redux/features/locations";
 import { getAllSportCenters } from "../../../redux/actions/sportCenters";
 import { getAllUsers } from "../../../redux/actions/users";
 
@@ -19,7 +19,7 @@ const Events = () => {
 
   useEffect(() => {
     dispatch(fetchSports());
-    dispatch(getAllLocations());
+    dispatch(fetchLocations());
     dispatch(getAllSportCenters());
     dispatch(getAllUsers());
   }, []);

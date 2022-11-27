@@ -7,7 +7,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import EditIcon from "@mui/icons-material/Edit";
 import EventIcon from "@mui/icons-material/Event";
 import { format } from "date-fns";
-import { useHistory, withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import EditModal from "../../../../components/EventModal";
 import Table from "../../../../components/Table";
@@ -19,6 +19,7 @@ import {
 } from "../../../../redux/actions/events";
 import { getAllSportCenters } from "../../../../redux/actions/sportCenters";
 import { getAllUsers } from "../../../../redux/actions/users";
+import { locationsSelectors } from "../../../../redux/features/locations";
 
 const Admin = () => {
   const dispatch = useDispatch();
@@ -29,9 +30,14 @@ const Admin = () => {
   const events = useSelector((state) => state.events.all);
   const isInitialized = useSelector((state) => state.events.isInitialized);
   const sports = useSelector((state) => state.sports);
-  const locations = useSelector((state) => state.locations);
+  const locations = useSelector(locationsSelectors.selectAll);
+  const isLocationsInitialized = useSelector(locationsSelectors.selectIsInitialized);
 
   const [editModalEvent, setEditModalEvent] = useState(null);
+
+  if (!isLocationsInitialized) {
+    return null;
+  }
 
   const columns = [
     {

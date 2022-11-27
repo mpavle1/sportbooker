@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
 import { Box, Typography, Modal, TextField, Button } from "@material-ui/core";
 
-import { addLocation, getAllLocations } from "../../../redux/actions/locations";
+import { addLocation } from "../../../redux/features/locations";
 
 const style = {
   position: "absolute",
@@ -84,8 +84,6 @@ const AddNewLocationModal = ({ onClose }) => {
                 },
               })
             );
-            dispatch(getAllLocations());
-            alert("Location has been added");
           }}
         >
           Add Location

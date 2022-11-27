@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  getAllLocations,
+  fetchLocations,
   deleteLocation,
-} from "../../../redux/actions/locations";
+  locationsSelectors
+} from "../../../redux/features/locations";
 import { Button } from "@material-ui/core";
 import styled from "styled-components";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -14,68 +15,77 @@ import AddNewLocationModal from "./AddNewLocation";
 
 import withNavigationContainer from "../withNavigationContainer";
 
-const Locations = ({ getAllLocations, locations, deleteLocation }) => {
+const Locations = () => {
+  const dispatch = useDispatch();
+
+  const locations = useSelector(locationsSelectors.selectAll);
+  const isLocationsInitialized = useSelector(locationsSelectors.selectIsInitialized);
+
   const [locationForEditing, setLocationForEditing] = useState(null);
   const [isAddNewLocationVisible, setIsAddNewLocationVisible] = useState(null);
 
   useEffect(() => {
-    getAllLocations();
-  }, []);
+    if(!isLocationsInitialized) {
+      dispatch(fetchLocations());
+    }
+  }, [isLocationsInitialized]);
 
-  const renderAllLocations = () => {
-    return (
-      <StyledList>
-        {locations.map((location) => {
-          const coordinates = location.coordinates ? (
-            <StyledLatLng>
-              <div>lat: {location.coordinates.lat}</div>
-              <div>lng: {location.coordinates.lng}</div>
-            </StyledLatLng>
-          ) : (
-            ""
-          );
+  const renderAllLocations = () => (
+    <StyledList>
+      {locations.map((location) => {
+        const coordinates = location.coordinates ? (
+          <StyledLatLng>
+            <div>lat: {location.coordinates.lat}</div>
+            <div>lng: {location.coordinates.lng}</div>
+          </StyledLatLng>
+        ) : (
+          ""
+        );
 
-          return (
-            <StyledItem key={location.name}>
+        return (
+          <StyledItem key={location.name}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "40px",
+              }}
+            >
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "40px",
+                  display: "inline-block",
+                  width: "100px",
                 }}
               >
-                <div
-                  style={{
-                    display: "inline-block",
-                    width: "100px",
-                  }}
-                >
-                  {location.name}
-                </div>{" "}
-                {coordinates}
-              </div>
-              <div>
-                <EditIcon
-                  onClick={() => {
-                    setLocationForEditing(location);
-                  }}
-                />
-                <StyledIcon
-                  onClick={() => {
-                    if (
-                      confirm("Are you sure you want to delete this location?")
-                    ) {
-                      deleteLocation(location.name);
-                    }
-                  }}
-                />
-              </div>
-            </StyledItem>
-          );
-        })}
-      </StyledList>
-    );
-  };
+                {location.name}
+              </div>{" "}
+              {coordinates}
+            </div>
+            <div>
+              <EditIcon
+                onClick={() => {
+                  setLocationForEditing(location);
+                }}
+              />
+              <StyledIcon
+                onClick={() => {
+                  if (
+                    confirm("Are you sure you want to delete this location?")
+                  ) {
+                    dispatch(deleteLocation(location));
+                  }
+                }}
+              />
+            </div>
+          </StyledItem>
+        );
+      })}
+    </StyledList>
+  );
+
+  if (!isLocationsInitialized) {
+    return null;
+  }
 
   return (
     <div>
@@ -123,14 +133,7 @@ const Locations = ({ getAllLocations, locations, deleteLocation }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  locations: state.locations,
-});
-
-export default connect(mapStateToProps, {
-  getAllLocations,
-  deleteLocation,
-})(withNavigationContainer(Locations));
+export default withNavigationContainer(Locations);
 
 const StyledList = styled.div`
   display: flex;
