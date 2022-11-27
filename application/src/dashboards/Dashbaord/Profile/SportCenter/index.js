@@ -17,7 +17,7 @@ import Alert from "@mui/material/Alert";
 import Stadium from "../../../../components/Stadium";
 import MyMap from "./MyMap";
 
-import { getAllSports } from "../../../../redux/actions/sports";
+import { fetchSports } from "../../../../redux/features/sports";
 import { getAllLocations } from "../../../../redux/actions/locations";
 import { updateSportCenterProfile } from "../../../../redux/actions/auth";
 import { updateProfilePhoto } from "../../../../redux/actions/auth";
@@ -76,10 +76,10 @@ const SportCenter = ({
   sportCenter,
   sports,
   locations,
-  getAllSports,
   getAllLocations,
   updateSportCenterProfile,
   updateProfilePhoto,
+  fetchSports
 }) => {
   const [isEditActive, setIsEditActive] = useState(false);
   const [name, setName] = useState(user.name);
@@ -95,7 +95,7 @@ const SportCenter = ({
   );
 
   useEffect(() => {
-    getAllSports();
+    fetchSports();
     getAllLocations();
   }, []);
 
@@ -530,8 +530,8 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
+  fetchSports,
   getAllLocations,
-  getAllSports,
   updateSportCenterProfile,
   updateProfilePhoto,
 })(SportCenter);

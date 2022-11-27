@@ -25,11 +25,11 @@ import SearchBox from "../../components/SearchBox";
 
 import { bookATicket } from "../../redux/actions/tickets";
 import { getAllEventTickets } from "../../redux/actions/tickets";
-import { getAllSports } from "../../redux/actions/sports";
 import { getAllLocations } from "../../redux/actions/locations";
 import { getAllSportCenters } from "../../redux/actions/sportCenters";
 import { getAllUsers } from "../../redux/actions/users";
 import { getAllSportCenterReviews } from "../../redux/actions/reviews";
+import { fetchSports } from "../../redux/features/sports";
 
 const Event = () => {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ const Event = () => {
 
   useEffect(() => {
     dispatch(getAllEventTickets(eventId));
-    dispatch(getAllSports());
+    dispatch(fetchSports());
     dispatch(getAllLocations());
     dispatch(getAllSportCenters());
     dispatch(getAllUsers());

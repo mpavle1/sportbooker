@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { useParams, Redirect } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
 import moment from "moment";
 
 import CardItem from "./CardItem";
@@ -11,8 +10,9 @@ import Filters from "./Filters";
 import SearchBox from "../../components/SearchBox";
 
 import { setSearchParameters } from "../../redux/actions/search";
-import { getAllSports } from "../../redux/actions/sports";
 import { getAllLocations } from "../../redux/actions/locations";
+
+import { fetchSports } from "../../redux/features/sports";
 
 const Search = () => {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const Search = () => {
 
   useEffect(() => {
     dispatch(setSearchParameters(searchType, null, searchId));
-    dispatch(getAllSports());
+    dispatch(fetchSports());
     dispatch(getAllLocations());
 
     axios

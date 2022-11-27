@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import {
-  getAllSports,
-  addSport,
-  deleteSport,
-} from "../../../redux/actions/sports";
-import { Button, TextField } from "@material-ui/core";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, TextField } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import withNavigationContainer from "../withNavigationContainer";
 
-const Sports = ({ getAllSports, addSport, sports, deleteSport }) => {
+import { fetchSports, addSport, deleteSport, sportsSelectors } from "../../../redux/features/sports";
+
+const Sports = () => {
+  const dispatch = useDispatch();
+
+  const sports = useSelector(sportsSelectors.selectAll);
+  const isSportsInitialized = useSelector(sportsSelectors.selectIsInitialized);
+
   const [newSport, setNewSport] = useState("");
 
   useEffect(() => {
-    getAllSports();
-  }, []);
+    if (!isSportsInitialized) {
+      dispatch(fetchSports());
+    }
+  }, [isSportsInitialized]);
 
   const renderAllSports = () => {
     return (
@@ -24,21 +28,28 @@ const Sports = ({ getAllSports, addSport, sports, deleteSport }) => {
         {sports.map((sport) => (
           <StyledItem key={sport.name}>
             {sport.name}
-            <StyledIcon onClick={() => deleteSport(sport.name)} />
+            <StyledIcon onClick={() => dispatch(deleteSport(sport))} />
           </StyledItem>
         ))}
       </StyledList>
     );
   };
 
+  if (!isSportsInitialized) {
+    return null;
+  }
+
   return (
     <div>
       <h2>Sports</h2>
       <div>{renderAllSports()}</div>
-      <div>
+      <div style={{
+          display: 'flex',
+          alignItems: 'flex-end'
+      }}>
         <StyledInput
           type="text"
-          placeholder="Enter new sport name"
+          label="Enter new sport name"
           value={newSport}
           onChange={(event) => setNewSport(event.target.value)}
         />
@@ -46,7 +57,7 @@ const Sports = ({ getAllSports, addSport, sports, deleteSport }) => {
           type="button"
           onClick={() => {
             if (newSport !== "") {
-              addSport(newSport);
+              dispatch(addSport(newSport));
               setNewSport("");
             }
           }}
@@ -61,15 +72,7 @@ const Sports = ({ getAllSports, addSport, sports, deleteSport }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  sports: state.sports,
-});
-
-export default connect(mapStateToProps, {
-  getAllSports,
-  addSport,
-  deleteSport,
-})(withNavigationContainer(Sports));
+export default withNavigationContainer(Sports);
 
 const StyledInput = styled(TextField)`
   width: 300px;

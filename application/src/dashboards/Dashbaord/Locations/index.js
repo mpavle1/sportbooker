@@ -4,7 +4,7 @@ import {
   getAllLocations,
   deleteLocation,
 } from "../../../redux/actions/locations";
-import { Button, TextField } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import styled from "styled-components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";

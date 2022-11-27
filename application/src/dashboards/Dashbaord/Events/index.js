@@ -6,7 +6,7 @@ import withNavigationContainer from "../withNavigationContainer";
 import Admin from "./Admin";
 import SportCenter from "./SportCenter";
 
-import { getAllSports } from "../../../redux/actions/sports";
+import { fetchSports } from "../../../redux/features/sports";
 import { getAllLocations } from "../../../redux/actions/locations";
 
 const Events = () => {
@@ -14,7 +14,7 @@ const Events = () => {
   const userType = useSelector((state) => state.auth.user.type);
 
   useEffect(() => {
-    dispatch(getAllSports());
+    dispatch(fetchSports());
     dispatch(getAllLocations());
   }, []);
 

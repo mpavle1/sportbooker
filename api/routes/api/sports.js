@@ -14,25 +14,25 @@ router.post("/", (req, res) => {
 
   Sport.findOne({ name }).then((sport) => {
     if (sport) {
-      return res.status(404).json("A sport with that name already exists");
+      return res.status(400).json("A sport with that name already exists");
     }
     const newSport = new Sport();
     newSport.name = name;
     newSport
       .save()
       .then(() => res.status(200).send(newSport))
-      .catch((error) => res.status(400).send(error));
+      .catch((error) => res.status(500).send(error));
   });
 });
 
 router.delete("/", (req, res) => {
-  const name = req.body.sport;
+  const { sport } = req.body;
 
   Sport.findOneAndRemove({
-    name,
-  }).then(() => {
-    res.send(name);
-  });
+    _id: sport._id,
+  }).then((sport) => {
+    res.status(200).send(sport);
+  }).catch((error) => res.status(500).send(error));
 });
 
 module.exports = router;

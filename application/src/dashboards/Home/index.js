@@ -17,23 +17,22 @@ import moment from "moment";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-// import { DateRangePicker } from '@mui/lab';
 
 import YourUpcomingEvents from "./YourUpcomingEvents";
 import SportCenterUpcomingEvents from "./SportCenterUpcomingEvents";
 import UpcomingEvents from "./UpcomingEvents";
 
 import { setSearchParameters } from "../../redux/actions/search";
-import { getAllSports } from "../../redux/actions/sports";
 import { getAllLocations } from "../../redux/actions/locations";
 import { getAllUsers } from "../../redux/actions/users";
 import { getAllSportCenters } from "../../redux/actions/sportCenters";
+import { fetchSports } from "../../redux/features/sports";
 
 const PER_PAGE = 50;
 
 function makeAndHandleRequest(query, type) {
   return fetch(
-    `${"http://localhost:5000/api/search"}?param=${query}&type=${type}`
+    `${"http://localhost:5050/api/search"}?param=${query}&type=${type}`
   )
     .then((resp) => resp.json())
     .then((result) => {
@@ -83,9 +82,9 @@ class Home extends React.Component {
   _cache = {};
 
   componentDidMount() {
-    const { getAllSports, getAllLocations, getAllUsers, getAllSportCenters } =
+    const { fetchSports, getAllLocations, getAllUsers, getAllSportCenters } =
       this.props;
-    getAllSports();
+    fetchSports();
     getAllLocations();
     getAllUsers();
     getAllSportCenters();
@@ -285,7 +284,7 @@ export default connect(
   }),
   {
     setSearchParameters,
-    getAllSports,
+    fetchSports,
     getAllLocations,
     getAllUsers,
     getAllSportCenters,

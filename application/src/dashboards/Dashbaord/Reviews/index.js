@@ -8,7 +8,7 @@ import SportCenter from "./SportCenter";
 import User from "./User";
 import PageNotFound from "../../../components/PageNotFound";
 
-import { getAllSports } from "../../../redux/actions/sports";
+import { fetchSports } from "../../../redux/features/sports";
 import { getAllLocations } from "../../../redux/actions/locations";
 import { getAllSportCenters } from "../../../redux/actions/sportCenters";
 import { getAllUsers } from "../../../redux/actions/users";
@@ -18,7 +18,7 @@ const Events = () => {
   const userType = useSelector((state) => state.auth.user.type);
 
   useEffect(() => {
-    dispatch(getAllSports());
+    dispatch(fetchSports());
     dispatch(getAllLocations());
     dispatch(getAllSportCenters());
     dispatch(getAllUsers());

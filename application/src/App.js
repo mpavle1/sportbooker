@@ -17,7 +17,7 @@ import DashboardContainer from "./container/DashbordContainer";
 import setAuthToken from "./utils/auth/setAuthToken";
 import routes from "./routes";
 
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "http://localhost:5050";
 
 if (localStorage.jwtToken) {
   // Set auth token header auth

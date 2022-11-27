@@ -6,17 +6,17 @@ const sportsAdapter = createEntityAdapter({
   selectId: (sport) => sport._id
 });
 
-export const fetchSports = createAsyncThunk('sports/get', (async () => {
+export const fetchSports = createAsyncThunk('sports/fetch', (async () => {
   const response = await API.getAllSports();
   return response.data;
 }));
 
-export const addSport = createAsyncThunk('sports/get', (async (sport) => {
+export const addSport = createAsyncThunk('sports/add', (async (sport) => {
   const response = await API.addSport(sport);
   return response.data;
 }));
 
-export const deleteSport = createAsyncThunk('sports/get', (async (sport) => {
+export const deleteSport = createAsyncThunk('sports/delete', (async (sport) => {
   const response = await API.deleteSport(sport);
   return response.data;
 }));
@@ -27,19 +27,56 @@ const sportsSlice = createSlice({
     isLoading: false,
     isInitialized: false,
   }),
-  reducers: {
-    sportAdded(state, action) {
-      return { ...state, sports: [state.sports, action.payload] };
+  extraReducers: {
+    [fetchSports.pending]: (state) => {
+      state.isLoading = true;
     },
-    sportDeleted(state, action) {
-      const sports = state.entities.filter(
-        (sport) => sport.id !== action.payload
-      );
-      state.sports = [...sports];
+    [fetchSports.fulfilled]: (state, action) => {
+      const { payload } = action;
+      state.isLoading = false;
+      state.isInitialized = true;
+
+      sportsAdapter.addMany(state, payload);
     },
-  },
+    [fetchSports.rejected]: (state) => {
+      state.isLoading = false;
+    },
+    [addSport.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [addSport.fulfilled]: (state, action) => {
+      const { payload } = action;
+      state.isLoading = false;
+
+      sportsAdapter.addOne(state, payload);
+    },
+    [addSport.rejected]: (state) => {
+      state.isLoading = false;
+    },
+    [deleteSport.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [deleteSport.fulfilled]: (state, action) => {
+      const { payload } = action;
+      state.isLoading = false;
+
+      sportsAdapter.removeOne(state, payload._id);
+    },
+    [deleteSport.rejected]: (state) => {
+      state.isLoading = false;
+    },
+  }
 });
 
-export const { todoAdded, todoToggled, sportsLoading } = sportsSlice.actions;
+
+const { selectAll, selectById, selectEntities } = sportsAdapter.getSelectors((state) => state.sports);
+
+export const sportsSelectors = {
+  selectAll,
+  selectById,
+  selectEntities,
+  selectIsLoading: createSelector((state) => state.sports, (sports) => sports.isLoading),
+  selectIsInitialized: createSelector((state) => state.sports, (sports) => sports.isInitialized)
+};
 
 export default sportsSlice.reducer;

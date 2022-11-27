@@ -24,7 +24,7 @@ const PER_PAGE = 50;
 
 function makeAndHandleRequest(query, type) {
   return fetch(
-    `${"http://localhost:5000/api/search"}?param=${query}&type=${type}`
+    `${"http://localhost:5050/api/search"}?param=${query}&type=${type}`
   )
     .then((resp) => resp.json())
     .then((result) => {
