@@ -16,7 +16,7 @@ function getStyle(step) {
     borderRadius: "5px",
     boxShadow: 24,
     p: 2,
-  }
+  };
 
   if (step !== 3) {
     style.width = 500;

@@ -46,7 +46,7 @@ const Users = () => {
     },
     {
       Header: "Email",
-      accessor: "email"
+      accessor: "email",
     },
     {
       Header: "Status",
@@ -72,7 +72,7 @@ const Users = () => {
                         status: status === "deactive" ? "active" : "deactive",
                       })
                     ).then(() => {
-                    //   alert("User has been updated");
+                      //   alert("User has been updated");
                       dispatch(getAllUsers());
                     });
                   }}
@@ -91,7 +91,7 @@ const Users = () => {
                         status: "active",
                       })
                     ).then(() => {
-                    //   alert("User has been updated");
+                      //   alert("User has been updated");
                       dispatch(getAllUsers());
                     });
                   }}

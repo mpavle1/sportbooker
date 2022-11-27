@@ -81,7 +81,7 @@ export const addReview = (review) => (dispatch) => {
   dispatch({ type: ADD_REVIEW });
   axios
     .post(`/api/reviews/`, {
-      review
+      review,
     })
     .then((res) => {
       dispatch({
@@ -100,7 +100,7 @@ export const deleteReview = (review) => (dispatch) => {
   dispatch({ type: DELETE_REVIEW });
   axios
     .post(`/api/reviews/delete`, {
-      review
+      review,
     })
     .then((res) => {
       dispatch({
@@ -119,7 +119,7 @@ export const updateReview = (review) => (dispatch) => {
   dispatch({ type: UPDATE_REVIEW });
   axios
     .patch(`/api/reviews/`, {
-      review
+      review,
     })
     .then((res) => {
       dispatch({
@@ -138,7 +138,7 @@ export const approveReview = (review) => (dispatch) => {
   dispatch({ type: UPDATE_REVIEW });
   axios
     .patch(`/api/reviews/approve`, {
-      review
+      review,
     })
     .then((res) => {
       dispatch({

@@ -7,12 +7,42 @@ const South = ({ handleButtonClick, stadium }) => {
   return (
     <StyledSouth>
       <StyledField>Field</StyledField>
-      <StyledButton onClick={() => handleButtonClick("A")} disabled={!isSectionActive(stadium, 'S', 'A')}>A</StyledButton>
-      <StyledButton onClick={() => handleButtonClick("B")} disabled={!isSectionActive(stadium, 'S', 'B')}>B</StyledButton>
-      <StyledButton onClick={() => handleButtonClick("C")} disabled={!isSectionActive(stadium, 'S', 'C')}>C</StyledButton>
-      <StyledButton onClick={() => handleButtonClick("D")} disabled={!isSectionActive(stadium, 'S', 'D')}>D</StyledButton>
-      <StyledButton onClick={() => handleButtonClick("E")} disabled={!isSectionActive(stadium, 'S', 'E')}>E</StyledButton>
-      <StyledButton onClick={() => handleButtonClick("F")} disabled={!isSectionActive(stadium, 'S', 'F')}>F</StyledButton>
+      <StyledButton
+        onClick={() => handleButtonClick("A")}
+        disabled={!isSectionActive(stadium, "S", "A")}
+      >
+        A
+      </StyledButton>
+      <StyledButton
+        onClick={() => handleButtonClick("B")}
+        disabled={!isSectionActive(stadium, "S", "B")}
+      >
+        B
+      </StyledButton>
+      <StyledButton
+        onClick={() => handleButtonClick("C")}
+        disabled={!isSectionActive(stadium, "S", "C")}
+      >
+        C
+      </StyledButton>
+      <StyledButton
+        onClick={() => handleButtonClick("D")}
+        disabled={!isSectionActive(stadium, "S", "D")}
+      >
+        D
+      </StyledButton>
+      <StyledButton
+        onClick={() => handleButtonClick("E")}
+        disabled={!isSectionActive(stadium, "S", "E")}
+      >
+        E
+      </StyledButton>
+      <StyledButton
+        onClick={() => handleButtonClick("F")}
+        disabled={!isSectionActive(stadium, "S", "F")}
+      >
+        F
+      </StyledButton>
     </StyledSouth>
   );
 };

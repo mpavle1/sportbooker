@@ -165,20 +165,16 @@ router.post("/login", (req, res) => {
 
           // check if user is active
           if (user.status === "deactive") {
-            return res
-              .status(403)
-              .json({
-                error:
-                  "Your account has not yet been activated. Please try again later.",
-              });
+            return res.status(403).json({
+              error:
+                "Your account has not yet been activated. Please try again later.",
+            });
           }
           if (user.status === "disabled") {
-            return res
-              .status(403)
-              .json({
-                error:
-                  "Your account has been disable due tu inapropirate behavior",
-              });
+            return res.status(403).json({
+              error:
+                "Your account has been disable due tu inapropirate behavior",
+            });
           }
 
           if (user.type === "sportCenter") {
@@ -244,7 +240,7 @@ router.patch("/changePassword", (req, res) => {
                   password: hash,
                 },
                 {
-                  new: true
+                  new: true,
                 }
               )
                 .then((u) => {
@@ -274,7 +270,7 @@ router.patch("/", (req, res) => {
       $set: req.body.user,
     },
     {
-      new: true
+      new: true,
     }
   )
     .then((newUser) => {
@@ -285,7 +281,7 @@ router.patch("/", (req, res) => {
             $set: req.body.sportCenter,
           },
           {
-            new: true
+            new: true,
           }
         )
           .then((newSportCenter) => {

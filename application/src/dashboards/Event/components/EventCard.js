@@ -28,7 +28,7 @@ const EventCard = ({ event }) => {
     >
       <StyledEventTitle>{event.title}</StyledEventTitle>
       <StyledEventFiled>
-        <EventIcon color="primary"/>
+        <EventIcon color="primary" />
         {format(new Date(event.date), "PPP")}
       </StyledEventFiled>
       <StyledEventFiled>
@@ -43,7 +43,9 @@ const EventCard = ({ event }) => {
         <PlaceIcon color="error" />{" "}
         {locations.find((location) => location._id === event.locationId)?.name}
       </StyledEventFiled>
-      <StyledEventFiled>        <SportsHandballIcon color="success" />
+      <StyledEventFiled>
+        {" "}
+        <SportsHandballIcon color="success" />
         {sports.find((sport) => sport._id === event.sportId)?.name}
       </StyledEventFiled>
     </StyledEventCard>

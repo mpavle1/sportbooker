@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const SportSchema = new Schema({
   name: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 module.exports = Sport = mongoose.model("sport", SportSchema);

@@ -1,7 +1,7 @@
 import React, { Fragment, memo } from "react";
 import styled from "styled-components";
 import { Typography, Button } from "@material-ui/core";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -13,7 +13,7 @@ const SelectSeat = ({
   stadium,
   selectedSeats,
   setSelectedSeats,
-  onBookClick
+  onBookClick,
 }) => {
   const tickets = useSelector((state) => state.tickets.event);
   const { eventId } = useParams();
@@ -31,13 +31,13 @@ const SelectSeat = ({
 
   const getButtonColor = (isSeatSelected, isSeatBooked) => {
     if (isSeatBooked) {
-      return '#B01414';
+      return "#B01414";
     }
     if (isSeatSelected) {
-      return '#68a66e'
+      return "#68a66e";
     }
-    return 'transparent'
-  }
+    return "transparent";
+  };
 
   const handleBackButtonClick = () => {
     setSelectedSeats([]);
@@ -84,77 +84,105 @@ const SelectSeat = ({
     var colCount = null;
 
     switch (selectedStand) {
-      case 'N':
-      var rowCount = section.row;
-      var colCount = section.column;
-
-        returnValue.push(<StyledInfoButton key={uuidv4()}>row\col</StyledInfoButton>);
-        for(let j = 0; j < section.column; j++) {
-          returnValue.push(<StyledInfoButton key={uuidv4()}>{j+1}</StyledInfoButton>);
-        }      
-
-        for(let i = section.row; i > 0; i--) {
-          returnValue.push(<StyledInfoButton key={uuidv4()}>{i}</StyledInfoButton>);
-          for(let j = 0; j < section.column; j++) {
-            returnValue.push(getSeatButton(i,j, false));
-          }      
-        }
-        break;
-      case 'S':
+      case "N":
         var rowCount = section.row;
         var colCount = section.column;
 
-        returnValue.push(<StyledInfoButton key={uuidv4()}>row\col</StyledInfoButton>);
-        for(let j = 0; j < section.column; j++) {
-          returnValue.push(<StyledInfoButton key={uuidv4()}>{j+1}</StyledInfoButton>);
-        }      
+        returnValue.push(
+          <StyledInfoButton key={uuidv4()}>row\col</StyledInfoButton>
+        );
+        for (let j = 0; j < section.column; j++) {
+          returnValue.push(
+            <StyledInfoButton key={uuidv4()}>{j + 1}</StyledInfoButton>
+          );
+        }
 
-        for(let i = 0; i < section.row; i++) {
-          returnValue.push(<StyledInfoButton key={uuidv4()}>{i + 1}</StyledInfoButton>);
-          for(let j = 0; j < section.column; j++) {
+        for (let i = section.row; i > 0; i--) {
+          returnValue.push(
+            <StyledInfoButton key={uuidv4()}>{i}</StyledInfoButton>
+          );
+          for (let j = 0; j < section.column; j++) {
+            returnValue.push(getSeatButton(i, j, false));
+          }
+        }
+        break;
+      case "S":
+        var rowCount = section.row;
+        var colCount = section.column;
+
+        returnValue.push(
+          <StyledInfoButton key={uuidv4()}>row\col</StyledInfoButton>
+        );
+        for (let j = 0; j < section.column; j++) {
+          returnValue.push(
+            <StyledInfoButton key={uuidv4()}>{j + 1}</StyledInfoButton>
+          );
+        }
+
+        for (let i = 0; i < section.row; i++) {
+          returnValue.push(
+            <StyledInfoButton key={uuidv4()}>{i + 1}</StyledInfoButton>
+          );
+          for (let j = 0; j < section.column; j++) {
             returnValue.push(getSeatButton(i + 1, j, false));
-          }      
+          }
         }
         break;
-      case 'E':
+      case "E":
         var rowCount = section.column;
         var colCount = section.row;
 
-        returnValue.push(<StyledInfoButton  key={uuidv4()}>col\row</StyledInfoButton>);
-        for(let j = 0; j < section.row; j++) {
-          returnValue.push(<StyledInfoButton  key={uuidv4()}>{j + 1}</StyledInfoButton>);
-        }      
+        returnValue.push(
+          <StyledInfoButton key={uuidv4()}>col\row</StyledInfoButton>
+        );
+        for (let j = 0; j < section.row; j++) {
+          returnValue.push(
+            <StyledInfoButton key={uuidv4()}>{j + 1}</StyledInfoButton>
+          );
+        }
 
-        for(let i = 0; i < section.column; i++) {
-          returnValue.push(<StyledInfoButton  key={uuidv4()}>{i + 1}</StyledInfoButton>);
-          for(let j = 0; j < section.row; j++) {
+        for (let i = 0; i < section.column; i++) {
+          returnValue.push(
+            <StyledInfoButton key={uuidv4()}>{i + 1}</StyledInfoButton>
+          );
+          for (let j = 0; j < section.row; j++) {
             returnValue.push(getSeatButton(j + 1, i, true));
-          }      
+          }
         }
         break;
-      case 'W':
+      case "W":
         var rowCount = section.column;
         var colCount = section.row;
 
-        returnValue.push(<StyledInfoButton  key={uuidv4()}>col\row</StyledInfoButton>);
-        for(let j = section.row; j > 0; j--) {
-          returnValue.push(<StyledInfoButton  key={uuidv4()}>{j}</StyledInfoButton>);
-        }      
+        returnValue.push(
+          <StyledInfoButton key={uuidv4()}>col\row</StyledInfoButton>
+        );
+        for (let j = section.row; j > 0; j--) {
+          returnValue.push(
+            <StyledInfoButton key={uuidv4()}>{j}</StyledInfoButton>
+          );
+        }
 
-        for(let i = 0; i < section.column; i++) {
-          returnValue.push(<StyledInfoButton  key={uuidv4()}>{i + 1}</StyledInfoButton>);
-          for(let j = section.row; j > 0; j--) {
+        for (let i = 0; i < section.column; i++) {
+          returnValue.push(
+            <StyledInfoButton key={uuidv4()}>{i + 1}</StyledInfoButton>
+          );
+          for (let j = section.row; j > 0; j--) {
             returnValue.push(getSeatButton(j, i, true));
-          }      
+          }
         }
         break;
       default:
-        legend = '';
+        legend = "";
         break;
     }
 
-    return <StyledRowContainer rowCount={rowCount} columnCount={colCount}>{returnValue}</StyledRowContainer>;
-  }
+    return (
+      <StyledRowContainer rowCount={rowCount} columnCount={colCount}>
+        {returnValue}
+      </StyledRowContainer>
+    );
+  };
 
   return (
     <Fragment>
@@ -203,15 +231,14 @@ const StyledButtons = styled.div`
 const StyledRowContainer = styled.div`
   padding: 30px 0;
   display: grid;
-  grid-template-columns: repeat(${({ columnCount }) => (columnCount + 1)}, 1fr);
-  grid-template-rows: repeat(${({ rowCount }) => (rowCount)}, 1fr);
+  grid-template-columns: repeat(${({ columnCount }) => columnCount + 1}, 1fr);
+  grid-template-rows: repeat(${({ rowCount }) => rowCount}, 1fr);
   gap: 5px;
 `;
 
 const StyledButton = styled(Button)`
   border: 1px solid #777 !important;
-  background-color: ${({ buttonColor }) => buttonColor } !important;
+  background-color: ${({ buttonColor }) => buttonColor} !important;
 `;
 
-const StyledInfoButton = styled(Button)`
-`;
+const StyledInfoButton = styled(Button)``;

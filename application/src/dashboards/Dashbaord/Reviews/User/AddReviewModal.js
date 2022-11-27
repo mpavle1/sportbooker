@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Box, Typography, Modal, TextField, Button } from "@material-ui/core";
 import { Rating } from "@mui/material";
-import moment from 'moment';
+import moment from "moment";
 
 import { addReview } from "../../../../redux/actions/reviews";
 
@@ -47,7 +47,8 @@ const AddReviewModal = ({ onClose, event }) => {
             fontSize: "20px",
           }}
         >
-          {scUser.name} - {location.name} - Capacity: {sportCenter.capacity} seats
+          {scUser.name} - {location.name} - Capacity: {sportCenter.capacity}{" "}
+          seats
         </div>
         <StyledSCphoto src={sportCenter.profilePhoto} />
       </StyledSC>
@@ -113,11 +114,11 @@ const AddReviewModal = ({ onClose, event }) => {
               addReview({
                 title,
                 comment,
-                date: moment(new Date()).format('YYYY-MM-DD'),
+                date: moment(new Date()).format("YYYY-MM-DD"),
                 sportCenterId: event.sportCenterId,
                 userId: user._id,
                 eventId: event._id,
-                score
+                score,
               })
             );
             dispatch(getAllUserReviews(user._id));

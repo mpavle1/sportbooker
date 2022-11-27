@@ -29,12 +29,12 @@ const Filters = ({ type, filterCheckedOptions, setFilterCheckedOptions }) => {
               <Checkbox
                 checked={filterCheckedOptions.includes(option._id)}
                 onChange={(event) => {
-                    const value = event.target.id;
-                    let newArray = [...filterCheckedOptions, value];
-                    if (filterCheckedOptions.includes(value)) {
-                      newArray = newArray.filter((sportId) => sportId !== value);
-                    }
-                    setFilterCheckedOptions([...newArray]);
+                  const value = event.target.id;
+                  let newArray = [...filterCheckedOptions, value];
+                  if (filterCheckedOptions.includes(value)) {
+                    newArray = newArray.filter((sportId) => sportId !== value);
+                  }
+                  setFilterCheckedOptions([...newArray]);
                 }}
                 name={option.name}
                 id={option._id}

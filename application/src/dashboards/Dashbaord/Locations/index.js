@@ -47,7 +47,7 @@ const Locations = ({ getAllLocations, locations, deleteLocation }) => {
                 <div
                   style={{
                     display: "inline-block",
-                    width: "100px"
+                    width: "100px",
                   }}
                 >
                   {location.name}

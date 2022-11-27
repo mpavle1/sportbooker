@@ -6,10 +6,10 @@ const TicketItem = ({ ticket, user }) => {
     <StyledEventItem>
       <StyledTicket>
         <div>
-            {user.name} {user.lastName}
+          {user.name} {user.lastName}
         </div>
         <div>
-            <b>Ticket Id:</b> {ticket._id}
+          <b>Ticket Id:</b> {ticket._id}
         </div>
         <div>
           <b>stand:</b> {ticket.stand} <b>section:</b> {ticket.section}

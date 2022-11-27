@@ -6,12 +6,42 @@ import { isSectionActive } from "../../../../../utils";
 const North = ({ handleButtonClick, stadium }) => {
   return (
     <StyledNorth>
-      <StyledButton onClick={() => handleButtonClick("D")} disabled={!isSectionActive(stadium, 'N', 'D')}>D</StyledButton>
-      <StyledButton onClick={() => handleButtonClick("E")} disabled={!isSectionActive(stadium, 'N', 'E')}>E</StyledButton>
-      <StyledButton onClick={() => handleButtonClick("F")} disabled={!isSectionActive(stadium, 'N', 'F')}>F</StyledButton>
-      <StyledButton onClick={() => handleButtonClick("A")} disabled={!isSectionActive(stadium, 'N', 'A')}>A</StyledButton>
-      <StyledButton onClick={() => handleButtonClick("B")} disabled={!isSectionActive(stadium, 'N', 'B')}>B</StyledButton>
-      <StyledButton onClick={() => handleButtonClick("C")} disabled={!isSectionActive(stadium, 'N', 'C')}>C</StyledButton>
+      <StyledButton
+        onClick={() => handleButtonClick("D")}
+        disabled={!isSectionActive(stadium, "N", "D")}
+      >
+        D
+      </StyledButton>
+      <StyledButton
+        onClick={() => handleButtonClick("E")}
+        disabled={!isSectionActive(stadium, "N", "E")}
+      >
+        E
+      </StyledButton>
+      <StyledButton
+        onClick={() => handleButtonClick("F")}
+        disabled={!isSectionActive(stadium, "N", "F")}
+      >
+        F
+      </StyledButton>
+      <StyledButton
+        onClick={() => handleButtonClick("A")}
+        disabled={!isSectionActive(stadium, "N", "A")}
+      >
+        A
+      </StyledButton>
+      <StyledButton
+        onClick={() => handleButtonClick("B")}
+        disabled={!isSectionActive(stadium, "N", "B")}
+      >
+        B
+      </StyledButton>
+      <StyledButton
+        onClick={() => handleButtonClick("C")}
+        disabled={!isSectionActive(stadium, "N", "C")}
+      >
+        C
+      </StyledButton>
       <StyledField>Field</StyledField>
     </StyledNorth>
   );

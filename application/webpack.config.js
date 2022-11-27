@@ -1,13 +1,13 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: path.join(__dirname, "src/index.js"),
-  devtool: 'source-map',
+  devtool: "source-map",
   output: {
     path: path.resolve(__dirname, "public/dist"),
-    filename: 'bundle.js',
-    publicPath: '/'
+    filename: "bundle.js",
+    publicPath: "/",
   },
   module: {
     rules: [
@@ -17,21 +17,25 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react']
-          }
-        }
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+          },
+        },
       },
       {
         test: /(\.css|\.less)$/,
-        loaders: ['style-loader', 'css-loader']
-      }
-    ]
+        loaders: ["style-loader", "css-loader"],
+      },
+    ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: [".js", ".jsx"],
     alias: {
-      'styled-components': path.resolve('.', 'node_modules', 'styled-components')
-    }
+      "styled-components": path.resolve(
+        ".",
+        "node_modules",
+        "styled-components"
+      ),
+    },
   },
   devServer: {
     historyApiFallback: true,
@@ -41,4 +45,4 @@ module.exports = {
       template: path.join(__dirname, "public/index.html"),
     }),
   ],
-}
+};

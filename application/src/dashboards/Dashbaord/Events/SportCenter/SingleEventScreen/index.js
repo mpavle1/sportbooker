@@ -86,7 +86,7 @@ const SingleEventScreen = () => {
             <AccessTimeIcon /> {event.startTime} - {event.endTime}
           </StyledEventInfo>
           <StyledEventInfo>
-            <SportsHandballIcon color="success"/>{" "}
+            <SportsHandballIcon color="success" />{" "}
             {sports.find((sport) => sport._id === event.sportId)?.name}
           </StyledEventInfo>
           <StyledEventInfo>

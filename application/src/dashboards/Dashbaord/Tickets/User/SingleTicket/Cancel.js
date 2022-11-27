@@ -89,7 +89,7 @@ const Cancel = () => {
           </div>
         </div>
       </StyledInfoContainer>
-      <div style={{ margin: "10px 0", width: '500px' }}>{description}</div>
+      <div style={{ margin: "10px 0", width: "500px" }}>{description}</div>
       <ButtonContainer>
         <Button
           variant="contained"

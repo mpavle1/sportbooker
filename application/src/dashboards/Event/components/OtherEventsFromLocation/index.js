@@ -57,7 +57,7 @@ const EventsFromSc = ({ sportCenterId, locationId, location }) => {
         <Alert
           severity="info"
           sx={{
-            fontWeight: "bold"
+            fontWeight: "bold",
           }}
         >
           Other events from {location}

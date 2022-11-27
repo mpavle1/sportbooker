@@ -1,7 +1,7 @@
-import * as navigation from './navigation';
+import * as navigation from "./navigation";
 
 const CONST = {
-    navigation
+  navigation,
 };
 
 export default CONST;

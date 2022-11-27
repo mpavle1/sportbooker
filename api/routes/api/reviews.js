@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
 router.get("/sportCenter/:sportCenterId", (req, res) => {
   Review.find({
     sportCenterId: req.params.sportCenterId,
-    status: 'approved'
+    status: "approved",
   })
     .then((reviews) => res.status(200).json(reviews))
     .catch((err) => res.status(400).json(err));

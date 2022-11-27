@@ -8,9 +8,9 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { Button } from "@material-ui/core";
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
 
 const Table = ({ columns, data }) => {
   const {
@@ -80,7 +80,7 @@ const Table = ({ columns, data }) => {
           })}
         </TableBody>
       </MaUTable>
-      <div style={{ margin: '10px 0 0 0'}}>
+      <div style={{ margin: "10px 0 0 0" }}>
         <Button
           variant="contained"
           onClick={() => gotoPage(0)}

@@ -4,36 +4,36 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   name: {
     type: String,
-    required: false
+    required: false,
   },
   lastName: {
     type: String,
-    required: false
+    required: false,
   },
   email: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   dateOfBirth: {
     type: Date,
-    required: false
+    required: false,
   },
   phoneNumber: {
     type: String,
-    required: false
+    required: false,
   },
   type: {
     type: String,
-    required: true
+    required: true,
   },
   status: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 module.exports = User = mongoose.model("users", UserSchema);

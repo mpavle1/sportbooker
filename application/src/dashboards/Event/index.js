@@ -16,7 +16,7 @@ import EventSeatRoundedIcon from "@mui/icons-material/EventSeatRounded";
 import StarIcon from "@mui/icons-material/Star";
 import Alert from "@mui/material/Alert";
 
-import SportCenterMap from './components/SportCenterMap';
+import SportCenterMap from "./components/SportCenterMap";
 import Reviews from "./components/ReviewSection";
 import EventsFromSc from "./components/EventsFromSc";
 import OtherEventsFromLocation from "./components/OtherEventsFromLocation";
@@ -178,7 +178,7 @@ const Event = () => {
 
     if (!canBookATicket) {
       return (
-        <Alert severity="warning" sx={{ textAlign: "center", width: '300px' }}>
+        <Alert severity="warning" sx={{ textAlign: "center", width: "300px" }}>
           An active account is required to book a ticket. Login or register to
           proceed.
         </Alert>

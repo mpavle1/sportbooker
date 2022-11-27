@@ -36,10 +36,10 @@ const EditModal = ({ event, onClose, onChange }) => {
   const sportCenters = useSelector((state) => state.sportCenters);
   const sportCenter = sportCenters.find((sc) => sc._id === event.sportCenterId);
 
-//   if (sports.length === 0 || sportCenters.length === 0) {
-//     onClose();
-//     reutrn;
-//   }
+  //   if (sports.length === 0 || sportCenters.length === 0) {
+  //     onClose();
+  //     reutrn;
+  //   }
 
   const [title, setTitle] = useState(event.title);
   const [description, setDescription] = useState(event.description);

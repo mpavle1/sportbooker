@@ -1,20 +1,50 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-import styled from 'styled-components';
+import styled from "styled-components";
 import { isSectionActive } from "../../../../../utils";
 
 const West = ({ handleButtonClick, stadium }) => {
   return (
     <StyledWest>
       <StyledGridColumn>
-        <StyledButton onClick={() => handleButtonClick("D")} disabled={!isSectionActive(stadium, 'W', 'D')}>D</StyledButton>
-        <StyledButton onClick={() => handleButtonClick("E")} disabled={!isSectionActive(stadium, 'W', 'E')}>E</StyledButton>
-        <StyledButton onClick={() => handleButtonClick("F")} disabled={!isSectionActive(stadium, 'W', 'F')}>F</StyledButton>
+        <StyledButton
+          onClick={() => handleButtonClick("D")}
+          disabled={!isSectionActive(stadium, "W", "D")}
+        >
+          D
+        </StyledButton>
+        <StyledButton
+          onClick={() => handleButtonClick("E")}
+          disabled={!isSectionActive(stadium, "W", "E")}
+        >
+          E
+        </StyledButton>
+        <StyledButton
+          onClick={() => handleButtonClick("F")}
+          disabled={!isSectionActive(stadium, "W", "F")}
+        >
+          F
+        </StyledButton>
       </StyledGridColumn>
       <StyledGridColumn>
-        <StyledButton onClick={() => handleButtonClick("A")} disabled={!isSectionActive(stadium, 'W', 'A')}>A</StyledButton>
-        <StyledButton onClick={() => handleButtonClick("B")} disabled={!isSectionActive(stadium, 'W', 'B')}>B</StyledButton>
-        <StyledButton onClick={() => handleButtonClick("C")} disabled={!isSectionActive(stadium, 'W', 'C')}>C</StyledButton>
+        <StyledButton
+          onClick={() => handleButtonClick("A")}
+          disabled={!isSectionActive(stadium, "W", "A")}
+        >
+          A
+        </StyledButton>
+        <StyledButton
+          onClick={() => handleButtonClick("B")}
+          disabled={!isSectionActive(stadium, "W", "B")}
+        >
+          B
+        </StyledButton>
+        <StyledButton
+          onClick={() => handleButtonClick("C")}
+          disabled={!isSectionActive(stadium, "W", "C")}
+        >
+          C
+        </StyledButton>
       </StyledGridColumn>
       <StyledField>Field</StyledField>
     </StyledWest>

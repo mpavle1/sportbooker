@@ -58,7 +58,7 @@ const SelectSection = ({ isViewModeActive, stadium, onChangeStadium }) => {
 
 SelectSection.defaultProps = {
   isViewModeActive: false,
-  onChangeStadium: () => {}
+  onChangeStadium: () => {},
 };
 
 export default SelectSection;

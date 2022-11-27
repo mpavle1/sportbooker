@@ -57,7 +57,11 @@ const Navigation = () => {
           </Fragment>
         )}
         <StyledButton>
-          <NavLink to="/dashboard/reviews" exact activeStyle={{ color: "#3f51b5" }}>
+          <NavLink
+            to="/dashboard/reviews"
+            exact
+            activeStyle={{ color: "#3f51b5" }}
+          >
             Reviews
           </NavLink>
         </StyledButton>

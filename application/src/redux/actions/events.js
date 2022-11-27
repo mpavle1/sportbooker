@@ -147,15 +147,11 @@ export const getOtherEventsForLocation = (sportCenterId, locationId, limit) => {
 };
 
 export const getUpcomingEventsForUser = (userId, limit) => {
-  return axios.get(
-    `api/events/upcomingEventsForUser/${userId}/${limit}`
-  );
+  return axios.get(`api/events/upcomingEventsForUser/${userId}/${limit}`);
 };
 
 export const getUpcomingPopularEvents = (limit) => {
-  return axios.get(
-    `api/events/upcomingPopularEvents/${limit}`
-  );
+  return axios.get(`api/events/upcomingPopularEvents/${limit}`);
 };
 
 export const getSportCenterUpcomingEvents = (sportCenterID, limit) => {
@@ -165,19 +161,13 @@ export const getSportCenterUpcomingEvents = (sportCenterID, limit) => {
 };
 
 export const getPastEventsForUser = (userId) => {
-  return axios.get(
-    `api/events/getPastEventsForUser/${userId}/`
-  );
+  return axios.get(`api/events/getPastEventsForUser/${userId}/`);
 };
 
 export const getPastEventsForUserWithOutReviews = (userId) => {
-  return axios.get(
-    `api/events/getPastEventsForUserWithOutReviews/${userId}/`
-  );
+  return axios.get(`api/events/getPastEventsForUserWithOutReviews/${userId}/`);
 };
 
 export const getAllSCEvents = (sportCenterId) => {
-  return axios.get(
-    `/api/events/sportCenter/${sportCenterId}`
-  );
+  return axios.get(`/api/events/sportCenter/${sportCenterId}`);
 };

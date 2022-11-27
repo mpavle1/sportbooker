@@ -27,7 +27,7 @@ const YourUpcomingEvents = ({ user }) => {
         <Alert
           severity="warning"
           sx={{
-            fontWeight: "bold"
+            fontWeight: "bold",
           }}
         >
           Don't forget, You have reserved tickets for these upcoming events

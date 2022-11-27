@@ -119,13 +119,12 @@ export const getSportCenter = (sportCenterId) => {
   return axios.get(`/api/users/sportcenter/${sportCenterId}`);
 };
 
-export const cleanErrors = () => dispatch => {
+export const cleanErrors = () => (dispatch) => {
   dispatch({
     type: GET_ERRORS,
     payload: {},
   });
 };
-
 
 export const updateProfilePhoto = (userId, photoFile) => (dispatch) => {
   const formData = new FormData();

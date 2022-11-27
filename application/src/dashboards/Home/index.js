@@ -19,9 +19,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 // import { DateRangePicker } from '@mui/lab';
 
-import YourUpcomingEvents from './YourUpcomingEvents';
-import SportCenterUpcomingEvents from './SportCenterUpcomingEvents';
-import UpcomingEvents from './UpcomingEvents';
+import YourUpcomingEvents from "./YourUpcomingEvents";
+import SportCenterUpcomingEvents from "./SportCenterUpcomingEvents";
+import UpcomingEvents from "./UpcomingEvents";
 
 import { setSearchParameters } from "../../redux/actions/search";
 import { getAllSports } from "../../redux/actions/sports";
@@ -223,9 +223,11 @@ class Home extends React.Component {
         <StyledBackgroundWrapper>
           <StyledBackground></StyledBackground>
         </StyledBackgroundWrapper>
-        {user?.type === 'user' && <YourUpcomingEvents user={user} />}
-        {user?.type === 'sportCenter' && <SportCenterUpcomingEvents sportCenterId={sportCenter._id} />}
-        {user?.type !== 'sportCenter' && <UpcomingEvents />}
+        {user?.type === "user" && <YourUpcomingEvents user={user} />}
+        {user?.type === "sportCenter" && (
+          <SportCenterUpcomingEvents sportCenterId={sportCenter._id} />
+        )}
+        {user?.type !== "sportCenter" && <UpcomingEvents />}
         <br />
       </div>
     );
@@ -275,17 +277,20 @@ class Home extends React.Component {
   };
 }
 
-export default connect((state) => ({
-  user: state.auth.user,
-  isAuthenticated: state.auth.isAuthenticated,
-  sportCenter: state.auth.sportCenter
-}), {
-  setSearchParameters,
-  getAllSports,
-  getAllLocations,
-  getAllUsers,
-  getAllSportCenters,
-})(withRouter(Home));
+export default connect(
+  (state) => ({
+    user: state.auth.user,
+    isAuthenticated: state.auth.isAuthenticated,
+    sportCenter: state.auth.sportCenter,
+  }),
+  {
+    setSearchParameters,
+    getAllSports,
+    getAllLocations,
+    getAllUsers,
+    getAllSportCenters,
+  }
+)(withRouter(Home));
 
 const StyledSearchBarContainer = styled.div`
   width: 500px;

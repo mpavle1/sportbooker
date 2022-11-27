@@ -11,7 +11,7 @@ import {
 } from "./redux/actions/auth";
 import store from "./redux/store";
 
-import Header from './components/Header';
+import Header from "./components/Header";
 import DashboardContainer from "./container/DashbordContainer";
 
 import setAuthToken from "./utils/auth/setAuthToken";
@@ -44,7 +44,7 @@ if (localStorage.jwtToken) {
 
 const App = () => (
   <Provider store={store}>
-    <Router initialEntries={['/']}>
+    <Router initialEntries={["/"]}>
       <Header />
       <DashboardContainer>
         <Switch>

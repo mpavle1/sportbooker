@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Button } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { format } from "date-fns";
-import moment from 'moment';
+import moment from "moment";
 import { useHistory } from "react-router-dom";
 
 import { getSportCenter } from "../../../../../redux/actions/auth";

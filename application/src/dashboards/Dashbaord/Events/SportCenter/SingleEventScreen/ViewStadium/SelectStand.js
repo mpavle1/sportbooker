@@ -9,7 +9,7 @@ const SelectStand = ({
   setCurrentStep,
   currentStep,
   setIsModalVisible,
-  stadium
+  stadium,
 }) => {
   const handleButtonClick = (direction) => {
     handleStandSelect(direction);
@@ -32,28 +32,28 @@ const SelectStand = ({
         <StyledNorthButton
           variant="outlined"
           onClick={() => handleButtonClick("N")}
-          disabled={!isStandActive(stadium, 'N')}
+          disabled={!isStandActive(stadium, "N")}
         >
           North
         </StyledNorthButton>
         <StyledEastButton
           variant="outlined"
           onClick={() => handleButtonClick("E")}
-          disabled={!isStandActive(stadium, 'E')}
+          disabled={!isStandActive(stadium, "E")}
         >
           East
         </StyledEastButton>
         <StyledWestButton
           variant="outlined"
           onClick={() => handleButtonClick("W")}
-          disabled={!isStandActive(stadium, 'W')}
+          disabled={!isStandActive(stadium, "W")}
         >
           West
         </StyledWestButton>
         <StyledSouthButton
           variant="outlined"
           onClick={() => handleButtonClick("S")}
-          disabled={!isStandActive(stadium, 'N')}
+          disabled={!isStandActive(stadium, "N")}
         >
           South
         </StyledSouthButton>

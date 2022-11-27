@@ -16,7 +16,7 @@ function getStyle(step) {
     borderRadius: "5px",
     boxShadow: 24,
     p: 2,
-  }
+  };
 
   if (step !== 3) {
     style.width = 500;
@@ -25,7 +25,12 @@ function getStyle(step) {
   return style;
 }
 
-const BookATicketModal = ({ isVisible, handleCloseModal, stadium, onBookATicketClick }) => {
+const BookATicketModal = ({
+  isVisible,
+  handleCloseModal,
+  stadium,
+  onBookATicketClick,
+}) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedStand, setSelectedStand] = useState(null);
   const [selectedSection, setSelectedSection] = useState(null);
@@ -42,7 +47,7 @@ const BookATicketModal = ({ isVisible, handleCloseModal, stadium, onBookATicketC
   const onBookClick = () => {
     onBookATicketClick(selectedStand, selectedSection, selectedSeats);
     onModalClose();
-  }
+  };
 
   const renderCurrentStep = () => {
     switch (currentStep) {

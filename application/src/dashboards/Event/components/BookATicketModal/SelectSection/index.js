@@ -11,7 +11,7 @@ const SelectSection = ({
   currentStep,
   setCurrentStep,
   selectedStand,
-  stadium
+  stadium,
 }) => {
   const handleButtonClick = (direction) => {
     handleSectionSelect(direction);
@@ -25,9 +25,13 @@ const SelectSection = ({
   const renderSelectedStand = () => {
     switch (selectedStand) {
       case "N":
-        return <North handleButtonClick={handleButtonClick} stadium={stadium} />;
+        return (
+          <North handleButtonClick={handleButtonClick} stadium={stadium} />
+        );
       case "S":
-        return <South handleButtonClick={handleButtonClick} stadium={stadium} />;
+        return (
+          <South handleButtonClick={handleButtonClick} stadium={stadium} />
+        );
       case "E":
         return <East handleButtonClick={handleButtonClick} stadium={stadium} />;
       case "W":
@@ -40,13 +44,13 @@ const SelectSection = ({
   const renderTitle = () => {
     switch (selectedStand) {
       case "N":
-        return 'Please select a section in the North stand';
+        return "Please select a section in the North stand";
       case "S":
-        return 'Please select a section in the South stand';
+        return "Please select a section in the South stand";
       case "E":
-        return 'Please select a section in the East stand';
+        return "Please select a section in the East stand";
       case "W":
-        return 'Please select a section in the West stand';
+        return "Please select a section in the West stand";
       default:
         break;
     }

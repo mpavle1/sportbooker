@@ -24,7 +24,7 @@ const Login = () => {
   });
 
   useEffect(() => {
-    if (typeof errors !== 'object') {
+    if (typeof errors !== "object") {
       alert(`An error occured: ${errors}`);
       dispatch(cleanErrors());
     }

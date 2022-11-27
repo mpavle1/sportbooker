@@ -64,9 +64,15 @@ export default function (state = initialState, action) {
         all: [...state.all, action.payload],
       };
     case DELETE_REVIEW_SUCCESS:
-      const newAll = [...state.all].filter((review) => review._id !== action.payload._id);
-      const newSC = [...state.sportCenter].filter((review) => review._id !== action.payload._id);
-      const newUser = [...state.user].filter((review) => review._id !== action.payload._id);
+      const newAll = [...state.all].filter(
+        (review) => review._id !== action.payload._id
+      );
+      const newSC = [...state.sportCenter].filter(
+        (review) => review._id !== action.payload._id
+      );
+      const newUser = [...state.user].filter(
+        (review) => review._id !== action.payload._id
+      );
 
       return {
         ...state,
@@ -76,9 +82,15 @@ export default function (state = initialState, action) {
         user: [...newUser],
       };
     case UPDATE_REVIEW_SUCCESS:
-      const updateNewAll = [...state.all].filter((review) => review._id !== action.payload._id);
-      const updateNewSC = [...state.sportCenter].filter((review) => review._id !== action.payload._id);
-      const updateNewUser = [...state.user].filter((review) => review._id !== action.payload._id);
+      const updateNewAll = [...state.all].filter(
+        (review) => review._id !== action.payload._id
+      );
+      const updateNewSC = [...state.sportCenter].filter(
+        (review) => review._id !== action.payload._id
+      );
+      const updateNewUser = [...state.user].filter(
+        (review) => review._id !== action.payload._id
+      );
 
       return {
         ...state,

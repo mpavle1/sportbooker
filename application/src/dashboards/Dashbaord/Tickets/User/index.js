@@ -13,7 +13,9 @@ import { getAllLocations } from "../../../../redux/actions/locations";
 const Tickets = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const isEventsInitialized = useSelector((state) => state.events.isInitialized);
+  const isEventsInitialized = useSelector(
+    (state) => state.events.isInitialized
+  );
 
   useEffect(() => {
     dispatch(getAllUserTickets(user._id));

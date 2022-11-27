@@ -59,7 +59,7 @@ const EventCard = ({ event, onReviewClick }) => {
         >
           View this Event
         </Button>
-        <Button onClick={() => onReviewClick()} type="button" >
+        <Button onClick={() => onReviewClick()} type="button">
           Leave a review
         </Button>
       </div>

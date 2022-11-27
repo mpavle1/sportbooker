@@ -134,7 +134,7 @@ const Admin = () => {
               <IconButton
                 onClick={() => {
                   dispatch(approveReview(cell.row.original));
-                  alert('Review has been approved');
+                  alert("Review has been approved");
                   dispatch(getAllReviews());
                 }}
               >
